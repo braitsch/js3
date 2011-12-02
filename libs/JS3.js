@@ -43,6 +43,9 @@ function JS3(cnvs)
 		JS3.prototype.getChildAt = function(n){
 			return _children[n];
 		}
+		JS3.prototype.getChildAtRandom = function(){
+			return _children[Math.floor(Math.random()*_children.length)];
+		}		
 		JS3.prototype.removeChildAt = function(n){
 			_children.splice(n, 1);
 		}		
@@ -69,6 +72,13 @@ function JS3(cnvs)
 	 			win.document.write('<img src="' + img + '"/>');
 	 			win.document.write('</body></html>');
 	 			win.document.close();
+		}
+		JS3.prototype.drawLine = function(x1, y1, x2, y2){
+			_context.moveTo(x1, y1);  
+			_context.lineTo(x2, y2);
+			_context.lineCap = "butt";			
+			_context.strokeStyle = '#ffffff';
+			_context.stroke();
 		}		
 		
 	// public static methods //
@@ -79,7 +89,7 @@ function JS3(cnvs)
 			_context.globalAlpha = o.alpha;			
 		    _context.fillStyle = o.color;		
 		    _context.fillRect(o.x, o.y, o.width, o.height);
-			_context.globalAlpha = 1;		
+			_context.globalAlpha = 1;
 		}
 		var drawCircle = function(o){
 			_context.globalAlpha = o.alpha;	
@@ -111,7 +121,7 @@ function JS3(cnvs)
 		{
 			getFrameRate();				
 			if (_drawClean) drawBackground();
-			for (var i = _runners.length - 1; i >= 0; i--) {
+			for (var i = 0; i < _runners.length; i++) {
 				if (_runners[i].d === undefined){
 					_runners[i].f();
 			// execute on delay //		
@@ -122,7 +132,7 @@ function JS3(cnvs)
 				}
 			}
 			// execute tweens //
-			for (var i = _tweens.length - 1; i >= 0; i--) {
+			for (var i = 0; i < _tweens.length; i++) {
 				var twn= _tweens[i];
 				if (twn.n == undefined) {
 					twn.n = Math.round(twn.m / _frameRate);

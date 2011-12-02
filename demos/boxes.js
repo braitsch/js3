@@ -24,8 +24,9 @@ function addBalls()
 {
 	var i = 5;
 	while ( i-- ){
-		var c = new JS3Circle();
-			c.size = 15;
+		var c = new JS3Rect();
+			c.width = 20;
+			c.height = 10;			
 			c.alpha = 0;
 			c.x = Math.random() * canvas.width;
 			c.y = Math.random() * canvas.height;
