@@ -32,26 +32,33 @@ function JS3(cnvs)
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	
 	// public constants //
-		JS3.LINE = 'line';	
-		JS3.RECT = 'rect';	
-		JS3.CIRCLE = 'circle';		
-		JS3.OBJECT = {x:0, y:0, alpha:1};
+		JS3.LINE 	= 'line';	
+		JS3.ARC 	= 'arc';			
+		JS3.RECT 	= 'rect';	
+		JS3.CIRCLE 	= 'circle';		
+		JS3.OBJECT 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, fill:true, fillColor:'#fff', fillAlpha:1,
+						size:25, stroke:true, strokeColor:'#eee', strokeAlpha:1, strokeWidth:1, capStyle:'butt'};
 	
-	// public instance methods //	
+	// display list management //	
 	
 		JS3.prototype.addChild = function(o){
 			_children.push(o);
 		}	
+		JS3.prototype.addChildAt = function(o, n){
+			if (n <= _children.length) _children.splice(n, 0, o);
+		}			
 		JS3.prototype.getChildAt = function(n){
 			return _children[n];
 		}
 		JS3.prototype.getChildAtRandom = function(){
-			trace(_children.length)
 			return _children[Math.floor(Math.random()*_children.length)];
 		}		
 		JS3.prototype.removeChildAt = function(n){
 			_children.splice(n, 1);
 		}		
+		
+	// 	animation methods //
+		
 		JS3.prototype.run = function(func, delay, repeat){
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
@@ -61,12 +68,15 @@ function JS3(cnvs)
 		JS3.prototype.stop = function(func){
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) _runners.splice(i, 1);
 		}	
-		JS3.prototype.tween = function(o, t, p){
+		JS3.prototype.tween = function(obj, secs, props){
 			var d = {}; // property delta //
-			for (var k in p) d[k] = p[k] - o[k];
-			_tweens.push({o:o, d:d, m:t * 1000});
+			for (var k in props) d[k] = props[k] - obj[k];
+			_tweens.push({o:obj, d:d, m:secs * 1000});
 			if (_running == false) startAnimating();
 		}			
+		
+	// save canvas as a png //
+		
 		JS3.prototype.save = function(){
 			var img = _canvas.toDataURL('image/png');
 			var win = window.open('', '_blank', 'width='+_width+', height='+_height);
@@ -76,33 +86,59 @@ function JS3(cnvs)
 	 			win.document.write('</body></html>');
 	 			win.document.close();
 		}
-		JS3.prototype.drawLine = function(x1, y1, x2, y2){
-			_graphics.push(new JS3Line(x1, y1, x2, y2))
-		}		
+		
+	// basic drawing methods //	
+		JS3.prototype.drawLine 		= function(o){ _graphics.push(new JS3Line(o)); }
+		JS3.prototype.drawArc		= function(o){ _graphics.push(new JS3Arc(o)); }
+		JS3.prototype.drawRect		= function(o){ _graphics.push(new JS3Rect(o)); }
+		JS3.prototype.drawCircle	= function(o){ _graphics.push(new JS3Circle(o)); }		
 		
 	// public static methods //
 		JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}		
 	
 	// private instance methods //
-		var drawLine = function(o){
+		var drawLine = function(o){	
+			_context.globalAlpha = o.alpha;			
 			_context.moveTo(o.x1, o.y1);  
 			_context.lineTo(o.x2, o.y2);
-			_context.lineCap = o.capStyle
-			_context.strokeStyle = o.color;
-			_context.stroke();
+			stroke(o);
+			_context.globalAlpha = 1;			
+		}
+		var drawArc = function(o){
+			_context.globalAlpha = o.alpha;	
+		 	_context.beginPath();		
+		    _context.arc(o.x, o.y, o.size, o.angleA, o.angleB, o.clockwise);
+			stroke(o);
+			_context.globalAlpha = 1;			
 		}
 		var drawRect = function(o){
-			_context.globalAlpha = o.alpha;
-		    _context.fillStyle = o.color;		
-		    _context.fillRect(o.x, o.y, o.width, o.height);
+			_context.globalAlpha = o.alpha;	
+			_context.beginPath();
+			_context.rect(o.x, o.y, o.width, o.height);
+			if (o.fill) fill(o);
+			if (o.stroke) stroke(o);			
 			_context.globalAlpha = 1;
 		}
 		var drawCircle = function(o){
 			_context.globalAlpha = o.alpha;	
-		 	_context.beginPath();
-		    _context.fillStyle = o.color;		
+		 	_context.beginPath();		
 		    _context.arc(o.x, o.y, o.size, 0, 2 * Math.PI, false);
-		    _context.fill();
+			if (o.fill) fill(o);
+			if (o.stroke) stroke(o);
+			_context.globalAlpha = 1;
+		}
+		var fill = function(o){
+			_context.globalAlpha = o.fillAlpha;			
+		    _context.fillStyle = o.fillColor;
+			_context.fill();
+			_context.globalAlpha = 1;
+		}
+		var stroke = function(o){			
+			_context.globalAlpha = o.strokeAlpha;
+			_context.lineCap = o.capStyle;
+		    _context.lineWidth = o.strokeWidth;
+		    _context.strokeStyle = o.strokeColor;
+			_context.stroke();
 			_context.globalAlpha = 1;
 		}	
 		var drawBackground = function(){
@@ -127,6 +163,9 @@ function JS3(cnvs)
 		var paint = function(o)
 		{
 			switch(o.type){
+				case JS3.ARC :
+					drawArc(o);
+				break;				
 				case JS3.LINE :
 					drawLine(o);
 				break;				
@@ -190,29 +229,44 @@ function JS3(cnvs)
 
 // graphic primitives //
 
-function JS3Line(x1, y1, x2, y2)
+function JS3Line(o)
 {
 	this.type = JS3.LINE;
-	this.color = '#eee';
-	this.capStyle = 'butt';
-	this.x1 = x1; this.y1 = y1;
-	this.x2 = x2; this.y2 = y2;		
+	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];
+	if (o) for (var k in o) this[k] = o[k];
+	if (o.alpha != undefined) this.strokeAlpha = this.fillAlpha = o.alpha;
+	o = null;
 }
 
-function JS3Rect()
+function JS3Arc(o)
 {
-	this.type = JS3.RECT;	
-	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];	
-	this.color = JS3.getRandomColor();
- 	this.width = this.height = 10;
+	this.type = JS3.ARC;
+	this.clockwise = false;
+	this.angleA = 1 * Math.PI;
+	this.angleB = 2 * Math.PI;	
+	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];
+	if (o) for (var k in o) this[k] = o[k];
+	if (o.alpha != undefined) this.strokeAlpha = this.fillAlpha = o.alpha;
+	o = null;	
 }
 
-function JS3Circle()
+function JS3Rect(o)
+{
+	this.type = JS3.RECT;		
+	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];		
+	if (o) for (var k in o) this[k] = o[k];
+	if (this.width == undefined || this.height == undefined) this.width = this.height = this.size;
+	if (o.alpha != undefined) this.strokeAlpha = this.fillAlpha = o.alpha;
+	o = null;	
+}
+
+function JS3Circle(o)
 {
 	this.type = JS3.CIRCLE;	
 	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];
-	this.color = JS3.getRandomColor();	
- 	this.size = 25;
+	if (o) for (var k in o) this[k] = o[k];	
+	if (o.alpha != undefined) this.strokeAlpha = this.fillAlpha = o.alpha;
+	o = null;	
 }
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};
