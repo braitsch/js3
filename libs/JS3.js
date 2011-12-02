@@ -14,6 +14,7 @@ function JS3(cnvs)
 		var _width 		= _canvas.width;
 		var _height 	= _canvas.height;
 		var _children 	= [];
+		var _graphics	= [];
 		var _runners	= [];
 		var _tweens		= [];
 		var _drawClean 	= true;
@@ -31,8 +32,9 @@ function JS3(cnvs)
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	
 	// public constants //
+		JS3.LINE = 'line';	
 		JS3.RECT = 'rect';	
-		JS3.CIRCLE = 'circle';
+		JS3.CIRCLE = 'circle';		
 		JS3.OBJECT = {x:0, y:0, alpha:1};
 	
 	// public instance methods //	
@@ -44,6 +46,7 @@ function JS3(cnvs)
 			return _children[n];
 		}
 		JS3.prototype.getChildAtRandom = function(){
+			trace(_children.length)
 			return _children[Math.floor(Math.random()*_children.length)];
 		}		
 		JS3.prototype.removeChildAt = function(n){
@@ -74,19 +77,22 @@ function JS3(cnvs)
 	 			win.document.close();
 		}
 		JS3.prototype.drawLine = function(x1, y1, x2, y2){
-			_context.moveTo(x1, y1);  
-			_context.lineTo(x2, y2);
-			_context.lineCap = "butt";			
-			_context.strokeStyle = '#ffffff';
-			_context.stroke();
+			_graphics.push(new JS3Line(x1, y1, x2, y2))
 		}		
 		
 	// public static methods //
 		JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}		
 	
 	// private instance methods //
+		var drawLine = function(o){
+			_context.moveTo(o.x1, o.y1);  
+			_context.lineTo(o.x2, o.y2);
+			_context.lineCap = o.capStyle
+			_context.strokeStyle = o.color;
+			_context.stroke();
+		}
 		var drawRect = function(o){
-			_context.globalAlpha = o.alpha;			
+			_context.globalAlpha = o.alpha;
 		    _context.fillStyle = o.color;		
 		    _context.fillRect(o.x, o.y, o.width, o.height);
 			_context.globalAlpha = 1;
@@ -105,22 +111,37 @@ function JS3(cnvs)
 		}
 		var render = function()
 		{
+			if (_drawClean) drawBackground();
+		// render non-persistent graphics //
+			i = _graphics.length;
+			while ( i-- ) {
+				var k = _graphics[i];
+				paint(k);
+				_graphics.splice(i, 1);
+				k = null;
+			}
+		// render display list object //				
 			var i = _children.length;	
-			while ( i-- ){
-				switch(_children[i].type){
-					case JS3.RECT :
-						drawRect(_children[i]);
-					break;					
-					case JS3.CIRCLE :
-						drawCircle(_children[i]);
-					break;						
-				}
-			}	
+			while ( i-- ) paint(_children[i]);			
+		}
+		var paint = function(o)
+		{
+			switch(o.type){
+				case JS3.LINE :
+					drawLine(o);
+				break;				
+				case JS3.RECT :
+					drawRect(o);
+				break;					
+				case JS3.CIRCLE :
+					drawCircle(o);
+				break;						
+			}			
 		}
 		var startAnimating = function()
 		{
-			getFrameRate();				
-			if (_drawClean) drawBackground();
+			getFrameRate();
+			// execute runners //
 			for (var i = 0; i < _runners.length; i++) {
 				if (_runners[i].d === undefined){
 					_runners[i].f();
@@ -169,6 +190,15 @@ function JS3(cnvs)
 
 // graphic primitives //
 
+function JS3Line(x1, y1, x2, y2)
+{
+	this.type = JS3.LINE;
+	this.color = '#eee';
+	this.capStyle = 'butt';
+	this.x1 = x1; this.y1 = y1;
+	this.x2 = x2; this.y2 = y2;		
+}
+
 function JS3Rect()
 {
 	this.type = JS3.RECT;	
@@ -184,7 +214,6 @@ function JS3Circle()
 	this.color = JS3.getRandomColor();	
  	this.size = 25;
 }
-
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};
 
