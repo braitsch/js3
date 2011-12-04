@@ -37,7 +37,7 @@ function JS3(cnvs)
 		JS3.RECT 	= 'rect';	
 		JS3.CIRCLE 	= 'circle';		
 		JS3.OBJECT 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, fill:true, fillColor:'#fff', fillAlpha:1,
-						size:25, stroke:true, strokeColor:'#eee', strokeAlpha:1, strokeWidth:1, capStyle:'butt'};
+						size:25, stroke:true, strokeColor:'#eee', strokeAlpha:1, strokeWidth:4, capStyle:'butt'};
 	
 	// display list management //	
 	
@@ -88,13 +88,27 @@ function JS3(cnvs)
 		}
 		
 	// basic drawing methods //	
-		JS3.prototype.drawLine 		= function(o){ _graphics.push(new JS3Line(o)); }
-		JS3.prototype.drawArc		= function(o){ _graphics.push(new JS3Arc(o)); }
-		JS3.prototype.drawRect		= function(o){ _graphics.push(new JS3Rect(o)); }
-		JS3.prototype.drawCircle	= function(o){ _graphics.push(new JS3Circle(o)); }		
+		JS3.prototype.clear			= this.drawBackground;	
+		JS3.prototype.drawLine 		= function(o){ _graphics.push(new JS3Line(o)); 		if (!_running) render();	}
+		JS3.prototype.drawArc		= function(o){ _graphics.push(new JS3Arc(o)); 		if (!_running) render();	}
+		JS3.prototype.drawRect		= function(o){ _graphics.push(new JS3Rect(o));  	if (!_running) render();	}
+		JS3.prototype.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));	if (!_running) render();	}
 		
 	// public static methods //
-		JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}		
+		JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}
+		JS3.getRandomValue = function(n1, n2)
+		{
+			if (n1 == undefined){
+				return Math.random();
+			}	else if (n2 == undefined){
+				return Math.random() * n1;
+			}	else{
+				return (Math.random() * (n2-n1)) + n1;
+			}
+		}
+		JS3.copyProps = function(o1, o2){
+			for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;			
+		}			
 	
 	// private instance methods //
 		var drawLine = function(o){	
@@ -105,12 +119,12 @@ function JS3(cnvs)
 			_context.globalAlpha = 1;			
 		}
 		var drawArc = function(o){
-			_context.globalAlpha = o.alpha;	
-		 	_context.beginPath();		
-		    _context.arc(o.x, o.y, o.size, o.angleA, o.angleB, o.clockwise);
+			_context.globalAlpha = o.alpha;
+			_context.moveTo(o.x1, o.y1);	
+		 	_context.quadraticCurveTo(o.cx, o.cy, o.x2, o.y2);
 			stroke(o);
 			_context.globalAlpha = 1;			
-		}
+		}		
 		var drawRect = function(o){
 			_context.globalAlpha = o.alpha;	
 			_context.beginPath();
@@ -137,7 +151,7 @@ function JS3(cnvs)
 			_context.globalAlpha = o.strokeAlpha;
 			_context.lineCap = o.capStyle;
 		    _context.lineWidth = o.strokeWidth;
-		    _context.strokeStyle = o.strokeColor;
+		    _context.strokeStyle = o.strokeColor;	
 			_context.stroke();
 			_context.globalAlpha = 1;
 		}	
@@ -147,7 +161,6 @@ function JS3(cnvs)
 		}
 		var render = function()
 		{
-			if (_drawClean) drawBackground();
 		// render non-persistent graphics //
 			i = _graphics.length;
 			while ( i-- ) {
@@ -204,7 +217,7 @@ function JS3(cnvs)
 					twn.n -=1;
 				if (twn.n == 0) _tweens.splice(i, 1);
 			}
-			render();
+			if (_drawClean) drawBackground(); render();
 			_running = (_tweens.length != 0 || _runners.length != 0);
 			if (_running) requestAnimFrame(startAnimating);
 		}
@@ -233,40 +246,29 @@ function JS3Line(o)
 {
 	this.type = JS3.LINE;
 	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];
-	if (o) for (var k in o) this[k] = o[k];
-	if (o.alpha != undefined) this.strokeAlpha = this.fillAlpha = o.alpha;
-	o = null;
+	if (o) JS3.copyProps(o, this);
 }
 
 function JS3Arc(o)
 {
 	this.type = JS3.ARC;
-	this.clockwise = false;
-	this.angleA = 1 * Math.PI;
-	this.angleB = 2 * Math.PI;	
 	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];
-	if (o) for (var k in o) this[k] = o[k];
-	if (o.alpha != undefined) this.strokeAlpha = this.fillAlpha = o.alpha;
-	o = null;	
+	if (o) JS3.copyProps(o, this);
 }
 
 function JS3Rect(o)
 {
 	this.type = JS3.RECT;		
 	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];		
-	if (o) for (var k in o) this[k] = o[k];
+	if (o) JS3.copyProps(o, this);
 	if (this.width == undefined || this.height == undefined) this.width = this.height = this.size;
-	if (o.alpha != undefined) this.strokeAlpha = this.fillAlpha = o.alpha;
-	o = null;	
 }
 
 function JS3Circle(o)
 {
 	this.type = JS3.CIRCLE;	
 	for (var k in JS3.OBJECT) this[k] = JS3.OBJECT[k];
-	if (o) for (var k in o) this[k] = o[k];	
-	if (o.alpha != undefined) this.strokeAlpha = this.fillAlpha = o.alpha;
-	o = null;	
+	if (o) JS3.copyProps(o, this);	
 }
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};

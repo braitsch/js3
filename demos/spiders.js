@@ -4,6 +4,8 @@ var canvas;
 var speed = 1;
 var spiders = [];
 var maxBalls = 100;
+var colors = [	['0xB9D7D9', '0x668284', '0x2A2829', '0x493736', '0x7B3B3B'],
+				['0xEAFA70', '0x8C6B07', '0x403001', '0x292004', '0x1F1702'] ];
 
 function init()
 {
@@ -52,7 +54,7 @@ function move()
 }
 
 function makeSpider()
-{
+{	
 	var s = canvas.getChildAtRandom();
 		s.size = 20;
 		s.color = '#668284';
@@ -68,8 +70,12 @@ function reach()
 		for (var k = canvas.numChildren - 1; k >= 0; k--){
 			var c = canvas.getChildAt(k);
 			if (c.spider == undefined){
-				if (Math.abs(s.x - c.x) < 75 && Math.abs(s.y - c.y) < 75) canvas.drawLine(s.x, s.y, c.x, c.y);	
-			}
+				if (Math.abs(s.x - c.x) < 75 && Math.abs(s.y - c.y) < 75) {
+					var o = {	strokeWidth:1, strokeColor:'#EAFA70', x1:s.x, y1:s.y, x2:c.x, y2:c.y,	
+								cx:((s.x+c.x)/2)+(JS3.getRandomValue(-10, 10)), cy:((s.y+c.y)/2)+(JS3.getRandomValue(-10, 10)) };
+					canvas.drawArc(o);									
+				};
+			};
 		};
 	};
 }
@@ -91,10 +97,10 @@ function changeBallDirection()
 function onStart()
 {
 	canvas.run(addBalls, 30);
-	canvas.run(move);
-	canvas.run(makeSpider, 90);	
+	canvas.run(move);	
+	if (spiders.length < 3) canvas.run(makeSpider, 90);		
 	canvas.run(reach);
-	canvas.run(changeBallDirection, 60);
+	canvas.run(changeBallDirection, 60);	
 }
 
 function onStop()
