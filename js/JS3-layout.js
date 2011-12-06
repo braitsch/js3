@@ -1,11 +1,11 @@
-var cnvs1, cnvs2;
+var cnvs1;
+var cnvs2;
 
 $(function(){
 	addButtonListeners();
 	drawShape();
 	addChild();
-	addTween1();
-	addTween2();	
+	addTween();
 });
 
 var addButtonListeners = function()
@@ -32,12 +32,19 @@ var addButtonListeners = function()
 			cnvs2.clear();
 			cnvs2.render();
 		}
-	});	
-}
-
-var toggleBtn = function(b)
-{
-	b.val() == 'tween' ? b.val('stop') : b.val('tween');
+	});
+	$('#tween3btn').click(function() {
+		if ($(this).val() == 'tween'){
+			startTween3();	
+		}	else{
+			$(this).val('tween');
+			cnvs3.getChildAt(0).x = 50;
+			cnvs3.getChildAt(0).y = 40;			
+			cnvs3.getChildAt(0).alpha = 1;	
+			cnvs3.clear();
+			cnvs3.render();
+		}
+	});		
 }
 
 var drawShape = function()
@@ -66,27 +73,29 @@ var addChild = function()
 	cnvs.addChild( a );	
 }
 
-var addTween1 = function()
+var addTween = function()
 {
 	cnvs1 = new JS3('tween1');
 	cnvs1.background = '#eee';
-	var c = new JS3Circle();
-		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;
-	cnvs1.addChild( c );
-}
-
-var addTween2 = function()
-{
+	cnvs1.addChild( drawCircle() );
 	cnvs2 = new JS3('tween2');
 	cnvs2.background = '#eee';
+	cnvs2.addChild( drawCircle() );	
+	cnvs3 = new JS3('tween3');
+	cnvs3.background = '#eee';
+	cnvs3.addChild( drawCircle() );		
+}
+
+var drawCircle = function()
+{
 	var c = new JS3Circle();
-		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;
-	cnvs2.addChild( c );
+		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;	
+	return c;	
 }
 
 var startTween1 = function()
 {
-	cnvs1.tween(cnvs1.getChildAt(0), 5, {x:600, onComplete:function(o){
+	cnvs1.tween(cnvs1.getChildAt(0), 3, {x:600, onComplete:function(o){
 		$('#tween1btn').val('reset');
 	}});
 }
@@ -94,8 +103,15 @@ var startTween1 = function()
 var startTween2 = function()
 {
 	cnvs2.tween(cnvs2.getChildAt(0), 3, {x:600, onComplete:function(o){
-		cnvs2.tween(o, 4, {alpha:0, onComplete:function(){		
+		cnvs2.tween(o, 2, {alpha:0, onComplete:function(){		
 			$('#tween2btn').val('reset');
 		}});
+	}});
+}
+
+var startTween3 = function()
+{
+	cnvs3.tween(cnvs3.getChildAt(0), 2, {x:600, alpha:0, y:10, onComplete:function(o){
+		$('#tween3btn').val('reset');
 	}});
 }

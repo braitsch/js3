@@ -41,50 +41,50 @@ function JS3(cnvs)
 	
 	// display list management //	
 	
-		JS3.prototype.addChild = function(o){
+		this.addChild = function(o){
 			_children.push(o);
 			if (!_running) render();
 		}	
-		JS3.prototype.addChildAt = function(o, n){
+		this.addChildAt = function(o, n){
 			if (n <= _children.length) _children.splice(n, 0, o);
 			if (!_running) render();			
 		}			
-		JS3.prototype.getChildAt = function(n){
+		this.getChildAt = function(n){
 			return _children[n];
 		}
-		JS3.prototype.getChildAtRandom = function(){
+		this.getChildAtRandom = function(){
 			return _children[Math.floor(Math.random()*_children.length)];
 		}		
-		JS3.prototype.removeChildAt = function(n){
+		this.removeChildAt = function(n){
 			_children.splice(n, 1);
 		}		
 		
 	// 	animation methods //
 		
-		JS3.prototype.run = function(func, delay, repeat){
+		this.run = function(func, delay, repeat){
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
 			_runners.push({f:func, d:delay, r:repeat});
 			if (_running == false) startAnimating();
 		}	
-		JS3.prototype.stop = function(func){
+		this.stop = function(func){
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) _runners.splice(i, 1);
 		}	
-		JS3.prototype.tween = function(obj, secs, props){
+		this.tween = function(obj, secs, props){
 			if (obj.isTweening) return;
 		// calc delta to tween for each prop //				
 			props.d = {};
-			for (var k in props) if (obj[k] !=undefined) props.d[k] = props[k] - obj[k];  
+			props.n = Math.round((secs * 1000) / 20);
+			for (var k in props) if (obj[k] !=undefined) props.d[k] = (props[k] - obj[k]) / props.n;  
 			props.o = obj;
-			props.t = secs * 1000;
-			obj.isTweening = true;
+			props.o.isTweening = true;
 			_tweens.push(props);
 			if (_running == false) startAnimating();
 		}			
 		
 	// save canvas as a png //
 		
-		JS3.prototype.save = function(){
+		this.save = function(){
 			var img = _canvas.toDataURL('image/png');
 			var win = window.open('', '_blank', 'width='+_width+', height='+_height);
 				win.document.write('<!DOCTYPE html style="padding:0; margin:0"><head><title>My Canvas</title>');
@@ -95,12 +95,12 @@ function JS3(cnvs)
 		}
 		
 	// basic drawing methods //	
-		JS3.prototype.render		= function(){render()};
-		JS3.prototype.clear			= function(){drawBackground()};				
-		JS3.prototype.drawLine 		= function(o){ _graphics.push(new JS3Line(o)); 		if (!_running) render();	}
-		JS3.prototype.drawArc		= function(o){ _graphics.push(new JS3Arc(o)); 		if (!_running) render();	}
-		JS3.prototype.drawRect		= function(o){ _graphics.push(new JS3Rect(o));  	if (!_running) render();	}
-		JS3.prototype.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));	if (!_running) render();	}		
+		this.render		= function(){ render() };
+		this.clear		= function(){ drawBackground() };				
+		this.drawLine 	= function(o){ _graphics.push(new JS3Line(o)); 		if (!_running) render();	}
+		this.drawArc	= function(o){ _graphics.push(new JS3Arc(o)); 		if (!_running) render();	}
+		this.drawRect	= function(o){ _graphics.push(new JS3Rect(o));  	if (!_running) render();	}
+		this.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));	if (!_running) render();	}		
 	
 	// private instance methods //
 		var drawLine = function(o){	
@@ -199,14 +199,9 @@ function JS3(cnvs)
 			// execute tweens //
 			for (var i = 0; i < _tweens.length; i++) {
 				var twn = _tweens[i];
-				if (twn.n == undefined) {
-					twn.n = Math.round(twn.t / _frameRate);
-				// calc delta per frame //	
-					for (var k in twn.d) twn.d[k] = twn.d[k] / twn.n;
-				}
 				// write new vals on target object //
 				for (var k in twn.d) twn.o[k] += twn.d[k];
-				// prevent negative alpha values which throw errors //
+				// prevent negative alpha values from throwing errors //
 				if (twn.o.alpha < 0) twn.o.alpha = 0;
 					twn.n -=1;
 				if (twn.n == 0) {
