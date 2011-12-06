@@ -1,5 +1,6 @@
-var cnvs1;
-var cnvs2;
+var cnvs1, cnvs2, cnvs3, cnvs4, cnvs5;
+var cntr1 = 0;
+
 
 $(function(){
 	addButtonListeners();
@@ -44,7 +45,25 @@ var addButtonListeners = function()
 			cnvs3.clear();
 			cnvs3.render();
 		}
-	});		
+	});	
+	$('#frame1btn').click(function() {
+		if ($(this).val() == 'run'){
+			$(this).val('stop');	
+			cnvs4.run(startFrame1, 15);				
+		}	else{
+			$(this).val('run');
+			cnvs4.stop(startFrame1);
+		}
+	});	
+	$('#frame2btn').click(function() {
+		if ($(this).val() == 'run'){
+			$(this).val('stop');	
+			cnvs5.run(startFrame2, 15, 10 - cntr1);				
+		}	else{
+			$(this).val('run');
+			cnvs5.stop(startFrame2);
+		}
+	});				
 }
 
 var drawShape = function()
@@ -83,7 +102,14 @@ var addTween = function()
 	cnvs2.addChild( drawCircle() );	
 	cnvs3 = new JS3('tween3');
 	cnvs3.background = '#eee';
-	cnvs3.addChild( drawCircle() );		
+	cnvs3.addChild( drawCircle() );	
+	cnvs4 = new JS3('frame1');
+	cnvs4.background = '#eee';
+	cnvs4.addChild( drawCircle() );	
+	cnvs5 = new JS3('frame2');
+	cnvs5.background = '#eee';	
+	cnvs5.addChild( drawCircle() );	
+	cnvs5.addChild( new JS3Text({color:'#222', align:'center', size:18, x:50, y:48}));	
 }
 
 var drawCircle = function()
@@ -114,4 +140,24 @@ var startTween3 = function()
 	cnvs3.tween(cnvs3.getChildAt(0), 2, {x:600, alpha:0, y:10, onComplete:function(o){
 		$('#tween3btn').val('reset');
 	}});
+}
+
+function startFrame1()
+{
+	cnvs4.getChildAt(0).x +=10;
+	if (cnvs4.getChildAt(0).x >= 600) cnvs4.getChildAt(0).x = 50;
+}
+
+function startFrame2()
+{
+	var b = cnvs5.getChildAt(0); 
+	b.x +=10;
+	var t = cnvs5.getChildAt(1);
+	t.x +=10;
+	t.text = ++cntr1;
+	if (cntr1 == 10){
+		cntr1 = 0;
+		$('#frame2btn').val('run');
+	}
+	if (b.x >= 600) { b.x = t.x = 50; }
 }

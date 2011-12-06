@@ -34,7 +34,7 @@
             </div> 	        
     	    <div class='example'>
     	        <h2>Drawing Shapes</h2>
-    	        <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>Once these shapes are drawn, the objects that define them are removed from memory.</p>    
+    	        <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>Once these shapes are drawn on the canvas, the objects that define them are removed from memory.</p>    
     	        <canvas id="drawShape" width="900" height="75"></canvas>
     	        <h3>Example Code</h3>    	        
                 <pre><code>
@@ -46,7 +46,7 @@
             </div> 
     	    <div class='example'>
     	        <h2>Adding Shapes to the Display List</h2>
-    	        <p>To create persistent shapes that you can animate and interact with, add shapes using the new JS3Shape() method and set properties just as you would in ActionScript</p>    
+    	        <p>To create persistent shapes that you can animate and interact with, add JS3Shape Objects and set properties on them just as you would in ActionScript.</p>    
     	        <canvas id="addChild" width="900" height="75"></canvas>
     	        <h3>Example Code</h3>    	        
                 <pre><code>
@@ -105,7 +105,40 @@
                 cnvs.addChild( c );
                 cnvs.tween(c, 2, {x:600, y:10, alpha:0});
                 </code></pre>                              
-                </div>            
+            </div>   
+    	    <div class='example'>
+    	        <h2>Timed Frame Animation</h2>
+                <p>You can also manually redraw the canvas on a timer by passing a function that updates the screen to the JS3.run() method.<br>
+                    The update function below moves the circle 10 pixels to the right each time it is called, every 15 frames.</p>
+    	        <canvas id="frame1" width="900" height="75"></canvas>
+                <input type='button' value='run' id='frame1btn'>
+    	        <h3>Example Code</h3> 
+                <pre><code>
+            	var c = new JS3Circle();
+            		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;
+                cnvs.addChild( c );                    
+    	        function update()
+                {
+	                c.x +=10;
+	                if (c.x >= 600) c.x = 50;
+                }
+                cnvs.run(update, 15);
+                 </code></pre>   
+                <p>You can also pass a third argument to run() to limit the number of times the update function is called, similar to how the <a href='http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/utils/Timer.html' target='blank'>Timer</a> class works in AS3<br>The following example calls the update function 10 times, on a 20 frame interval, and then stops.</p>
+    	        <canvas id="frame2" width="900" height="75"></canvas>
+                <input type='button' value='run' id='frame2btn'>
+    	        <h3>Example Code</h3> 
+                <pre><code>
+            	var c = new JS3Circle();
+            		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;
+                cnvs.addChild( c );                    
+    	        function update()
+                {
+	                c.x +=10;
+                }
+                cnvs.run(update, 20, 10);
+                 </code></pre>                    	                                    
+            </div>
         </div>        
 	</body>
 </html>
