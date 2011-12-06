@@ -4,6 +4,8 @@ body{ font: 62.5% "Arial", sans-serif; margin: 50px;}
 
 p{font: 1.2em "Arial", sans-serif;}
 
+a{color:#333;}
+
 #wrap{
 	width:900px;	
 	margin:20px auto;	

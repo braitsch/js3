@@ -21,7 +21,6 @@
     	    <div class='example'>
     	        <h2>Setup</h2>
     	        <p>First things first, add a canvas tag to your HTML, give it an id and pass it to the JS3 constructor.</p>    
-    	        <canvas id="setup" width="900" height="75"></canvas>
     	        <h3>Example Code</h3>    	        
                 <pre><code>
                 // html //
@@ -33,7 +32,7 @@
                 </code></pre>
             </div> 	        
     	    <div class='example'>
-    	        <h2>Drawing Shapes</h2>
+                <h2><a name="drawing-shapes" href='#drawing-shapes'>Drawing Shapes</a></h2>
     	        <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>Once these shapes are drawn on the canvas, the objects that define them are removed from memory.</p>    
     	        <canvas id="drawShape" width="900" height="75"></canvas>
     	        <h3>Example Code</h3>    	        
@@ -42,10 +41,11 @@
             	cnvs.drawRect( { width:40, height:40, x:100, y:20, fillColor:"#69D2E7", strokeColor:"#C02942", strokeWidth:2 } );	
             	cnvs.drawLine( { x1:165, y1:60, x2:225, y2:20, strokeColor:"#C02942", strokeWidth:2 } );
             	cnvs.drawArc( { x1:250, y1:60, x2:300, y2:60, cx:275, cy:-20, strokeColor:"#C02942", strokeWidth:2 } );	
+                cnvs.drawTri( { size:40, x:350, y:40, fillColor:"#69D2E7", strokeColor:"#C02942", strokeWidth:2 } );		            	
                 </code></pre>
             </div> 
     	    <div class='example'>
-    	        <h2>Adding Shapes to the Display List</h2>
+                <h2><a name="adding-shapes" href="#adding-shapes">Adding Shapes to the Display List</a></h2>
     	        <p>To create persistent shapes that you can animate and interact with, add JS3Shape Objects and set properties on them just as you would in ActionScript.</p>    
     	        <canvas id="addChild" width="900" height="75"></canvas>
     	        <h3>Example Code</h3>    	        
@@ -65,11 +65,15 @@
             	var a = new JS3Arc();
             		a.x1 = 250; a.y1 = 60; a.x2 = 300; a.y2 = 60; a.cx = 275; a.cy = -20; a.strokeColor="#C02942"; a.strokeWidth=2;
             	cnvs.addChild( a );	
+            	
+                var t = new JS3Tri();
+                        t.size = 40; t.x = 350; t.y = 40; t.fillColor = "#69D2E7"; t.strokeColor="#C02942"; t.strokeWidth=2;
+                cnvs.addChild( t );            	
                 </code></pre>
             </div>             
              
     	    <div class='example'>
-    	        <h2>Tweening</h2>
+                <h2><a name="tweening" href="#tweening">Tweening</a></h2>
     	        <p>Initiate simple tweens using the familiar <a href='http://www.greensock.com/tweenlite/' target='blank'>TweenLite</a> syntax:
     	        <b>canvas.tween(target, seconds, { x:, y:, alpha... onComplete:callback })</b><br>
     	        The example below tweens the circle to an x position of 600 over 3 seconds.</p>	        
@@ -107,8 +111,8 @@
                 </code></pre>                              
             </div>   
     	    <div class='example'>
-    	        <h2>Timed Frame Animation</h2>
-                <p>You can also manually redraw the canvas on a timer by passing a function that updates the screen to the JS3.run() method.<br>
+                <h2><a name="animation" href="#animation">Timed Frame Animation</a></h2>    	        
+                <p>You can manually redraw the canvas on a timer by passing a function that updates the screen to the JS3.run() method.<br>
                     The update function below moves the circle 10 pixels to the right each time it is called, every 15 frames.</p>
     	        <canvas id="frame1" width="900" height="75"></canvas>
                 <input type='button' value='run' id='frame1btn'>
@@ -137,7 +141,43 @@
 	                c.x +=10;
                 }
                 cnvs.run(update, 20, 10);
-                 </code></pre>                    	                                    
+                 </code></pre> 
+                <p>Just calling run() with an update function will execute "update" on every frame tick, similar to the AS3 OnEnterFrame.</p>
+    	        <canvas id="frame3" width="900" height="75"></canvas>
+                <input type='button' value='stop' id='frame3btn'>
+    	        <h3>Example Code</h3> 
+                <pre><code>
+                // build an object with unique properties for a circle //    
+                function defineCircle()
+                {
+                    var c = {};
+		            c.size = 15; c.x = Math.random()*cnvs.width; c.y = Math.random()*cnvs.height; 
+		            c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;	
+		            c.dirX = Math.round(Math.random()) == 0 ? -1 : 1;
+		            c.dirY = Math.round(Math.random()) == 0 ? -1 : 1;
+                    return c;
+                }
+                // update function to bounce the circles around the canvas //
+    	        function update()
+                {
+                	var i = cnvs.numChildren;
+                	while ( i-- ){
+                		var c = cnvs.getChildAt(i);
+                		if (c.x >= cnvs.width || c.x <= 0) c.dirX *=-1;
+                		if (c.y >= cnvs.height || c.y <= 0) c.dirY *=-1;
+                		c.x += 1 * c.dirX;
+                		c.y += 1 * c.dirY;
+                	}
+                }
+                // attach two circles to the stage //
+                var c1 = new JS3Circle(defineCircle());
+                cnvs.addChild( c1 );
+                var c2 = new JS3Circle(defineCircle());
+                cnvs.addChild( c2 );                
+                // finally call the update function on every frame //
+                cnvs.run(update);
+                </code></pre> 
+                <h2>More features & examples coming soon...</h2>     
             </div>
         </div>        
 	</body>

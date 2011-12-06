@@ -1,6 +1,5 @@
-var cnvs1, cnvs2, cnvs3, cnvs4, cnvs5;
+var cnvs1, cnvs2, cnvs3, cnvs4, cnvs5, cnvs6;
 var cntr1 = 0;
-
 
 $(function(){
 	addButtonListeners();
@@ -63,7 +62,16 @@ var addButtonListeners = function()
 			$(this).val('run');
 			cnvs5.stop(startFrame2);
 		}
-	});				
+	});	
+	$('#frame3btn').click(function() {
+		if ($(this).val() == 'run'){
+			$(this).val('stop');	
+			cnvs6.run(startFrame3);				
+		}	else{
+			$(this).val('run');
+			cnvs6.stop(startFrame3);
+		}
+	});					
 }
 
 var drawShape = function()
@@ -73,6 +81,7 @@ var drawShape = function()
 	cnvs.drawRect( { width:40, height:40, x:100, y:20, fillColor:"#69D2E7", strokeColor:"#C02942", strokeWidth:2 } );	
 	cnvs.drawLine( { x1:165, y1:60, x2:225, y2:20, strokeColor:"#C02942", strokeWidth:2 } );
 	cnvs.drawArc( { x1:250, y1:60, x2:300, y2:60, cx:275, cy:-20, strokeColor:"#C02942", strokeWidth:2 } );	
+	cnvs.drawTri( { size:40, x:350, y:40, fillColor:"#69D2E7", strokeColor:"#C02942", strokeWidth:2 } );
 }
 
 var addChild = function()
@@ -90,6 +99,9 @@ var addChild = function()
 	var a = new JS3Arc();
 		a.x1 = 250; a.y1 = 60; a.x2 = 300; a.y2 = 60; a.cx = 275; a.cy = -20; a.strokeColor="#C02942"; a.strokeWidth=2;
 	cnvs.addChild( a );	
+	var t = new JS3Tri();
+		t.x = 350; t.y = 40; t.size = 40; t.fillColor = "#69D2E7"; t.strokeColor="#C02942"; t.strokeWidth=2;
+	cnvs.addChild( t );
 }
 
 var addTween = function()
@@ -110,12 +122,26 @@ var addTween = function()
 	cnvs5.background = '#eee';	
 	cnvs5.addChild( drawCircle() );	
 	cnvs5.addChild( new JS3Text({color:'#222', align:'center', size:18, x:50, y:48}));	
+	cnvs6 = new JS3('frame3');
+	cnvs6.background = '#eee';
+	cnvs6.addChild( drawSmCircle() );
+	cnvs6.addChild( drawSmCircle() );
+	cnvs6.run(startFrame3);	
 }
 
 var drawCircle = function()
 {
 	var c = new JS3Circle();
 		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;	
+	return c;
+}
+
+var drawSmCircle = function()
+{
+	var c = new JS3Circle();
+		c.size = 15; c.x = Math.random()*cnvs6.width; c.y = Math.random()*cnvs6.height; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;	
+		c.dirX = Math.round(Math.random()) == 0 ? -1 : 1;
+		c.dirY = Math.round(Math.random()) == 0 ? -1 : 1;
 	return c;	
 }
 
@@ -161,3 +187,16 @@ function startFrame2()
 	}
 	if (b.x >= 600) { b.x = t.x = 50; }
 }
+
+function startFrame3()
+{
+	var i = cnvs6.numChildren;
+	while ( i-- ){
+		var b = cnvs6.getChildAt(i);
+		if (b.x >= cnvs6.width || b.x <= 0) b.dirX *=-1;
+		if (b.y >= cnvs6.height || b.y <= 0) b.dirY *=-1;
+		b.x += 1 * b.dirX;
+		b.y += 1 * b.dirY;
+	}	
+}
+

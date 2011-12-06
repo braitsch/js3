@@ -32,11 +32,12 @@ function JS3(cnvs)
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	
 	// public constants //
-		JS3.LINE 	= 'line';	
-		JS3.ARC 	= 'arc';			
-		JS3.RECT 	= 'rect';	
-		JS3.CIRCLE 	= 'circle';	
-		JS3.TEXT 	= 'text';				
+		JS3.LINE 		= 'line';	
+		JS3.ARC 		= 'arc';			
+		JS3.RECT 		= 'rect';	
+		JS3.CIRCLE	 	= 'circle';	
+		JS3.TRIANGLE	= 'triangle';
+		JS3.TEXT 		= 'text';
 		JS3.GRAPHIC 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, fill:true, fillColor:'#fff', fillAlpha:1,
 						size:25, stroke:true, strokeColor:'#eee', strokeAlpha:1, strokeWidth:4, capStyle:'butt'};
 		JS3.TEXTFIELD 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, text:'', size:12, font:'Arial', color:'#333'};						
@@ -99,10 +100,11 @@ function JS3(cnvs)
 	// basic drawing methods //	
 		this.render		= function(){ render() };
 		this.clear		= function(){ drawBackground() };				
-		this.drawLine 	= function(o){ _graphics.push(new JS3Line(o)); 		if (!_running) render();	}
+		this.drawLine	= function(o){ _graphics.push(new JS3Line(o)); 		if (!_running) render();	}
 		this.drawArc	= function(o){ _graphics.push(new JS3Arc(o)); 		if (!_running) render();	}
 		this.drawRect	= function(o){ _graphics.push(new JS3Rect(o));  	if (!_running) render();	}
-		this.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));	if (!_running) render();	}		
+		this.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));	if (!_running) render();	}
+		this.drawTri	= function(o){ _graphics.push(new JS3Tri(o));		if (!_running) render();	}				
 		this.drawText 	= function(o){ _graphics.push(new JS3Text(o)); 		if (!_running) render();	}	
 	
 	// private instance methods //
@@ -136,6 +138,23 @@ function JS3(cnvs)
 			if (o.stroke) stroke(o);
 			_context.globalAlpha = 1;
 		}
+		var drawTri = function(o){
+			_context.globalAlpha = o.alpha;	
+		 	_context.beginPath();
+			o.p1.x = o.p1.x || o.x - o.size/2;
+			o.p1.y = o.p1.y || o.y + o.size/2;
+			o.p2.x = o.p2.x || o.x;			
+			o.p2.y = o.p2.y || o.y - o.size/2;
+			o.p3.x = o.p3.x || o.x + o.size/2;
+			o.p3.y = o.p3.y || o.y + o.size/2;							
+			_context.lineTo(o.p1.x, o.p1.y);
+			_context.lineTo(o.p2.x, o.p2.y);
+			_context.lineTo(o.p3.x, o.p3.y);
+			_context.lineTo(o.p1.x, o.p1.y);			
+			if (o.fill) fill(o);
+			if (o.stroke) stroke(o);
+			_context.globalAlpha = 1;
+		}		
 		var fill = function(o){
 			_context.globalAlpha = o.alpha * o.fillAlpha;			
 		    _context.fillStyle = o.fillColor;
@@ -193,6 +212,9 @@ function JS3(cnvs)
 				case JS3.CIRCLE :
 					drawCircle(o);
 				break;
+				case JS3.TRIANGLE :
+					drawTri(o);
+				break;				
 				case JS3.TEXT :
 					drawText(o);
 				break;										
@@ -275,6 +297,14 @@ function JS3Line(o)
 function JS3Arc(o)
 {
 	this.type = JS3.ARC;
+	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
+	if (o) JS3.copyProps(o, this);
+}
+
+function JS3Tri(o)
+{
+	this.type = JS3.TRIANGLE;
+	this.p1 = {}; this.p2 = {}; this.p3 = {};		
 	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
 	if (o) JS3.copyProps(o, this);
 }
