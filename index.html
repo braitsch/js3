@@ -46,7 +46,7 @@
             </div> 
     	    <div class='example'>
     	        <h2>Adding Shapes to the Display List</h2>
-    	        <p>To create persistent shapes that you can animate and interact with, create shapes using the new JS3Shape() method and set properties just as you would in ActionScript</p>    
+    	        <p>To create persistent shapes that you can animate and interact with, add shapes using the new JS3Shape() method and set properties just as you would in ActionScript</p>    
     	        <canvas id="addChild" width="900" height="75"></canvas>
     	        <h3>Example Code</h3>    	        
                 <pre><code>
@@ -70,10 +70,30 @@
              
     	    <div class='example'>
     	        <h2>Tweening</h2>
-    	        <p>Initiate simple tweens using the familiar TweenLite syntax</p>	        
-    	        <canvas id="tween-1"></canvas>
-                <input type='button' value='play'>
-            </div>
+    	        <p>Initiate simple tweens using the familiar <a href='http://www.greensock.com/tweenlite/' target='blank'>TweenLite</a> syntax.<br>
+    	        Note:<i> I'm working on the issue of maintaining a consistent frame rate, hence the timing discrepancy between tweens.</i></p>	        
+    	        <canvas id="tween1" width="900" height="75"></canvas>
+                <input type='button' value='tween' id='tween1btn'>
+    	        <h3>Example Code</h3>    	        
+               <pre><code>
+            	var c = new JS3Circle();
+            		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;
+            	cnvs.addChild( c );
+            	cnvs.tween(c, 5, {x:600});
+                </code></pre>              
+    	        <p>You can also daisy-chain tweens by specifying a callback to be executed. The target object of the tween is automatically passed as an argument to the callback.</p>      
+    	        <canvas id="tween2" width="900" height="75"></canvas>
+                <input type='button' value='tween' id='tween2btn'>
+    	        <h3>Example Code</h3>    	        
+               <pre><code>
+            	var c = new JS3Circle();
+            		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;
+            	cnvs.addChild( c );
+                cnvs.tween(c, 3, {x:600, onComplete:function(o){
+                    cnvs.tween(o, 4, {alpha:0});
+                }});
+                </code></pre>              
+                </div>            
         </div>        
 	</body>
 </html>

@@ -71,9 +71,14 @@ function JS3(cnvs)
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) _runners.splice(i, 1);
 		}	
 		JS3.prototype.tween = function(obj, secs, props){
-			var d = {}; // property delta //
-			for (var k in props) d[k] = props[k] - obj[k];
-			_tweens.push({o:obj, d:d, m:secs * 1000});
+			if (obj.isTweening) return;
+		// calc delta to tween for each prop //				
+			props.d = {};
+			for (var k in props) if (obj[k] !=undefined) props.d[k] = props[k] - obj[k];  
+			props.o = obj;
+			props.t = secs * 1000;
+			obj.isTweening = true;
+			_tweens.push(props);
 			if (_running == false) startAnimating();
 		}			
 		
@@ -193,16 +198,22 @@ function JS3(cnvs)
 			}
 			// execute tweens //
 			for (var i = 0; i < _tweens.length; i++) {
-				var twn= _tweens[i];
+				var twn = _tweens[i];
 				if (twn.n == undefined) {
-					twn.n = Math.round(twn.m / _frameRate);
+					twn.n = Math.round(twn.t / _frameRate);
 				// calc delta per frame //	
 					for (var k in twn.d) twn.d[k] = twn.d[k] / twn.n;
 				}
 				// write new vals on target object //
-					for (var k in twn.d) twn.o[k] += twn.d[k];
+				for (var k in twn.d) twn.o[k] += twn.d[k];
+				// prevent negative alpha values which throw errors //
+				if (twn.o.alpha < 0) twn.o.alpha = 0;
 					twn.n -=1;
-				if (twn.n == 0) _tweens.splice(i, 1);
+				if (twn.n == 0) {
+					_tweens.splice(i, 1);
+					twn.o.isTweening = false;
+					if (twn.onComplete != undefined) twn.onComplete(twn.o);
+				}
 			}
 			if (_drawClean) drawBackground(); render();
 			_running = (_tweens.length != 0 || _runners.length != 0);
@@ -273,9 +284,3 @@ function JS3Circle(o)
 }
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};
-
-
-function hello()
-{
-	
-}
