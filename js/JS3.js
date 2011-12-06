@@ -43,9 +43,11 @@ function JS3(cnvs)
 	
 		JS3.prototype.addChild = function(o){
 			_children.push(o);
+			if (!_running) render();
 		}	
 		JS3.prototype.addChildAt = function(o, n){
 			if (n <= _children.length) _children.splice(n, 0, o);
+			if (!_running) render();			
 		}			
 		JS3.prototype.getChildAt = function(n){
 			return _children[n];
@@ -88,27 +90,12 @@ function JS3(cnvs)
 		}
 		
 	// basic drawing methods //	
-		JS3.prototype.clear			= this.drawBackground;	
+		JS3.prototype.render		= function(){render()};
+		JS3.prototype.clear			= function(){drawBackground()};				
 		JS3.prototype.drawLine 		= function(o){ _graphics.push(new JS3Line(o)); 		if (!_running) render();	}
 		JS3.prototype.drawArc		= function(o){ _graphics.push(new JS3Arc(o)); 		if (!_running) render();	}
 		JS3.prototype.drawRect		= function(o){ _graphics.push(new JS3Rect(o));  	if (!_running) render();	}
-		JS3.prototype.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));	if (!_running) render();	}
-		
-	// public static methods //
-		JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}
-		JS3.getRandomValue = function(n1, n2)
-		{
-			if (n1 == undefined){
-				return Math.random();
-			}	else if (n2 == undefined){
-				return Math.random() * n1;
-			}	else{
-				return (Math.random() * (n2-n1)) + n1;
-			}
-		}
-		JS3.copyProps = function(o1, o2){
-			for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;			
-		}			
+		JS3.prototype.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));	if (!_running) render();	}		
 	
 	// private instance methods //
 		var drawLine = function(o){	
@@ -136,19 +123,19 @@ function JS3(cnvs)
 		var drawCircle = function(o){
 			_context.globalAlpha = o.alpha;	
 		 	_context.beginPath();		
-		    _context.arc(o.x, o.y, o.size, 0, 2 * Math.PI, false);
+		    _context.arc(o.x, o.y, o.size/2, 0, 2 * Math.PI, false);
 			if (o.fill) fill(o);
 			if (o.stroke) stroke(o);
 			_context.globalAlpha = 1;
 		}
 		var fill = function(o){
-			_context.globalAlpha = o.fillAlpha;			
+			_context.globalAlpha = o.alpha * o.fillAlpha;			
 		    _context.fillStyle = o.fillColor;
 			_context.fill();
 			_context.globalAlpha = 1;
 		}
 		var stroke = function(o){			
-			_context.globalAlpha = o.strokeAlpha;
+			_context.globalAlpha = o.alpha * o.strokeAlpha;
 			_context.lineCap = o.capStyle;
 		    _context.lineWidth = o.strokeWidth;
 		    _context.strokeStyle = o.strokeColor;	
@@ -240,6 +227,20 @@ function JS3(cnvs)
 		}		
 }
 
+// public static methods //
+JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}
+JS3.getRandomValue = function(n1, n2)
+{
+	if (n1 == undefined){
+		return Math.random();
+	}	else if (n2 == undefined){
+		return Math.random() * n1;
+	}	else{
+		return (Math.random() * (n2-n1)) + n1;
+	}
+}
+JS3.copyProps = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;}	
+
 // graphic primitives //
 
 function JS3Line(o)
@@ -274,4 +275,7 @@ function JS3Circle(o)
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};
 
 
-
+function hello()
+{
+	
+}

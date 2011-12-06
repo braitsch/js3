@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>JS3</title>		
+		<meta name="description" content="A simple JavaScript port of the ActionScript3 Display List.">
+		<meta name="author" content="Stephen Braitsch">		
+		<link type="text/css" href="css/main-site.css" rel="stylesheet" />			
+		<link type="text/css" href="css/custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+		<link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/github.min.css">			
+		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="js/JS3.js"></script>
+		<script type="text/javascript" src="js/JS3-layout.js"></script>
+	    <script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+	</head>
+	<body>
+	    <div id='wrap'>
+    	    <div class='example'>
+    	        <h2>Setup</h2>
+    	        <p>First things first, add a canvas tag to your HTML, give it an id and pass it to the JS3 constructor.</p>    
+    	        <canvas id="setup" width="900" height="75"></canvas>
+    	        <h3>Example Code</h3>    	        
+                <pre><code>
+                // html //
+                canvas id="my-canvas" width="900" height="75"
+                // javascript //
+                var cnvs = new JS3('my-canvas');
+                cnvs.background = '#eee';
+                </script>
+                </code></pre>
+            </div> 	        
+    	    <div class='example'>
+    	        <h2>Drawing Shapes</h2>
+    	        <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>Once these shapes are drawn, the objects that define them are removed from memory.</p>    
+    	        <canvas id="drawShape" width="900" height="75"></canvas>
+    	        <h3>Example Code</h3>    	        
+                <pre><code>
+            	cnvs.drawCircle( { size:40, x:50, y:40, fillColor:"#69D2E7", strokeColor:"#C02942", strokeWidth:2 } );
+            	cnvs.drawRect( { width:40, height:40, x:100, y:20, fillColor:"#69D2E7", strokeColor:"#C02942", strokeWidth:2 } );	
+            	cnvs.drawLine( { x1:165, y1:60, x2:225, y2:20, strokeColor:"#C02942", strokeWidth:2 } );
+            	cnvs.drawArc( { x1:250, y1:60, x2:300, y2:60, cx:275, cy:-20, strokeColor:"#C02942", strokeWidth:2 } );	
+                </code></pre>
+            </div> 
+    	    <div class='example'>
+    	        <h2>Adding Shapes to the Display List</h2>
+    	        <p>To create persistent shapes that you can animate and interact with, create shapes using the new JS3Shape() method and set properties just as you would in ActionScript</p>    
+    	        <canvas id="addChild" width="900" height="75"></canvas>
+    	        <h3>Example Code</h3>    	        
+                <pre><code>
+            	var c = new JS3Circle();
+            		c.size = 40; c.x = 50; c.y = 40; c.fillColor = "#69D2E7"; c.strokeColor = "#C02942"; c.strokeWidth = 2;
+            	cnvs.addChild( c );
+            	
+            	var r = new JS3Rect();
+            		r.width = 40; r.height = 40; r.x = 100; r.y = 20; r.fillColor = "#69D2E7"; r.strokeColor = "#C02942"; r.strokeWidth = 2;
+            	cnvs.addChild( r );	
+            	
+            	var l = new JS3Line();
+            		l.x1 = 165; l.y1 = 60; l.x2 = 225; l.y2 = 20; l.strokeColor="#C02942"; l.strokeWidth=2;
+            	cnvs.addChild( l );
+            	
+            	var a = new JS3Arc();
+            		a.x1 = 250; a.y1 = 60; a.x2 = 300; a.y2 = 60; a.cx = 275; a.cy = -20; a.strokeColor="#C02942"; a.strokeWidth=2;
+            	cnvs.addChild( a );	
+                </code></pre>
+            </div>             
+             
+    	    <div class='example'>
+    	        <h2>Tweening</h2>
+    	        <p>Initiate simple tweens using the familiar TweenLite syntax</p>	        
+    	        <canvas id="tween-1"></canvas>
+                <input type='button' value='play'>
+            </div>
+        </div>        
+	</body>
+</html>
+
+

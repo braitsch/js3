@@ -1,17 +1,19 @@
 
-
 var canvas;
 var speed = 1;
 var spiders = [];
-var maxBalls = 100;
-var colors = [	['0xB9D7D9', '0x668284', '0x2A2829', '0x493736', '0x7B3B3B'],
-				['0xEAFA70', '0x8C6B07', '0x403001', '0x292004', '0x1F1702'] ];
+var wiggle = 12;
+var maxNuts = 100;
+var palettes = [	['#E0E4CC', '#FA6900', '#C02942', '#69D2E7'],
+					['#E0E4CC', '#53777A', '#542437', '#ECD078'],
+					['#000000', '#ED0B65', '#B2A700', '#FCAE11']];
+var colors = palettes[Math.floor(JS3.getRandomValue(palettes.length))];
 
 function init()
 {
 	canvas = new JS3('cnvs');
 	canvas.drawClean = true;
-	canvas.background = '#CCC';
+	canvas.background = colors[0];
 	onStart();
 	addButtons();
 }
@@ -30,7 +32,8 @@ function addBalls()
 		var c = new JS3Circle();
 			c.size = 3;
 			c.alpha = 0;
-			c.color = '#ffff00';
+			c.fillColor = colors[Math.round(JS3.getRandomValue(1, 2))];
+			c.stroke = false;
 			c.x = Math.random() * canvas.width;
 			c.y = Math.random() * canvas.height;
 			c.dirX = Math.round(Math.random()) == 0 ? -1 : 1;
@@ -38,7 +41,7 @@ function addBalls()
 		canvas.addChild(c);
 		canvas.tween(c, 3, {alpha:1});		
 	}
-	if (canvas.numChildren >= maxBalls) canvas.stop(addBalls);	
+	if (canvas.numChildren >= maxNuts) canvas.stop(addBalls);	
 }
 
 function move()
@@ -56,9 +59,11 @@ function move()
 function makeSpider()
 {	
 	var s = canvas.getChildAtRandom();
-		s.size = 20;
-		s.color = '#668284';
+		s.size = 10;
+		s.stroke = true;
 		s.spider = true;
+		s.strokeWidth = 3;
+		s.strokeColor = colors[3];
 	spiders.push(s);
 	if (spiders.length > 2) canvas.stop(makeSpider);
 }
@@ -71,8 +76,8 @@ function reach()
 			var c = canvas.getChildAt(k);
 			if (c.spider == undefined){
 				if (Math.abs(s.x - c.x) < 75 && Math.abs(s.y - c.y) < 75) {
-					var o = {	strokeWidth:1, strokeColor:'#EAFA70', x1:s.x, y1:s.y, x2:c.x, y2:c.y,	
-								cx:((s.x+c.x)/2)+(JS3.getRandomValue(-10, 10)), cy:((s.y+c.y)/2)+(JS3.getRandomValue(-10, 10)) };
+					var o = {	strokeWidth:1, strokeColor:colors[3], x1:s.x, y1:s.y, x2:c.x, y2:c.y,	
+								cx:((s.x+c.x)/2)+(JS3.getRandomValue(-wiggle, wiggle)), cy:((s.y+c.y)/2)+(JS3.getRandomValue(-wiggle, wiggle)) };
 					canvas.drawArc(o);									
 				};
 			};
