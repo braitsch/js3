@@ -46,7 +46,7 @@
             </div> 
     	    <div class='example'>
                 <h2><a name="adding-shapes" href="#adding-shapes">Adding Shapes to the Display List</a></h2>
-    	        <p>To create persistent shapes that you can animate and interact with, add JS3Shape Objects and set properties on them just as you would in ActionScript.</p>    
+    	        <p>To create persistent shapes that you can animate and interact with, add JS3Shape objects to your canvas and set properties on them just as you would in ActionScript.</p>    
     	        <canvas id="addChild" width="900" height="75"></canvas>
     	        <h3>Example Code</h3>    	        
                 <pre><code>
@@ -165,8 +165,8 @@
                 		var c = cnvs.getChildAt(i);
                 		if (c.x >= cnvs.width || c.x <= 0) c.dirX *=-1;
                 		if (c.y >= cnvs.height || c.y <= 0) c.dirY *=-1;
-                		c.x += 1 * c.dirX;
-                		c.y += 1 * c.dirY;
+                		c.x += c.dirX;
+                		c.y += c.dirY;
                 	}
                 }
                 // attach two circles to the stage //

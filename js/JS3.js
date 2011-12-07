@@ -71,7 +71,7 @@ function JS3(cnvs)
 			if (_running == false) startAnimating();
 		}	
 		this.stop = function(func){
-			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) _runners.splice(i, 1);
+			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) _runners[i].r = 0;
 		}	
 		this.tween = function(obj, secs, props){
 			if (obj.isTweening) return;
@@ -225,14 +225,14 @@ function JS3(cnvs)
 			getFrameRate();
 			// execute runners //
 			for (var i = 0; i < _runners.length; i++) {
-				if (_runners[i].d === undefined){
+ 				if (_runners[i].d === undefined){
 					_runners[i].f();
 			// execute on delay //		
 				}	else if (_frameNum % _runners[i].d == 0){
 					_runners[i].f();
 					_runners[i].r -= 1;
-					if (_runners[i].r == 0)	_runners.splice(i, 1);
 				}
+				if (_runners[i].r <= 0)	_runners.splice(i, 1);	
 			}
 			// execute tweens //
 			for (var i = 0; i < _tweens.length; i++) {

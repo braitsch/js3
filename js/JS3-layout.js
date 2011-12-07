@@ -195,8 +195,8 @@ function startFrame3()
 		var b = cnvs6.getChildAt(i);
 		if (b.x >= cnvs6.width || b.x <= 0) b.dirX *=-1;
 		if (b.y >= cnvs6.height || b.y <= 0) b.dirY *=-1;
-		b.x += 1 * b.dirX;
-		b.y += 1 * b.dirY;
+		b.x += b.dirX;
+		b.y += b.dirY;
 	}	
 }
 
