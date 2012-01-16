@@ -77,6 +77,7 @@ var addButtonListeners = function()
 var drawShape = function()
 {
 	var cnvs = new JS3('drawShape');
+	cnvs.drawClean = false;
 	cnvs.drawCircle( { size:40, x:50, y:40, fillColor:"#69D2E7", strokeColor:"#C02942", strokeWidth:2 } );
 	cnvs.drawRect( { width:40, height:40, x:100, y:20, fillColor:"#69D2E7", strokeColor:"#C02942", strokeWidth:2 } );	
 	cnvs.drawLine( { x1:165, y1:60, x2:225, y2:20, strokeColor:"#C02942", strokeWidth:2 } );
