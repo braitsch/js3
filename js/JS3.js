@@ -20,9 +20,8 @@ function JS3(cnvs)
 		var _drawClean 	= true;
 		var _background = '#ffffff';
 		var _frameNum	= 0;
-		var _frameRate	= 60;		
+		var _frameRate	= 30;		
 		var _frameTime	= new Date() * 1;
-		var _running 	= false;
 	
 	// public getters & setters //
 	 	this.__defineGetter__("width", 			function()		{ return _width;});
@@ -46,21 +45,22 @@ function JS3(cnvs)
 	
 		this.addChild = function(o){
 			_children.push(o);
-			if (!_running) render();
 		}	
 		this.addChildAt = function(o, n){
 			if (n <= _children.length) _children.splice(n, 0, o);
-			if (!_running) render();			
 		}			
 		this.getChildAt = function(n){
 			return _children[n];
 		}
 		this.getChildAtRandom = function(){
 			return _children[Math.floor(Math.random()*_children.length)];
+		}
+		this.removeChild = function(o, k){
+			for (var i = _children.length - 1; i >= 0; i--){ if (_children[i] == o){ removeChildAt(i, k); break; }};
 		}		
-		this.removeChildAt = function(n){
-			_children.splice(n, 1);
-		}		
+		this.removeChildAt = function(i, k){
+			if (k) _children[i] = null; _children.splice(i, 1); 
+		}					
 		
 	// 	animation methods //
 		
@@ -68,7 +68,6 @@ function JS3(cnvs)
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
 			_runners.push({f:func, d:delay, r:repeat});
-			if (_running == false) startAnimating();
 		}	
 		this.stop = function(func){
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) _runners[i].r = 0;
@@ -82,7 +81,6 @@ function JS3(cnvs)
 			props.o = obj;
 			props.o.isTweening = true;
 			_tweens.push(props);
-			if (_running == false) startAnimating();
 		}			
 		
 	// save canvas as a png //
@@ -100,18 +98,20 @@ function JS3(cnvs)
 	// basic drawing methods //	
 		this.render		= function(){ render() };
 		this.clear		= function(){ drawBackground() };				
-		this.drawLine	= function(o){ _graphics.push(new JS3Line(o)); 		if (!_running) render();	}
-		this.drawArc	= function(o){ _graphics.push(new JS3Arc(o)); 		if (!_running) render();	}
-		this.drawRect	= function(o){ _graphics.push(new JS3Rect(o));  	if (!_running) render();	}
-		this.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));	if (!_running) render();	}
-		this.drawTri	= function(o){ _graphics.push(new JS3Tri(o));		if (!_running) render();	}				
-		this.drawText 	= function(o){ _graphics.push(new JS3Text(o)); 		if (!_running) render();	}	
+		this.drawLine	= function(o){ _graphics.push(new JS3Line(o)); 	}
+		this.drawArc	= function(o){ _graphics.push(new JS3Arc(o)); 	}
+		this.drawRect	= function(o){ _graphics.push(new JS3Rect(o));  }
+		this.drawCircle	= function(o){ _graphics.push(new JS3Circle(o));}
+		this.drawTri	= function(o){ _graphics.push(new JS3Tri(o));	}
+		this.drawText 	= function(o){ _graphics.push(new JS3Text(o)); 	}
 	
 	// private instance methods //
 		var drawLine = function(o){	
-			_context.globalAlpha = o.alpha;			
+			_context.globalAlpha = o.alpha;
+			_context.beginPath();
 			_context.moveTo(o.x1, o.y1);  
 			_context.lineTo(o.x2, o.y2);
+			_context.closePath();
 			stroke(o);
 			_context.globalAlpha = 1;			
 		}
@@ -249,8 +249,7 @@ function JS3(cnvs)
 				}
 			}
 			if (_drawClean) drawBackground(); render();
-			_running = (_tweens.length != 0 || _runners.length != 0);
-			if (_running) requestAnimFrame(startAnimating);
+			requestAnimFrame(startAnimating);
 		}
 		var requestAnimFrame = (function(callback){
 		    return window.requestAnimationFrame ||
@@ -263,12 +262,13 @@ function JS3(cnvs)
 		var getFrameRate = function()
 		{
 			_frameNum ++;
-			if (_frameNum % 60 == 0){
+			if (_frameNum % 30 == 0){
 				var now = new Date * 1;
-				_frameRate = 1000 / ((now - _frameTime) / 60);
+				_frameRate = 1000 / ((now - _frameTime) / 30);
 				_frameTime = now;
 			}
-		}		
+		}
+		startAnimating();
 }
 
 // public static methods //

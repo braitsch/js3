@@ -22,21 +22,17 @@ function addButtons()
 
 function addBalls()
 {
-	var i = 5;
+	var i = 20;
 	while ( i-- ){
 		var c = new JS3Circle();
-			c.size = 15;
+			c.size = JS3.getRandomValue(3, 12);
 			c.alpha = 0;
+			c.stroke = false;			
+			c.speed = c.size * .05;
 			c.x = Math.random() * canvas.width;
-			c.y = Math.random() * canvas.height;
-			c.dirX = Math.round(Math.random()) == 0 ? -1 : 1;
-			c.dirY = Math.round(Math.random()) == 0 ? -1 : 1;		
+			c.dirX = Math.round(Math.random()) == 0 ? -.5 : .5;
 		canvas.addChild(c);
 		canvas.tween(c, 3, {alpha:1});		
-	}
-	if (canvas.numChildren > maxBalls){
-		i = 5;
-		while ( i-- ) canvas.removeChildAt(0);
 	}
 }
 
@@ -45,10 +41,9 @@ function move()
 	var i = canvas.numChildren;
 	while ( i-- ){
 		var b = canvas.getChildAt(i);
-		if (b.x >= canvas.width || b.x <= 0) b.dirX *=-1;
-		if (b.y >= canvas.height || b.y <= 0) b.dirY *=-1;
-		b.x += speed * b.dirX;
-		b.y += speed * b.dirY;
+		b.x += b.speed * b.dirX;
+		b.y += b.speed;
+		if (b.y > canvas.height) canvas.removeChildAt(i, true);		
 	}	
 }
 
