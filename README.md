@@ -1,5 +1,5 @@
-This is an H1
+JS3 - A simple AS3 drawing & tweening API for the JavaScript Canvas
 =============
 
-This is an H2
+Documentation & Examples Coming Soon.
 -------------
