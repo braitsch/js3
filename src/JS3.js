@@ -81,6 +81,13 @@ function JS3(cnvs)
 			props.o = obj;
 			props.o.isTweening = true;
 			_tweens.push(props);
+		}
+		this.reset = function(){
+			while(_children.length) {_children[0] = null; _children.splice(0, 1);}
+			while(_graphics.length){ _graphics[0] = null; _graphics.splice(0, 1);}
+			while(_tweens.length) {_tweens[0] = null; _tweens.splice(0, 1);}
+			while(_runners.length) {_runners[0] = null; _runners.splice(0, 1);}					
+			_children = []; _graphics = []; _tweens = []; _runners = [];
 		}			
 		
 	// save canvas as a png //

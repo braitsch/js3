@@ -1,25 +1,14 @@
 
-
-var canvas;
 var speed = 1;
 var maxBalls = 100;
-//var palettes = ['#E0E4CC', '#FA6900', '#C02942', '#69D2E7'];
 var palettes = ['#E0E4CC', '#53777A', '#542437', '#ECD078'];
+//var palettes = ['#E0E4CC', '#FA6900', '#C02942', '#69D2E7'];
 
 function init()
 {
-	canvas = new JS3('cnvs');
 	canvas.drawClean = false;
 	canvas.background = '#eee';
-	onStart();	
-	addButtons();
-}
-
-function addButtons()
-{
-	window.document.getElementById('start').addEventListener('click', onStart, false);	
-	window.document.getElementById('stop').addEventListener('click', onStop, false);
-	window.document.getElementById('save').addEventListener('click', canvas.save, false);		
+	onStart();
 }
 
 function addBalls()
@@ -53,4 +42,4 @@ function onStop()
 	canvas.stop(addBalls);
 }
 
-window.onload = init;
+init();

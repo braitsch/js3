@@ -1,0 +1,38 @@
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>JS3 Canvas Demo</title>
+		<meta name="description" content="">
+		<meta name="author" content="Stephen Braitsch">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="shortcut icon" href="/favicon.ico">		
+		<link rel="stylesheet" href="gallery.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	</head>	
+    <body>
+        <div id='outer'> 
+            <div id='inner'> 
+                <div id="canvas">
+                    <canvas id="cnvs" width="1000" height="600"></canvas>
+                </div>
+                <div id="controls">
+                    <div id="btn-cnt">
+                        <button class='btn' id='spiders'>spiders</button>
+                        <button class='btn' id='joints'>joints</button>                        
+                        <button class='btn' id='snow'>snow</button>
+                        <button class='btn' id='confetti'>confetti</button>
+                        <button class='btn' id='snakes'>snakes</button>
+                    </div>  
+                    <div id="btn-cnt">
+                        <!-- <button class='btn' id='pause'>pause</button> -->
+                        <button class='btn' id='save' >save image</button>                         
+                    </div>                                        
+                </div>                
+            </div>
+        </div>    
+    	<script src="./events.js"></script>
+    	<script src="../src/JS3.js"></script>
+    </body>
+</html>

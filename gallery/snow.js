@@ -1,23 +1,12 @@
 
-
-var canvas;
 var speed = 1;
 var maxBalls = 100;
 
 function init()
 {
-	canvas = new JS3('cnvs');
 	canvas.drawClean = true;
 	canvas.background = '#CCC';
-	onStart();	
-	addButtons();
-}
-
-function addButtons()
-{
-	window.document.getElementById('start').addEventListener('click', onStart, false);	
-	window.document.getElementById('stop').addEventListener('click', onStop, false);
-	window.document.getElementById('save').addEventListener('click', canvas.save, false);		
+	onStart();
 }
 
 function addBalls()
@@ -62,4 +51,4 @@ function onStop()
 	canvas.stop(move);
 }
 
-window.onload = init;
+init();

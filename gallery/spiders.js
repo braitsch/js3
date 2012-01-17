@@ -1,5 +1,4 @@
 
-var canvas;
 var speed = 1;
 var spiders = [];
 var wiggle = 12;
@@ -11,18 +10,9 @@ var colors = palettes[Math.floor(JS3.getRandomValue(palettes.length))];
 
 function init()
 {
-	canvas = new JS3('cnvs');
 	canvas.drawClean = true;
 	canvas.background = colors[0];
 	onStart();
-	addButtons();
-}
-
-function addButtons()
-{
-	window.document.getElementById('start').addEventListener('click', onStart, false);	
-	window.document.getElementById('stop').addEventListener('click', onStop, false);
-	window.document.getElementById('save').addEventListener('click', canvas.save, false);		
 }
 
 function addBalls()
@@ -59,7 +49,7 @@ function move()
 function makeSpider()
 {	
 	var s = canvas.getChildAtRandom();
-		s.size = 10;
+		s.size = 35;
 		s.stroke = true;
 		s.spider = true;
 		s.strokeWidth = 3;
@@ -117,4 +107,4 @@ function onStop()
 	canvas.stop(changeBallDirection);	
 }
 
-window.onload = init;
+init();

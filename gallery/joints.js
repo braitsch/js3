@@ -1,5 +1,4 @@
 
-var canvas;
 var speed = 1;
 var joints = 10;
 var sm = [];
@@ -11,17 +10,10 @@ var line = ['#D9CEB2', '#99B2B7']
 
 function init()
 {
-	canvas = new JS3('cnvs');
 	canvas.drawClean = true;
 	canvas.background = '#D5DED9';
-	addBalls();	addButtons(); onStart();
-}
-
-function addButtons()
-{
-	window.document.getElementById('start').addEventListener('click', onStart, false);	
-	window.document.getElementById('stop').addEventListener('click', onStop, false);
-	window.document.getElementById('save').addEventListener('click', canvas.save, false);		
+	addBalls();
+	onStart();
 }
 
 function addBalls()
@@ -86,4 +78,4 @@ function onStop()
 	canvas.stop(move);
 }
 
-window.onload = init;
+init();
