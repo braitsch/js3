@@ -1,6 +1,6 @@
 
 var speed = 1;
-var joints = 10;
+var joints = 20;
 var sm = [];
 var lg = [];
 var ln = [];
