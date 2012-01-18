@@ -230,6 +230,7 @@ function JS3(cnvs)
 		var startAnimating = function()
 		{
 			getFrameRate();
+//			trace(_frameRate);
 			// execute runners //
 			for (var i = 0; i < _runners.length; i++) {
  				if (_runners[i].d === undefined){
