@@ -1,9 +1,17 @@
 
 var canvas;
 
-function initControls()
+function onLoad()
 {	
-	canvas = new JS3('cnvs');	
+	var v = getViewport();
+	var h = $('#header').height();
+	var c = document.createElement("canvas");
+		c.setAttribute('id', 'cnvs');
+		c.setAttribute('width', v.x - 200);
+		c.setAttribute('height', v.y - h - 5);
+	document.body.appendChild(c);
+	canvas = new JS3('cnvs');
+	$('#controls').height(v.y - h - 5);	
 	$('#spiders').click(function() {loadFile('spiders');});
 	$('#joints').click(function() {loadFile('joints');});
 	$('#tubes').click(function() {loadFile('tubes');});	
@@ -24,4 +32,10 @@ function loadFile(f)
   	document.body.appendChild(js);
 }
 
-window.onload = initControls;
+function getViewport()
+{
+	var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0];
+	return {x:w.innerWidth||e.clientWidth||g.clientWidth, y:w.innerHeight||e.clientHeight||g.clientHeight};	
+}
+
+window.onload = onLoad;
