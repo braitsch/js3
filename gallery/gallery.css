@@ -10,10 +10,16 @@ body{
 	background-color:#444;
 }
 
-#controls{
-	float:right;	
+#canvas{	
+	margin-right:200px;
+	background-color:#444;
+}
+
+#controls{	
+	position:absolute;
 	width:200px;
 	height:100%;
+	right:0; top:20px;
 	background-color:#555;		
 }
 

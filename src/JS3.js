@@ -88,6 +88,11 @@ function JS3(cnvs)
 			while(_tweens.length) {_tweens[0] = null; _tweens.splice(0, 1);}
 			while(_runners.length) {_runners[0] = null; _runners.splice(0, 1);}					
 			_children = []; _graphics = []; _tweens = []; _runners = [];
+		}
+		this.setSize = function(w, h)
+		{
+			_canvas.width = _width = w;
+			_canvas.height = _height = h;
 		}			
 		
 	// save canvas as a png //

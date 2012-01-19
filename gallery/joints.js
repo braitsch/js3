@@ -10,6 +10,7 @@ var line = ['#D9CEB2', '#99B2B7']
 
 function init()
 {
+	trace('width='+canvas.width);	
 	canvas.drawClean = true;
 	canvas.background = '#D5DED9';
 	addBalls();
