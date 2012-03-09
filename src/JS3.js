@@ -64,10 +64,10 @@ function JS3(cnvs)
 		
 	// 	animation methods //
 		
-		this.run = function(func, delay, repeat){
+		this.run = function(func, delay, repeat, onComp){
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
-			_runners.push({f:func, d:delay, r:repeat});
+			_runners.push({f:func, d:delay, r:repeat, o:onComp});
 		}	
 		this.stop = function(func){
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) _runners[i].r = 0;
@@ -245,7 +245,11 @@ function JS3(cnvs)
 					_runners[i].f();
 					_runners[i].r -= 1;
 				}
-				if (_runners[i].r <= 0)	_runners.splice(i, 1);	
+				if (_runners[i].r <= 0)	{
+			// execute callback when run repeat count completes
+					if (_runners[i].o != undefined) _runners[i].o();
+					_runners.splice(i, 1);
+				}
 			}
 			// execute tweens //
 			for (var i = 0; i < _tweens.length; i++) {

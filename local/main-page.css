@@ -1,0 +1,22 @@
+
+body { background-color:#eee; }
+h1, h2 { margin-bottom:5px; }
+hr { border-top: 1px solid #CCC; border-bottom: 1px solid white;}
+button {float:right; margin-top:6px;}
+#content { width:900px; margin:80px auto; }
+#header { text-align:center; }
+p { padding-left:8px; }
+
+.clearfix { clear:both; };
+.dropdown .caret { margin-left:4px; }
+pre { padding:0; } pre code { background:white; }
+
+#x1-code{ width:300px; float:left;}
+#x1{ margin-left:10px;}
+
+canvas{
+	background:white;
+	border: 1px solid #CCC;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 4px;	-webkit-border-radius: 4px; -moz-border-radius: 4px;
+}
