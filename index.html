@@ -43,7 +43,7 @@
         <div id='content'>
                 <div id="header">
                     <h1>Simple, Flash-like Tweening for the JavaScript Canvas</h1>
-                    <p>JS3 is a lightweight port of the familiar TweenLite ActionScript library for the JavaScript Canvas allowing you to do things like :</p>                    
+                    <p>JS3 is a lightweight port of the familiar <a href='http://www.greensock.com/tweenlite/' target='blank'>TweenLite</a> ActionScript library for the JavaScript Canvas allowing you to do things like :</p>                    
                 </div>
                 <div id="header-example">
                     <pre id='x1-code'><code>                     
@@ -242,11 +242,11 @@ The "drawCircle" function just returns a basic circle and the "update" function 
     // update function to bounce the circles around the canvas //
     function update()
     {
-    	var i = cnvs.numChildren;
+    	var i = stage.numChildren;
     	while ( i-- ){
-    		var c = cnvs.getChildAt(i);
-    		if (c.x >= cnvs.width || c.x <= 0) c.dirX *=-1;
-    		if (c.y >= cnvs.height || c.y <= 0) c.dirY *=-1;
+    		var c = stage.getChildAt(i);
+    		if (c.x >= stage.width || c.x <= 0) c.dirX *=-1;
+    		if (c.y >= stage.height || c.y <= 0) c.dirY *=-1;
     		c.x += c.dirX;
     		c.y += c.dirY;
     	}
