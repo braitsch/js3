@@ -7,8 +7,7 @@ button {float:right; margin-top:6px;}
 #header { text-align:center; }
 p { padding-left:8px; }
 
-.clearfix { clear:both; };
-.dropdown .caret { margin-left:4px; }
+.clearfix { clear:both; }
 pre { padding:0; } pre code { background:white; }
 
 #x1-code{ width:300px; float:left;}
@@ -20,3 +19,6 @@ canvas{
 	border: 1px solid rgba(0, 0, 0, 0.15);
 	border-radius: 4px;	-webkit-border-radius: 4px; -moz-border-radius: 4px;
 }
+
+button i { padding-right:5px; }
+#btn-download { position:absolute; top:1px; right:10px; }

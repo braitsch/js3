@@ -6,6 +6,7 @@ $(document).ready(function() {
 	initCnvs2();
 	initCnvsControlled();			
 	addButtonListeners();
+	$("#btn-download").click(function()  { window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3.js";});	
 });
 
 function initCnvs1()
