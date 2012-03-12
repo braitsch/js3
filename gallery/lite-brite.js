@@ -1,12 +1,12 @@
 
-var size = (canvas.width-20) / 75;
+var size;
 var circs = [];
 
 function init()
 {
 	canvas.drawClean = false;
 	canvas.background = '#777';
-	draw();
+	size = (canvas.width - 20) / 75; draw();
 }
 
 function draw()
@@ -39,5 +39,3 @@ function toggle()
 	canvas.drawCircle(o);	
 	};
 }
-
-init();

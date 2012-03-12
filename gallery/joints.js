@@ -78,5 +78,3 @@ function onStop()
 {
 	canvas.stop(move);
 }
-
-init();

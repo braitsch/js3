@@ -48,5 +48,3 @@ function onStop()
 	canvas.stop(drip);	
 	canvas.stop(addBalls);	
 }
-
-init();

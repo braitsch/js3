@@ -43,5 +43,3 @@ function grow()
 	};
 	if (vines.length == 0) canvas.stop(grow);
 }
-
-init()

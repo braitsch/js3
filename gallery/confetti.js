@@ -41,5 +41,3 @@ function onStop()
 {
 	canvas.stop(addBalls);
 }
-
-init();

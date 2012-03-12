@@ -106,5 +106,3 @@ function onStop()
 	canvas.stop(reach);	
 	canvas.stop(changeBallDirection);	
 }
-
-init();
