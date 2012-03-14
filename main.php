@@ -139,8 +139,8 @@ The syntax is very similar to creating basic shapes, except that you must also m
                 <div id="animating-timers">
                     <h2>Animating with Timers</h2>
                 <p>You can control how often the canvas redraws itself by using the <strong><u>run</u></strong> method.<br>
-This method takes two arguments, a function to call and how often to call it in frames.<br>
-The snippet below draws a circle and moves it ten pixels to the right every time 15 frames have elapsed.</p>
+This method takes two arguments, a function to call and how often to call it in seconds.<br>
+The snippet below draws a circle and moves it ten pixels to the right every time 1/4 of a second.</p>
                 <pre><code>                        
         var c = new JS3Circle();
             c.size = 75; c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2;
@@ -150,13 +150,13 @@ The snippet below draws a circle and moves it ten pixels to the right every time
 	        c.x +=10;
 	        if (c.x >= 800) c.x = 75;
         }
-        stage.run(update, 15);
+        stage.run(update, .25);
                 </code></pre>
                 <canvas id="x5" width='898' height='100'></canvas>  
                 <button id='x5-btn' class='btn btn-primary'>Start Updating</button>
                 <div class="clearfix"><hr></div> 
                 <p>You can also specify how many times the <strong><u>run</u></strong> method should call the function you passed to it.<br>
-The snippet below moves the circle fifty pixels to the right every time 30 frames have elapsed. It does this 5 times and then stops.</p>
+The snippet below moves the circle fifty pixels to the right every time 1/2 second. It does this 5 times and then stops.</p>
                 <pre><code>                        
         var c = new JS3Circle();
             c.size = 75; c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2;
@@ -165,7 +165,7 @@ The snippet below moves the circle fifty pixels to the right every time 30 frame
         {
 	        c.x +=50;
         }
-        stage.run(update, 30, 5);
+        stage.run(update, .5, 5);
                 </code></pre>
                 <canvas id="x6" width='898' height='100'></canvas>  
                 <button id='x6-btn' class='btn btn-primary'>Start Updating</button>

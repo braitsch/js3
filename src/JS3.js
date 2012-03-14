@@ -67,10 +67,10 @@ function JS3(cnvs)
 		this.run = function(func, delay, repeat, onComp){
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
-			_runners.push({f:func, d:delay, r:repeat, o:onComp});
+			var r = {f:func, d:delay, r:repeat, o:onComp}; _runners.push(r); initRunner(r);
 		}	
 		this.stop = function(func){
-			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) _runners[i].r = 0;
+			stopRunner(func);
 		}	
 		this.tween = function(obj, secs, props){
 			if (obj.isTweening) return;
@@ -191,7 +191,14 @@ function JS3(cnvs)
 		}
 		var initTween = function(t){
 			t.start = Date.now(); _tweens.push(t)	
-		}		
+		}
+		var initRunner = function(r){
+			r.d === undefined ? r.f() : r.int = setInterval(execRunner, r.d * 1000, r);
+		}
+		var stopRunner = function(func)
+		{
+			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) { clearInterval(_runners[i].int); _runners.splice(i, 1); };
+		}
 		var render = function()
 		{
 		// render non-persistent graphics //
@@ -233,27 +240,9 @@ function JS3(cnvs)
 		}
 		var loop = function()
 		{
-			getFrameRate();
-			execTimers(); execTweens();
+			getFrameRate(); execTweens();
 			if (_drawClean) drawBackground(); render();
 			JS3.requestAnimFrame()(loop);
-		}
-		var execTimers = function()
-		{
-			for (var i = 0; i < _runners.length; i++) {
- 				if (_runners[i].d === undefined){
-					_runners[i].f();
-			// execute on delay //		
-				}	else if (_frameNum % _runners[i].d == 0){
-					_runners[i].f();
-					_runners[i].r -= 1;
-				}
-				if (_runners[i].r <= 0)	{
-			// execute callback when run repeat count completes
-					if (_runners[i].o != undefined) _runners[i].o();
-					_runners.splice(i, 1);
-				}
-			}			
 		}
 		var execTweens = function()
 		{
@@ -272,6 +261,18 @@ function JS3(cnvs)
 				}		
 			}	
 		}
+		var execRunner = function(r)
+		{
+			r.f();
+			if (r.r != undefined) {
+				r.r--;
+				if (r.r == 0){
+					stopRunner(r.f);
+			// execute callback when run repeat count completes //
+					if (r.o != undefined) r.o();
+				}
+			}	
+		}		
 		var getFrameRate = function()
 		{
 			var now = window.mozAnimationStartTime || Date.now();
@@ -377,7 +378,7 @@ function Tween(obj, dur, props)
 	this.elapsed	= 0;
 	this.onStart	= props.onStart;
 	this.onComplete	= props.onComplete;
-	this.easeFunc	= props.ease || JS3.easeInOutQuad;
+	this.easeFunc	= props.ease || JS3.linear;
 	this.props 		= {};
 	if (props.x != undefined) this.props.x = {a:obj.x, b:props.x-obj.x};
 	if (props.y != undefined) this.props.y = {a:obj.y, b:props.y-obj.y};

@@ -14,7 +14,7 @@ function initCnvs1()
 	var stage = new JS3('x1');
 	var c = new JS3Circle( { size:50, x:65, y:stage.height/2, fillColor:"#ddd", strokeColor:"#ccc", strokeWidth:2} );
 	stage.addChild(c);
-	function tween() { c.x = 65; stage.tween(c, 2, {x:520,
+	function tween() { c.x = 65; stage.tween(c, 2, {x:520, ease:JS3.easeInOutQuad,
 		//	onStart:function(){console.log('starting tween...'+this.duration)},
 			onComplete:function(){tween();}		
 		//	onComplete:function(){console.log('completed in '+(Date.now() - this.start) / 1000 + ' seconds'); tween();}
@@ -92,13 +92,13 @@ function addButtonListeners()
 			x5.stop(updateX5);
 			$(this).text('Start Updating');
 		}	else{
-			x5.run(updateX5, 15);
+			x5.run(updateX5, .25);
 			$(this).text('Stop Updating');
 		}
 
 	});	
 	$('#x6-btn').click(function(){
-		x6.run(updateX6, 30, 5, resetX6);
+		x6.run(updateX6, .5, 5, resetX6);
 		$(this).attr("disabled", true);
 	});	
 	$('#x7-btn').click(function(){
