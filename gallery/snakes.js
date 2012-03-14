@@ -40,7 +40,7 @@ function drip()
 function onStart()
 {
 	canvas.run(drip);
-	canvas.run(addBalls, 20);
+	canvas.run(addBalls, 1);
 }
 
 function onStop()

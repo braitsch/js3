@@ -41,7 +41,7 @@ function move()
 
 function onStart()
 {
-	canvas.run(addBalls, 30);
+	canvas.run(addBalls, 1);
 	canvas.run(move);
 }
 

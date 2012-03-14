@@ -172,7 +172,7 @@ The snippet below moves the circle fifty pixels to the right every time 1/2 seco
                 </div>
                 <div class="clearfix"><hr></div> 
         <p>Note you can also pass a fourth argument to <strong><u>run</u></strong> specifying a callback to execute when all calls to run's update function have completed.<br>
-The following snippet calls the update function every 30 frames, fives times and then executes the callback "onUpdateComplete".   
+The following snippet calls the update function every 1/2 second, fives times and then executes the callback "onUpdateComplete".   
             </p>
                 <pre><code>
     	function update()
@@ -183,7 +183,7 @@ The following snippet calls the update function every 30 frames, fives times and
         {
             console.log('done!');
         }
-        stage.run(update, 30, 5, onUpdateComplete);        
+        stage.run(update, .5, 5, onUpdateComplete);        
                 </code></pre>                
 <p>Lastly, calling <strong><u>run</u></strong> with just an update function and no other arguments will execute "update" on every frame tick, similar to the AS3 <a href='http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/Event.html#ENTER_FRAME' target='blank'>OnEnterFrame.</a><br>
 At any time if you'd like to stop calling the function you passed to <strong><u>run</u></strong> simply pass the function to <strong><u>stop</u></strong></p>

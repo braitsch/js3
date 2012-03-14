@@ -7,7 +7,7 @@ $(document).ready(function() {
 	canvas = new JS3('cnvs');
 	canvas.background = '#ff0000';
 	setCanvasSize(); $('#cnvs').show(); init();
-	addGui();
+//	addGui();
 });
 
 function setCanvasSize()
