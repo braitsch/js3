@@ -24,9 +24,9 @@
                         <li>Support for all the popular easing equations :
                             <ul>
                                 <li>linear ( straight / no ease ) easeInQuad, easeOutQuad, easeInOutQuad</li> 
-                                <li>easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart</li>
+                                <li>easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc</li>                                
                                 <li>easeInQuint, easeOutQuint, easeIOutQuint, easeInSine, easeOutSine, easeInOutSine</li>
-                                <li>easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc</li>                                                                                                
+                                <li>easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart</li>                                                                                                                                
                             </ul>    
                         </li>
                     </ul>
@@ -88,7 +88,7 @@ Once these shapes are drawn, the objects that define them are immediately remove
     	stage.drawArc( { x1:250, y1:75, x2:300, y2:75, cx:275, cy:-25, strokeColor:sc, strokeWidth:sw } );
         stage.drawTri( { size:50, x:350, y:stage.height/2, fillColor:fc, strokeColor:sc, strokeWidth:sw } );	
                 </code></pre>
-                <p>Results in drawing the following to the screen. <u>Full drawing API docs coming soon</u>.</p>
+                <p>Results in drawing the following to the screen. <a href='./drawing.php'>Click here to learn more about drawing simple shapes.</a></p>
                 <canvas id="x2" width='898' height='100'></canvas>  
                 </div><hr> 
                  
@@ -127,7 +127,7 @@ The syntax is very similar to creating basic shapes, except that you must also m
                 <p>You can also chain tweens together by specifying a callback to fire when the animation completes.</p>
                 <pre><code>                        
         stage.tween(c, 3, {x:800, onComplete:function(){
-            stage.tween(c, 3, {alpha:0});
+            stage.tween(c, 1, {alpha:0});
         }});
                 </code></pre>
                 <canvas id="x4" width='898' height='100'></canvas>  
@@ -229,7 +229,7 @@ The "drawCircle" function just returns a basic circle and the "update" function 
     stage.run(update);
                 </code></pre>
                 <canvas id="x7" width='898' height='100'></canvas>  
-                <button id='x7-btn' class='btn btn-primary'>Start Updating</button>
+                <button id='x7-btn' class='btn btn-primary'>Stop Updating</button>
                 </div>
                 <div class="clearfix"><hr></div>
                 <h2>More features & examples coming soon...</h2>

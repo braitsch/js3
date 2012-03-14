@@ -47,7 +47,7 @@ function initCnvsControlled()
 	x7 = new JS3('x7');  		
 	x7.addChild( new JS3Circle(getSimpleSprite()) );
 	x7.addChild( new JS3Circle(getSimpleSprite()) );
-//	x7.run(updateX7);		
+	x7.run(updateX7);		
 }
 
 function getSimpleCircle()
@@ -80,9 +80,12 @@ function addButtonListeners()
 	$('#x4-btn').click(function(){
 		var c = x4.getChildAt(0);
 		$(this).attr("disabled", true);
-        x4.tween(c, 3, {x:800, onComplete:function(){
-            x4.tween(c, 3, {alpha:0, onComplete:function(){
-        	c.x = 75; c.y = x4.height/2; c.alpha = 1; $('#x4-btn').attr('disabled', false);	
+        x4.tween(c, 3, {x:800, 
+		//	onStart:function(){console.log('starting tween...'+this.duration)},
+			onComplete:function(){
+			//	console.log('completed in '+(Date.now() - this.start) / 1000 + ' seconds');				
+            	x4.tween(c, 1, {alpha:0, onComplete:function(){ 
+        			c.x = 75; c.y = x4.height/2; c.alpha = 1; $('#x4-btn').attr('disabled', false);	
 			}});
         }});
 	});	

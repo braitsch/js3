@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.1
+ * Version : 0.1.2
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -193,7 +193,7 @@ function JS3(cnvs)
 			t.start = Date.now(); _tweens.push(t)	
 		}
 		var initRunner = function(r){
-			r.d === undefined ? r.f() : r.int = setInterval(execRunner, r.d * 1000, r);
+			r.int = setInterval(execRunner, r.d === undefined ? 1 : r.d * 1000, r);
 		}
 		var stopRunner = function(func)
 		{
@@ -382,7 +382,7 @@ function Tween(obj, dur, props)
 	this.props 		= {};
 	if (props.x != undefined) this.props.x = {a:obj.x, b:props.x-obj.x};
 	if (props.y != undefined) this.props.y = {a:obj.y, b:props.y-obj.y};
-	if (props.alpha != undefined) this.props.alpha = {a:obj.alpha, b:props.alpha-obj.alpha};	
+	if (props.alpha != undefined) this.props.alpha = {a:obj.alpha, b:props.alpha-obj.alpha}; props = null;
 }
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};
