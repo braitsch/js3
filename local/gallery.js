@@ -8,6 +8,7 @@ $(document).ready(function() {
 	canvas = new JS3('cnvs');
 	canvas.background = '#ff0000';
 	setCanvasSize(); $('#cnvs').show(); init();
+	$("#btn-download").click(function()  { window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3.js";});
 //	addGui();
 });
 
