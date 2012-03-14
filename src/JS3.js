@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.0
+ * Version : 0.1.1
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -20,8 +20,8 @@ function JS3(cnvs)
 		var _drawClean 	= true;
 		var _background = '#ffffff';
 		var _frameNum	= 0;
-		var _frameRate	= 30;		
-		var _frameTime	= new Date() * 1;
+		var _frameRate	= 0;
+		var _frameTime	= Date.now() - 1;
 	
 	// public getters & setters //
 	 	this.__defineGetter__("width", 			function()		{ return _width;});
@@ -74,13 +74,9 @@ function JS3(cnvs)
 		}	
 		this.tween = function(obj, secs, props){
 			if (obj.isTweening) return;
-		// calc delta to tween for each prop //				
-			props.d = {};
-			props.n = Math.round((secs * 1000) / 30);
-			for (var k in props) if (obj[k] !=undefined) props.d[k] = (props[k] - obj[k]) / props.n;  
-			props.o = obj;
-			props.o.isTweening = true;
-			_tweens.push(props);
+				obj.isTweening = true;
+			var t = new Tween(obj, secs, props);
+			t.delay == undefined ? initTween(t) : setTimeout(initTween, t.delay * 1000, t);
 		}
 		this.reset = function(){
 			while(_children.length) {_children[0] = null; _children.splice(0, 1);}
@@ -193,6 +189,9 @@ function JS3(cnvs)
 			_context.fillStyle = _background;
 			_context.fillRect(0, 0, _width, _height);				
 		}
+		var initTween = function(t){
+			t.start = Date.now(); _tweens.push(t)	
+		}		
 		var render = function()
 		{
 		// render non-persistent graphics //
@@ -232,11 +231,15 @@ function JS3(cnvs)
 				break;										
 			}			
 		}
-		var startAnimating = function()
+		var loop = function()
 		{
 			getFrameRate();
-//			trace(_frameRate);
-			// execute runners //
+			execTimers(); execTweens();
+			if (_drawClean) drawBackground(); render();
+			JS3.requestAnimFrame()(loop);
+		}
+		var execTimers = function()
+		{
 			for (var i = 0; i < _runners.length; i++) {
  				if (_runners[i].d === undefined){
 					_runners[i].f();
@@ -250,45 +253,35 @@ function JS3(cnvs)
 					if (_runners[i].o != undefined) _runners[i].o();
 					_runners.splice(i, 1);
 				}
-			}
-			// execute tweens //
-			for (var i = 0; i < _tweens.length; i++) {
-				var twn = _tweens[i];
-				// write new vals on target object //
-				for (var k in twn.d) twn.o[k] += twn.d[k];
-				// prevent negative alpha values from throwing errors //
-				if (twn.o.alpha < 0) twn.o.alpha = 0;
-					twn.n -=1;
-				if (twn.n == 0) {
-					_tweens.splice(i, 1);
-					twn.o.isTweening = false;
-					if (twn.onComplete != undefined) twn.onComplete(twn.o);
-				}
-			}
-			if (_drawClean) drawBackground(); render();
-			requestAnimFrame(startAnimating);
+			}			
 		}
-		var requestAnimFrame = (function(callback){
-		    return window.requestAnimationFrame ||
-		    window.webkitRequestAnimationFrame ||
-		    window.mozRequestAnimationFrame ||
-		    window.oRequestAnimationFrame ||
-		    window.msRequestAnimationFrame ||
-		    function(callback){ window.setTimeout(callback, 1000 / 60); };
-		})();
+		var execTweens = function()
+		{
+			for (var i=0; i < _tweens.length; i++){
+				t = _tweens[i];
+			// fire the onStart callback //	
+				if (t.elapsed == 0 && t.onStart != undefined) t.onStart(); 
+					t.elapsed = Date.now() - t.start;
+			// update properties with new tweened values //		
+				for(p in t.props) t.object[p] = t.easeFunc(t.elapsed, t.props[p].a, t.props[p].b, t.duration);
+				if (t.elapsed >= t.duration) {
+					_tweens.splice(i, 1);
+					t.object.isTweening = false;
+			// fire the onComplete callback //				
+					if (t.onComplete != undefined) t.onComplete();
+				}		
+			}	
+		}
 		var getFrameRate = function()
 		{
-			_frameNum ++;
-			if (_frameNum % 30 == 0){
-				var now = new Date * 1;
-				_frameRate = 1000 / ((now - _frameTime) / 30);
-				_frameTime = now;
-			}
+			var now = window.mozAnimationStartTime || Date.now();
+			_frameRate = 1000 / (now - _frameTime); _frameTime = now;			
 		}
-		startAnimating();
+// start running the animation loop //		
+	loop();
 }
 
-// public static methods //
+// --- static methods --- //
 JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}
 JS3.getRandomValue = function(n1, n2)
 {
@@ -300,7 +293,34 @@ JS3.getRandomValue = function(n1, n2)
 		return (Math.random() * (n2-n1)) + n1;
 	}
 }
-JS3.copyProps = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;}	
+JS3.copyProps = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;}
+JS3.requestAnimFrame = function(){
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || 
+	window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame;
+};
+// --- rob penners's easing equations from http://www.robertpenner.com/easing --- //
+JS3.linear = function (t, b, c, d) { return c*t/d + b; };
+JS3.easeInQuad = function (t, b, c, d) { t /= d; return c*t*t + b; };
+JS3.easeOutQuad = function (t, b, c, d) { t /= d; return -c * t*(t-2) + b; };
+JS3.easeInOutQuad = function (t, b, c, d) { t /= d/2; if (t < 1) return c/2*t*t + b; t--; return -c/2 * (t*(t-2) - 1) + b; };
+JS3.easeInCubic = function (t, b, c, d) { t /= d; return c*t*t*t + b; };
+JS3.easeOutCubic = function (t, b, c, d) { t /= d; t--; return c*(t*t*t + 1) + b; };
+JS3.easeInOutCubic = function (t, b, c, d) { t /= d/2; if (t < 1) return c/2*t*t*t + b; t -= 2; return c/2*(t*t*t + 2) + b; };
+JS3.easeInQuart = function (t, b, c, d) { t /= d; return c*t*t*t*t + b; };
+JS3.easeOutQuart = function (t, b, c, d) { t /= d; t--; return -c * (t*t*t*t - 1) + b; };
+JS3.easeInOutQuart = function (t, b, c, d) { t /= d/2; if (t < 1) return c/2*t*t*t*t + b; t -= 2; return -c/2 * (t*t*t*t - 2) + b; };
+JS3.easeInQuint = function (t, b, c, d) { t /= d; return c*t*t*t*t*t + b; };
+JS3.easeOutQuint = function (t, b, c, d) { t /= d; t--; return c*(t*t*t*t*t + 1) + b; };
+JS3.easeInOutQuint = function (t, b, c, d) { t /= d/2; if (t < 1) return c/2*t*t*t*t*t + b; t -= 2; return c/2*(t*t*t*t*t + 2) + b; };
+JS3.easeInSine = function (t, b, c, d) { return -c * Math.cos(t/d * (Math.PI/2)) + c + b; };
+JS3.easeOutSine = function (t, b, c, d) { return c * Math.sin(t/d * (Math.PI/2)) + b; };
+JS3.easeInOutSine = function (t, b, c, d) { return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b; };
+JS3.easeInExpo = function (t, b, c, d) { return c * Math.pow( 2, 10 * (t/d - 1) ) + b; };
+JS3.easeOutExpo = function (t, b, c, d) { return c * ( -Math.pow( 2, -10 * t/d ) + 1 ) + b; };
+JS3.easeInOutExpo = function (t, b, c, d) { t /= d/2; if (t < 1) return c/2 * Math.pow( 2, 10 * (t - 1) ) + b; t--; return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b; };
+JS3.easeInCirc = function (t, b, c, d) { t /= d; return -c * (Math.sqrt(1 - t*t) - 1) + b; };
+JS3.easeOutCirc = function (t, b, c, d) { t /= d; t--; return c * Math.sqrt(1 - t*t) + b; };
+JS3.easeInOutCirc = function (t, b, c, d) { t /= d/2; if (t < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b; t -= 2; return c/2 * (Math.sqrt(1 - t*t) + 1) + b; };
 
 // graphic primitives //
 
@@ -346,6 +366,22 @@ function JS3Text(o)
 	this.type = JS3.TEXT;
 	for (var k in JS3.TEXTFIELD) this[k] = JS3.TEXTFIELD[k];	
 	if (o) JS3.copyProps(o, this);	
+}
+
+function Tween(obj, dur, props)
+{
+	this.object 	= obj;
+	this.duration 	= dur * 1000;
+	this.delay 		= props.delay;
+	this.start		= 0;
+	this.elapsed	= 0;
+	this.onStart	= props.onStart;
+	this.onComplete	= props.onComplete;
+	this.easeFunc	= props.ease || JS3.easeInOutQuad;
+	this.props 		= {};
+	if (props.x != undefined) this.props.x = {a:obj.x, b:props.x-obj.x};
+	if (props.y != undefined) this.props.y = {a:obj.y, b:props.y-obj.y};
+	if (props.alpha != undefined) this.props.alpha = {a:obj.alpha, b:props.alpha-obj.alpha};	
 }
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};

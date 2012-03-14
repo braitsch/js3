@@ -10,17 +10,25 @@
                     <pre id='x1-code'><code>                     
         var c = new JS3Circle();
         stage.addChild(c);
-        stage.tween(c, 6, {x:520});
+        stage.tween(c, 2, {x:520});
                     </code></pre>
                     <canvas id="x1" width='585' height='102'></canvas>
                 </div><hr>
                 <div id="features" class='clearfix'>
-                    <h2>Basic Features</h2>
+                    <h2>Key Features</h2>
                     <ul>
                         <li>Simple API for drawing basic primitives: circles, rectangles, triangles, lines & arcs</li>
-                        <li>Tween multiple properties at the same time: <b>currently x, y & alpha</b></li>
-                        <li>Daisy-chain multiple tweens using callbacks</li>                        
-                        <li>Multiple easing equations: <b>coming very soon</b></li>                        
+                        <li>Tween multiple properties at the same time: <b>x, y & alpha, etc..</b></li>
+                        <li>Delayed Tweens, onStart & onComplete callbacks</li>
+                        <li>Sequence, or daisy-chain multiple tweens together using callbacks</li>                        
+                        <li>Support for all the popular easing equations :
+                            <ul>
+                                <li>linear ( straight / no ease ) easeInQuad, easeOutQuad, easeInOutQuad</li> 
+                                <li>easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart</li>
+                                <li>easeInQuint, easeOutQuint, easeIOutQuint, easeInSine, easeOutSine, easeInOutSine</li>
+                                <li>easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc</li>                                                                                                
+                            </ul>    
+                        </li>
                     </ul>
                 </div><hr>
                 <div id="getting-started">
@@ -221,7 +229,7 @@ The "drawCircle" function just returns a basic circle and the "update" function 
     stage.run(update);
                 </code></pre>
                 <canvas id="x7" width='898' height='100'></canvas>  
-                <button id='x7-btn' class='btn btn-primary'>Stop Updating</button>
+                <button id='x7-btn' class='btn btn-primary'>Start Updating</button>
                 </div>
                 <div class="clearfix"><hr></div>
                 <h2>More features & examples coming soon...</h2>

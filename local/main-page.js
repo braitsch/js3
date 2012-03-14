@@ -14,7 +14,11 @@ function initCnvs1()
 	var stage = new JS3('x1');
 	var c = new JS3Circle( { size:50, x:65, y:stage.height/2, fillColor:"#ddd", strokeColor:"#ccc", strokeWidth:2} );
 	stage.addChild(c);
-	function tween() { c.x = 65; stage.tween(c, 6, {x:520, onComplete:tween}); }
+	function tween() { c.x = 65; stage.tween(c, 2, {x:520,
+		//	onStart:function(){console.log('starting tween...'+this.duration)},
+			onComplete:function(){tween();}		
+		//	onComplete:function(){console.log('completed in '+(Date.now() - this.start) / 1000 + ' seconds'); tween();}
+		}); }
 	tween();
 }
 
@@ -43,7 +47,7 @@ function initCnvsControlled()
 	x7 = new JS3('x7');  		
 	x7.addChild( new JS3Circle(getSimpleSprite()) );
 	x7.addChild( new JS3Circle(getSimpleSprite()) );
-	x7.run(updateX7);		
+//	x7.run(updateX7);		
 }
 
 function getSimpleCircle()
@@ -108,7 +112,6 @@ function addButtonListeners()
 		}
 	});				
 }
-
 
 function updateX5()
 {
