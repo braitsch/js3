@@ -317,12 +317,15 @@ JS3.easeInOutCirc = function (t, b, c, d) { t /= d/2; if (t < 1) return -c/2 * (
 
 // --- framerate controls --- //
 JS3.func = [];
-JS3.loop = function(){for (var i=0; i < JS3.func.length; i++) JS3.func[i](); JS3.getAnimFrame()(JS3.loop);};
-JS3.getAnimFrame = function(){
-	JS3.getFrameRate();
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || 
-	window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame;
-};
+JS3.loop = function(){JS3.getFrameRate();for(var i=0; i < JS3.func.length; i++)JS3.func[i]();JS3.getAnimFrame(JS3.loop);};
+JS3.getAnimFrame = (function(){
+	return  window.requestAnimationFrame		|| 
+			window.webkitRequestAnimationFrame 	||
+			window.mozRequestAnimationFrame    	||
+			window.oRequestAnimationFrame      	||
+			window.msRequestAnimationFrame     	||
+	function( callback ){ window.setTimeout(callback, 1000 / 60); };
+})();
 JS3.getFrameRate = function(){
 	var now = window.mozAnimationStartTime || Date.now();
 	JS3.FRAME_RATE = 1000 / (now - JS3.FRAME_TIME); JS3.FRAME_TIME = now;			
@@ -347,7 +350,7 @@ JS3.showFrameRate = function(x, y)
 	}, 1000);
 }
 // start the main animation loop //
-JS3.getAnimFrame()(JS3.loop);
+JS3.getAnimFrame(JS3.loop);
 
 // graphic primitives //
 
