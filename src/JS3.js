@@ -273,22 +273,13 @@ function JS3(cnvs)
 				}
 			}	
 		}
-// add this JS3 instance to the static animation loop //
+// add this JS3 instance to the window animation loop //
 	JS3.func.push(loop);
 }
 
 // --- static methods --- //
 JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}
-JS3.getRandomValue = function(n1, n2)
-{
-	if (n1 == undefined){
-		return Math.random();
-	}	else if (n2 == undefined){
-		return Math.random() * n1;
-	}	else{
-		return (Math.random() * (n2-n1)) + n1;
-	}
-}
+JS3.getRandomValue = function(n1, n2){if (n1 == undefined){return Math.random();}else if (n2 == undefined){return Math.random()*n1;}else{return (Math.random()*(n2-n1))+n1;}}
 JS3.copyProps = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;}
 
 // --- rob penners's easing equations from http://www.robertpenner.com/easing --- //
@@ -317,8 +308,8 @@ JS3.easeInOutCirc = function (t, b, c, d) { t /= d/2; if (t < 1) return -c/2 * (
 
 // --- framerate controls --- //
 JS3.func = [];
-JS3.loop = function(){JS3.getFrameRate();for(var i=0; i < JS3.func.length; i++)JS3.func[i]();JS3.getAnimFrame(JS3.loop);};
-JS3.getAnimFrame = (function(){
+JS3.loop = function(){JS3.getFrameRate();for(var i=0; i < JS3.func.length; i++)JS3.func[i]();window.getAnimFrame(JS3.loop);};
+window.getAnimFrame = (function(){
 	return  window.requestAnimationFrame		|| 
 			window.webkitRequestAnimationFrame 	||
 			window.mozRequestAnimationFrame    	||
@@ -330,8 +321,7 @@ JS3.getFrameRate = function(){
 	var now = window.mozAnimationStartTime || Date.now();
 	JS3.FRAME_RATE = 1000 / (now - JS3.FRAME_TIME); JS3.FRAME_TIME = now;			
 };
-JS3.showFrameRate = function(x, y)
-{
+JS3.showFrameRate = function(x, y){
 	if (document.getElementById('JS3FR')) return;
 	var d = document.createElement('div');
 		d.setAttribute('id', 'JS3FR');
@@ -346,11 +336,11 @@ JS3.showFrameRate = function(x, y)
 	setInterval(function(){
 		var n = JS3.FRAME_RATE.toFixed(1);
 		d.innerHTML = n+' fps';		
-		if (n<15){ d.style.color = '#ff0000';}else if (n>=15 && n<=30){d.style.color = '#ffff00';} else{d.style.color = '#00ff00';}
+		if (n<15){d.style.color = '#ff0000';}else if (n>=15 && n<=30){d.style.color = '#ffff00';} else{d.style.color = '#00ff00';}
 	}, 1000);
 }
 // start the main animation loop //
-JS3.getAnimFrame(JS3.loop);
+window.getAnimFrame(JS3.loop);
 
 // graphic primitives //
 
