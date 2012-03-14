@@ -4,6 +4,7 @@ var offsetH = 42;
 var offsetW = 2;
 
 $(document).ready(function() {
+	JS3.showFrameRate(0, 40);	
 	canvas = new JS3('cnvs');
 	canvas.background = '#ff0000';
 	setCanvasSize(); $('#cnvs').show(); init();

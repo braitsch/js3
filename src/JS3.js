@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.2
+ * Version : 0.1.3
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -19,9 +19,6 @@ function JS3(cnvs)
 		var _tweens		= [];
 		var _drawClean 	= true;
 		var _background = '#ffffff';
-		var _frameNum	= 0;
-		var _frameRate	= 0;
-		var _frameTime	= Date.now() - 1;
 	
 	// public getters & setters //
 	 	this.__defineGetter__("width", 			function()		{ return _width;});
@@ -39,7 +36,12 @@ function JS3(cnvs)
 		JS3.TEXT 		= 'text';
 		JS3.GRAPHIC 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, fill:true, fillColor:'#fff', fillAlpha:1,
 						size:25, stroke:true, strokeColor:'#eee', strokeAlpha:1, strokeWidth:4, capStyle:'butt'};
-		JS3.TEXTFIELD 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, text:'', size:12, font:'Arial', color:'#333'};						
+		JS3.TEXTFIELD 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, text:'', size:12, font:'Arial', color:'#333'};
+		
+	// frame rate management //
+		JS3.FRAME_NUM	= 0;
+		JS3.FRAME_RATE	= 0;
+		JS3.FRAME_TIME	= Date.now() - 1;
 	
 	// display list management //	
 	
@@ -240,9 +242,7 @@ function JS3(cnvs)
 		}
 		var loop = function()
 		{
-			getFrameRate(); execTweens();
-			if (_drawClean) drawBackground(); render();
-			JS3.requestAnimFrame()(loop);
+			execTweens(); if (_drawClean) drawBackground(); render();
 		}
 		var execTweens = function()
 		{
@@ -272,14 +272,9 @@ function JS3(cnvs)
 					if (r.o != undefined) r.o();
 				}
 			}	
-		}		
-		var getFrameRate = function()
-		{
-			var now = window.mozAnimationStartTime || Date.now();
-			_frameRate = 1000 / (now - _frameTime); _frameTime = now;			
 		}
-// start running the animation loop //		
-	loop();
+// add this JS3 instance to the static animation loop //
+	JS3.func.push(loop);
 }
 
 // --- static methods --- //
@@ -295,10 +290,7 @@ JS3.getRandomValue = function(n1, n2)
 	}
 }
 JS3.copyProps = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;}
-JS3.requestAnimFrame = function(){
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || 
-	window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame;
-};
+
 // --- rob penners's easing equations from http://www.robertpenner.com/easing --- //
 JS3.linear = function (t, b, c, d) { return c*t/d + b; };
 JS3.easeInQuad = function (t, b, c, d) { t /= d; return c*t*t + b; };
@@ -322,6 +314,40 @@ JS3.easeInOutExpo = function (t, b, c, d) { t /= d/2; if (t < 1) return c/2 * Ma
 JS3.easeInCirc = function (t, b, c, d) { t /= d; return -c * (Math.sqrt(1 - t*t) - 1) + b; };
 JS3.easeOutCirc = function (t, b, c, d) { t /= d; t--; return c * Math.sqrt(1 - t*t) + b; };
 JS3.easeInOutCirc = function (t, b, c, d) { t /= d/2; if (t < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b; t -= 2; return c/2 * (Math.sqrt(1 - t*t) + 1) + b; };
+
+// --- framerate controls --- //
+JS3.func = [];
+JS3.loop = function(){for (var i=0; i < JS3.func.length; i++) JS3.func[i](); JS3.getAnimFrame()(JS3.loop);};
+JS3.getAnimFrame = function(){
+	JS3.getFrameRate();
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || 
+	window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame;
+};
+JS3.getFrameRate = function(){
+	var now = window.mozAnimationStartTime || Date.now();
+	JS3.FRAME_RATE = 1000 / (now - JS3.FRAME_TIME); JS3.FRAME_TIME = now;			
+};
+JS3.showFrameRate = function(x, y)
+{
+	if (document.getElementById('JS3FR')) return;
+	var d = document.createElement('div');
+		d.setAttribute('id', 'JS3FR');
+		d.style.position = "absolute";
+		d.style.top = y!=undefined ? y+'px' : '100px'; d.style.left = x!=undefined ? x+'px' : '100px';
+		d.style.background = "#333"; d.style.border = "1px solid #555";
+		d.style.color = '#00ff00'; d.style.padding = '10px';
+		d.style.fontSize = '16px'; d.style.fontFamily = 'Arial,sans-serif';
+		d.style.textShadow='1px 1px 0 #000';
+		d.innerHTML = '60.0 fps';		
+	document.body.appendChild(d);
+	setInterval(function(){
+		var n = JS3.FRAME_RATE.toFixed(1);
+		d.innerHTML = n+' fps';		
+		if (n<15){ d.style.color = '#ff0000';}else if (n>=15 && n<=30){d.style.color = '#ffff00';} else{d.style.color = '#00ff00';}
+	}, 1000);
+}
+// start the main animation loop //
+JS3.getAnimFrame()(JS3.loop);
 
 // graphic primitives //
 

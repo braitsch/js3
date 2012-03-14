@@ -10,7 +10,7 @@
                     <pre id='x1-code'><code>                     
         var c = new JS3Circle();
         stage.addChild(c);
-        stage.tween(c, 2, {x:520});
+        stage.tween(c, 2, {x:500});
                     </code></pre>
                     <canvas id="x1" width='585' height='102'></canvas>
                 </div><hr>
