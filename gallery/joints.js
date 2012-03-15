@@ -1,16 +1,13 @@
 
-var speed = 1;
-var joints = 20;
+var joints = 10;
 var sm = [];
 var lg = [];
 var ln = [];
 var fill = ['#948C75', '#7A6A53'];
-var line = ['#D9CEB2', '#99B2B7']
-// '#940F6D';
+var line = ['#D9CEB2', '#99B2B7'];
 
 function init()
 {
-	trace('width='+canvas.width);	
 	canvas.drawClean = true;
 	canvas.background = '#D5DED9';
 	addBalls();

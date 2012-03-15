@@ -100,7 +100,7 @@ function JS3(cnvs)
 		
 		var drawBackground = function(){
 			_context.fillStyle = _background;
-			_context.fillRect(0, 0, _width, _height);				
+			_context.fillRect(0, 0, _width, _height);			
 		}
 		var initTween = function(t){
 			t.start = Date.now(); _tweens.push(t)	
