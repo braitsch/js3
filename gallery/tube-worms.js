@@ -30,6 +30,7 @@ function getMousePosition(e)
 		startX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
 		startY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 	}
+	startY -= 40; // subtract abs y position of the window canvas
 	// stop any active worms from growing //
 	while (canvas.numChildren) canvas.removeChildAt(0);
 	draw();
@@ -45,8 +46,8 @@ function addWorm()
 {
 	var c = new JS3Circle();
 		c.size = JS3.getRandomValue(minSize, maxSize);
-		c.x = startX;
-		c.y = startY;		
+		c.x = startX - c.size/2;
+		c.y = startY - c.size/2;
 		c.fillColor = rndmColor ? JS3.getRandomColor() : fillColor;
 		c.strokeColor = strkColor;
 		c.strokeWidth = strkWidth;
