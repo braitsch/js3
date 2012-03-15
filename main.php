@@ -79,14 +79,13 @@
                     <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>
 Once these shapes are drawn, the objects that define them are immediately removed from memory.<br>This makes Shapes ideal for quickly drawing graphics to the screen where no further animation is desired.</p>
                 <pre><code>
-    	var stage = new JS3('my-canvas');	
-    // set properties for the fillColor, strokeColor & strokeWidth //
-    	var fc = '#ddd'; var sc = '#ccc'; var sw = 2;
-       	stage.drawCircle( { size:50, x:50, y:stage.height/2, fillColor:fc, strokeColor:sc, strokeWidth:sw } );
-        stage.drawRect( { width:50, height:50, x:100, y:25, fillColor:fc, strokeColor:sc, strokeWidth:sw } );
-    	stage.drawLine( { x1:165, y1:75, x2:225, y2:25, strokeColor:sc, strokeWidth:sw } );
-    	stage.drawArc( { x1:250, y1:75, x2:300, y2:75, cx:275, cy:-25, strokeColor:sc, strokeWidth:sw } );
-        stage.drawTri( { size:50, x:350, y:stage.height/2, fillColor:fc, strokeColor:sc, strokeWidth:sw } );	
+    	var stage = new JS3('my-canvas');
+    	stage.drawClean = false;
+       	stage.drawCircle( { size:50, x:50, y:25 } );
+        stage.drawRect( { width:80, height:50, x:120, y:25 } );
+    	stage.drawLine( { x1:220, y1:75, x2:270, y2:25 } );
+    	stage.drawArc( { x1:280, y1:75, x2:360, y2:75, cx:(280+360)/2, cy:-25 } );
+    	stage.drawTri( { size:50, x:380, y:25 } );		
                 </code></pre>
                 <p>Results in drawing the following to the screen. <a href='./drawing.php'>Click here to learn more about drawing simple shapes.</a></p>
                 <canvas id="x2" width='898' height='100'></canvas>  

@@ -108,11 +108,9 @@ function JS3(cnvs)
 		}
 		var render = function(){
 		// render display list objects //				
-			i = 0;
-			while ( i < _children.length ) { var k = _children[i]; k.update(k); i++;}			
+			i = 0; while ( i < _children.length ) { var k = _children[i]; k.update(k); i++;}			
 		// render non-persistent graphics //
-			i = 0;
-			while ( i < _graphics.length ) { var k = _graphics[i]; k.update(k); i++; _graphics.splice(i, 1); k = null;}
+			while ( _graphics.length ) { var k = _graphics[0]; k.update(k); _graphics.splice(0, 1); k = null;}
 		}
 		var loop = function(){
 			execTweens(); execRunners(); if (_drawClean) drawBackground(); render();
@@ -207,16 +205,16 @@ JS3.drawCirc = function(o){
 JS3.drawTri = function(o){
 	o.stage.globalAlpha = o.alpha;	
  	o.stage.beginPath();
-	o.p1.x = o.p1.x || o.x - o.size/2;
-	o.p1.y = o.p1.y || o.y + o.size/2;
-	o.p2.x = o.p2.x || o.x;			
-	o.p2.y = o.p2.y || o.y - o.size/2;
-	o.p3.x = o.p3.x || o.x + o.size/2;
-	o.p3.y = o.p3.y || o.y + o.size/2;							
-	o.stage.lineTo(o.p1.x, o.p1.y);
-	o.stage.lineTo(o.p2.x, o.p2.y);
-	o.stage.lineTo(o.p3.x, o.p3.y);
-	o.stage.lineTo(o.p1.x, o.p1.y);			
+	o.x1 = o.x1 || o.x;
+	o.y1 = o.y1 || o.y + o.size;
+	o.x2 = o.x2 || o.x + o.size/2;
+	o.y2 = o.y2 || o.y;
+	o.x3 = o.x3 || o.x + o.size;
+	o.y3 = o.y3 || o.y + o.size;							
+	o.stage.lineTo(o.x1, o.y1);
+	o.stage.lineTo(o.x2, o.y2);
+	o.stage.lineTo(o.x3, o.y3);
+	o.stage.lineTo(o.x1, o.y1);			
 	if (o.fillColor) JS3.fill(o);
 	if (o.strokeColor) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
@@ -359,7 +357,7 @@ function JS3getBaseProps(o)
 {
 	o.__defineGetter__("size", 	function()		{ return o.width;});
 	o.__defineSetter__("size", 	function(s)		{ o.width = o.height = s;});	
-	o.x=0;o.y=0; o.width=o.height=25; o.fillColor='#555'; o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=4;
+	o.x=o.y=0; o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc';o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 }
 
 function JS3getLineProps(o)

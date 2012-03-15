@@ -14,7 +14,7 @@ function initCnvs1()
 	var stage = new JS3('x1');
 	var c = new JS3Circle( { size:50, x:20, y:stage.height/2 - 25, fillColor:"#ddd", strokeColor:"#ccc", strokeWidth:2} );
 	stage.addChild(c);
-	function tween() { c.x = 20; stage.tween(c, 2, {x:520, ease:JS3.easeInOutQuad,
+	function tween() { c.x = 20; stage.tween(c, 2, {x:510, ease:JS3.easeInOutQuad,
 		//	onStart:function(){console.log('starting tween...'+this.duration)},
 			onComplete:function(){tween();}		
 		//	onComplete:function(){console.log('completed in '+(Date.now() - this.start) / 1000 + ' seconds'); tween();}
@@ -25,13 +25,12 @@ function initCnvs1()
 function initCnvs2()
 {
 	var stage = new JS3('x2');
-		stage.drawClean = false;	
-	var fc = '#ddd'; var sc = '#ccc'; var sw = 2;
-   	stage.drawCircle( { size:50, x:50, y:stage.height/2, fillColor:fc, strokeColor:sc, strokeWidth:sw } );
-    stage.drawRect( { width:50, height:50, x:100, y:25, fillColor:fc, strokeColor:sc, strokeWidth:sw } );
-	stage.drawLine( { x1:165, y1:75, x2:225, y2:25, strokeColor:sc, strokeWidth:sw } );
-	stage.drawArc( { x1:250, y1:75, x2:300, y2:75, cx:275, cy:-25, strokeColor:sc, strokeWidth:sw } );
-    stage.drawTri( { size:50, x:350, y:stage.height/2, fillColor:fc, strokeColor:sc, strokeWidth:sw } );	
+	stage.drawClean = false;
+   	stage.drawCircle( { size:50, x:50, y:25 } );
+    stage.drawRect( { width:80, height:50, x:120, y:25 } );
+	stage.drawLine( { x1:220, y1:75, x2:270, y2:25 } );
+	stage.drawArc( { x1:280, y1:75, x2:360, y2:75, cx:(280+360)/2, cy:-25 } );
+	stage.drawTri( { size:50, x:380, y:25 } );	
 }
 
 function initCnvsControlled()
@@ -53,16 +52,14 @@ function initCnvsControlled()
 function getSimpleCircle()
 {
 	var c = new JS3Circle();
-        c.x = 75; c.y = x3.height/2; c.alpha = 1;	
-		c.size = 50; c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2;   
+        c.x = 75; c.y = x3.height/2 - 25; c.size = 50; 
 	return c;	
 }
 
 function getSimpleSprite()
 {
 	var c = {};
-	c.size = 15; c.x = Math.random()*x7.width; c.y = Math.random()*x7.height; 
-	c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2; 	
+	c.size = 15; c.x = Math.random()*x7.width; c.y = Math.random()*x7.height;  	
 	c.dirX = Math.round(Math.random()) == 0 ? -1 : 1;
 	c.dirY = Math.round(Math.random()) == 0 ? -1 : 1;
 	return c;
