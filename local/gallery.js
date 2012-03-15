@@ -9,7 +9,6 @@ $(document).ready(function() {
 	canvas.background = '#ff0000';
 	setCanvasSize(); $('#cnvs').show(); init();
 	$("#btn-download").click(function()  { window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3.js";});
-//	addGui();
 });
 
 function setCanvasSize()
@@ -27,25 +26,4 @@ function getViewport()
 }
 
 window.onresize = function(e) { setCanvasSize(); }
-
-
-var FizzyText = function() {
-  this.message = 'dat.gui';
-  this.speed = 0.8;
-  this.displayOutline = false;
-  this.explode = function() {  };
-  // Define render logic ...
-};
-
-function addGui()
-{
-	var text = new FizzyText();
-	var gui = new dat.GUI({ autoPlace: false });
-	gui.add(text, 'message');
-	gui.add(text, 'speed', -5, 5);
-	gui.add(text, 'displayOutline');
-	gui.add(text, 'explode');
-	var div = document.getElementById('datgui');
-	div.appendChild(gui.domElement);
-};
     

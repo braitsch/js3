@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.4
+ * Version : 0.1.41
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -18,6 +18,7 @@ function JS3(cnvs)
 		var _tweens		= [];
 		var _drawClean 	= true;
 		var _background = '#ffffff';
+		var _winTitle	= 'My Canvas';
 	
 	// public getters & setters //
 	
@@ -26,6 +27,7 @@ function JS3(cnvs)
 	 	this.__defineGetter__("numChildren", 	function()		{ return _children.length;});
 	 	this.__defineSetter__("drawClean", 		function(b)		{ _drawClean = b;});
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
+	 	this.__defineSetter__("windowTitle", 	function(s)		{ _winTitle = s;});	
 	
 	// display list management //	
 	
@@ -77,7 +79,7 @@ function JS3(cnvs)
 	// save canvas as a png //		
 			var img = _canvas.toDataURL('image/png');
 			var win = window.open('', '_blank', 'width='+_width+', height='+_height);
-				win.document.write('<!DOCTYPE html style="padding:0; margin:0"><head><title>My Canvas</title>');
+				win.document.write('<!DOCTYPE html style="padding:0; margin:0"><head><title>'+_winTitle+'</title>');
 	 			win.document.write('</head><body style="background: #f2f2f2; padding:0; margin:0">');
 	 			win.document.write('<img src="' + img + '"/>');
 	 			win.document.write('</body></html>');
@@ -86,7 +88,6 @@ function JS3(cnvs)
 		
 	// basic drawing methods //	
 	
-		this.render		= function(){ render() };
 		this.clear		= function(){ drawBackground() };				
 		this.drawLine	= function(o){ o.stage=_context;_graphics.push(new JS3Line(o)); 	}
 		this.drawArc	= function(o){ o.stage=_context;_graphics.push(new JS3Arc(o)); 		}
@@ -163,9 +164,8 @@ JS3.getRandomValue = function(n1, n2){if (n1 == undefined){return Math.random();
 
 // --- object definitions --- //
 
-JS3.GRAPHIC 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, fill:true, fillColor:'#fff', fillAlpha:1,
-				size:25, stroke:true, strokeColor:'#eee', strokeAlpha:1, strokeWidth:4, capStyle:'butt'};
-JS3.TEXTFIELD 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, text:'', size:12, font:'Arial', color:'#333'};
+JS3.GRAPHIC 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, size:25, fillAlpha:1, fillColor:'#333', strokeAlpha:1, strokeWidth:4, capStyle:'butt'};
+JS3.TEXTFIELD 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, size:12, font:'Arial', color:'#333'};
 
 // --- static drawing methods --- //
 
@@ -189,16 +189,16 @@ JS3.drawRect = function(o){
 	o.stage.globalAlpha = o.alpha;	
 	o.stage.beginPath();
 	o.stage.rect(o.x, o.y, o.width, o.height);
-	if (o.fill) JS3.fill(o);
-	if (o.stroke) JS3.stroke(o);			
+	if (o.fillColor) JS3.fill(o);
+	if (o.strokeColor) JS3.stroke(o);			
 	o.stage.globalAlpha = 1;
 }
 JS3.drawCirc = function(o){
 	o.stage.globalAlpha = o.alpha;	
  	o.stage.beginPath();		
-    o.stage.arc(o.x, o.y, o.size/2, 0, 2 * Math.PI, false);
-	if (o.fill) JS3.fill(o);
-	if (o.stroke) JS3.stroke(o);
+    o.stage.arc(o.x, o.y, o.size/2, 0, 2 * Math.PI);
+	if (o.fillColor) JS3.fill(o);
+	if (o.strokeColor) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
 }
 JS3.drawTri = function(o){
@@ -214,8 +214,8 @@ JS3.drawTri = function(o){
 	o.stage.lineTo(o.p2.x, o.p2.y);
 	o.stage.lineTo(o.p3.x, o.p3.y);
 	o.stage.lineTo(o.p1.x, o.p1.y);			
-	if (o.fill) JS3.fill(o);
-	if (o.stroke) JS3.stroke(o);
+	if (o.fillColor) JS3.fill(o);
+	if (o.strokeColor) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
 }
 JS3.drawText = function(o){

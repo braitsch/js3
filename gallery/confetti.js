@@ -7,13 +7,13 @@ var palettes = ['#E0E4CC', '#53777A', '#542437', '#ECD078'];
 function init()
 {
 	canvas.drawClean = false;
-	canvas.background = '#eee';
+	canvas.background = '#fff';
 	onStart();
 }
 
 function addBalls()
 {
-	var i = 500;
+	var i = 100;
 	while ( i-- ){
 		var x = Math.random()*canvas.width;
 		var y = Math.random()*canvas.height;	
@@ -27,8 +27,6 @@ function addBalls()
 		canvas.drawTri(o);
 	}
 }
-
-
 
 // button handlers //
 
