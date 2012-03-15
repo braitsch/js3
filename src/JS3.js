@@ -8,7 +8,6 @@
 
 function JS3(cnvs)
 {
-	// private instance vars //	
 		var _canvas 	= document.getElementById(cnvs);
 		var _context 	= _canvas.getContext("2d");
 		var _width 		= _canvas.width;
@@ -21,32 +20,17 @@ function JS3(cnvs)
 		var _background = '#ffffff';
 	
 	// public getters & setters //
+	
 	 	this.__defineGetter__("width", 			function()		{ return _width;});
 	 	this.__defineGetter__("height", 		function()		{ return _height;});
 	 	this.__defineGetter__("numChildren", 	function()		{ return _children.length;});
 	 	this.__defineSetter__("drawClean", 		function(b)		{ _drawClean = b;});
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	
-	// public constants //
-		JS3.LINE 		= 'line';	
-		JS3.ARC 		= 'arc';			
-		JS3.RECT 		= 'rect';	
-		JS3.CIRCLE	 	= 'circle';	
-		JS3.TRIANGLE	= 'triangle';
-		JS3.TEXT 		= 'text';
-		JS3.GRAPHIC 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, fill:true, fillColor:'#fff', fillAlpha:1,
-						size:25, stroke:true, strokeColor:'#eee', strokeAlpha:1, strokeWidth:4, capStyle:'butt'};
-		JS3.TEXTFIELD 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, text:'', size:12, font:'Arial', color:'#333'};
-		
-	// frame rate management //
-		JS3.FRAME_NUM	= 0;
-		JS3.FRAME_RATE	= 0;
-		JS3.FRAME_TIME	= Date.now() - 1;
-	
 	// display list management //	
 	
 		this.addChild = function(o){
-			o.stage=_context; _children.push(o);
+			o.stage = _context; _children.push(o);
 		}	
 		this.addChildAt = function(o, n){
 			if (n <= _children.length) _children.splice(n, 0, o);
@@ -65,7 +49,7 @@ function JS3(cnvs)
 		}					
 		
 	// 	animation methods //
-		
+	
 		this.run = function(func, delay, repeat, onComp){
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
@@ -85,15 +69,12 @@ function JS3(cnvs)
 			while(_runners.length) {_runners[0] = null; _runners.splice(0, 1);}					
 			_children = []; _graphics = []; _tweens = []; _runners = [];
 		}
-		this.setSize = function(w, h)
-		{
+		this.setSize = function(w, h){
 			_canvas.width = _width = w;
 			_canvas.height = _height = h;
 		}			
-		
-	// save canvas as a png //
-		
 		this.save = function(){
+	// save canvas as a png //		
 			var img = _canvas.toDataURL('image/png');
 			var win = window.open('', '_blank', 'width='+_width+', height='+_height);
 				win.document.write('<!DOCTYPE html style="padding:0; margin:0"><head><title>My Canvas</title>');
@@ -104,6 +85,7 @@ function JS3(cnvs)
 		}
 		
 	// basic drawing methods //	
+	
 		this.render		= function(){ render() };
 		this.clear		= function(){ drawBackground() };				
 		this.drawLine	= function(o){ o.stage=_context;_graphics.push(new JS3Line(o)); 	}
@@ -112,6 +94,8 @@ function JS3(cnvs)
 		this.drawCircle	= function(o){ o.stage=_context;_graphics.push(new JS3Circle(o));	}
 		this.drawTri	= function(o){ o.stage=_context;_graphics.push(new JS3Tri(o));		}
 		this.drawText 	= function(o){ o.stage=_context;_graphics.push(new JS3Text(o)); 	}
+			
+	// private instance methods //
 		
 		var drawBackground = function(){
 			_context.fillStyle = _background;
@@ -123,26 +107,18 @@ function JS3(cnvs)
 		var stopRunner = function(func){
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) { _runners.splice(i, 1); };
 		}
-		var render = function()
-		{
+		var render = function(){
+		// render display list objects //				
+			i = 0;
+			while ( i < _children.length ) { var k = _children[i]; k.update(k); i++;}			
 		// render non-persistent graphics //
 			i = 0;
-			while ( i < _graphics.length ) {
-				var k = _graphics[i]; k.update(k); i++;
-				_graphics.splice(i, 1); k = null;
-			}
-		// render display list object //				
-			i = 0;
-			while ( i < _children.length ) {
-				var k = _children[i]; k.update(k); i++;
-			}
+			while ( i < _graphics.length ) { var k = _graphics[i]; k.update(k); i++; _graphics.splice(i, 1); k = null;}
 		}
-		var loop = function()
-		{
+		var loop = function(){
 			execTweens(); execRunners(); if (_drawClean) drawBackground(); render();
 		}
-		var execTweens = function()
-		{
+		var execTweens = function(){
 			for (var i=0; i < _tweens.length; i++){
 				t = _tweens[i];
 			// fire the onStart callback //	
@@ -158,8 +134,7 @@ function JS3(cnvs)
 				}		
 			}	
 		}
-		var execRunners = function()
-		{
+		var execRunners = function(){
 			var d = Date.now();
 			for (var i=0; i < _runners.length; i++){
 				var r = _runners[i];
@@ -180,11 +155,20 @@ function JS3(cnvs)
 	JS3.func.push(loop);
 }
 
-// --- static methods --- //
+// --- static class methods --- //
+
+JS3.setObjProps = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;}
 JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}
 JS3.getRandomValue = function(n1, n2){if (n1 == undefined){return Math.random();}else if (n2 == undefined){return Math.random()*n1;}else{return (Math.random()*(n2-n1))+n1;}}
 
-// --- drawing methods --- //
+// --- object definitions --- //
+
+JS3.GRAPHIC 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, fill:true, fillColor:'#fff', fillAlpha:1,
+				size:25, stroke:true, strokeColor:'#eee', strokeAlpha:1, strokeWidth:4, capStyle:'butt'};
+JS3.TEXTFIELD 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, text:'', size:12, font:'Arial', color:'#333'};
+
+// --- static drawing methods --- //
+
 JS3.drawLine = function(o){	
 	o.stage.globalAlpha = o.alpha;
 	o.stage.beginPath();
@@ -233,6 +217,14 @@ JS3.drawTri = function(o){
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
+}
+JS3.drawText = function(o){
+	o.stage.globalAlpha = o.alpha;
+	o.stage.font = o.size+'pt '+o.font;
+	o.stage.fillStyle = o.color;
+	o.stage.textAlign = o.align;
+	o.stage.fillText(o.text, o.x, o.y);			
+	o.stage.globalAlpha = 1;			
 }		
 JS3.fill = function(o){
 	o.stage.globalAlpha = o.alpha * o.fillAlpha;			
@@ -248,17 +240,9 @@ JS3.stroke = function(o){
 	o.stage.stroke();
 	o.stage.globalAlpha = 1;
 }
-JS3.drawText = function(o){
-	o.stage.globalAlpha = o.alpha;
-	o.stage.font = o.size+'pt '+o.font;
-	o.stage.fillStyle = o.color;
-	o.stage.textAlign = o.align;
-	o.stage.fillText(o.text, o.x, o.y);			
-	o.stage.globalAlpha = 1;			
-}
-JS3.copyProps = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;}
 
 // --- rob penners's easing equations from http://www.robertpenner.com/easing --- //
+
 JS3.linear = function (t, b, c, d) { return c*t/d + b; };
 JS3.easeInQuad = function (t, b, c, d) { t /= d; return c*t*t + b; };
 JS3.easeOutQuad = function (t, b, c, d) { t /= d; return -c * t*(t-2) + b; };
@@ -282,7 +266,8 @@ JS3.easeInCirc = function (t, b, c, d) { t /= d; return -c * (Math.sqrt(1 - t*t)
 JS3.easeOutCirc = function (t, b, c, d) { t /= d; t--; return c * Math.sqrt(1 - t*t) + b; };
 JS3.easeInOutCirc = function (t, b, c, d) { t /= d/2; if (t < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b; t -= 2; return c/2 * (Math.sqrt(1 - t*t) + 1) + b; };
 
-// --- framerate controls --- //
+// --- frame rate management --- //
+
 JS3.func = [];
 JS3.loop = function(){JS3.getFrameRate();for(var i=0; i < JS3.func.length; i++)JS3.func[i]();window.getAnimFrame(JS3.loop);};
 window.getAnimFrame = (function(){
@@ -295,7 +280,7 @@ window.getAnimFrame = (function(){
 })();
 JS3.getFrameRate = function(){
 	var now = window.mozAnimationStartTime || Date.now();
-	JS3.FRAME_RATE = 1000 / (now - JS3.FRAME_TIME); JS3.FRAME_TIME = now;			
+	JS3.FR = 1000 / (now - JS3.FT); JS3.FT = now;			
 };
 JS3.showFrameRate = function(x, y){
 	if (document.getElementById('JS3FR')) return;
@@ -310,11 +295,12 @@ JS3.showFrameRate = function(x, y){
 		d.innerHTML = '60.0 fps';		
 	document.body.appendChild(d);
 	setInterval(function(){
-		var n = JS3.FRAME_RATE.toFixed(1);
+		var n = JS3.FR.toFixed(1);
 		d.innerHTML = n+' fps';		
 		if (n<15){d.style.color = '#ff0000';}else if (n>=15 && n<=30){d.style.color = '#ffff00';} else{d.style.color = '#00ff00';}
 	}, 1000);
 }
+JS3.FR = 0; JS3.FT = Date.now() - 1;
 // start the main animation loop //
 window.getAnimFrame(JS3.loop);
 
@@ -322,46 +308,46 @@ window.getAnimFrame(JS3.loop);
 
 function JS3Line(o)
 {
-	this.type = JS3.LINE; this.update = JS3.drawLine;
+	this.update = JS3.drawLine;
 	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
-	if (o) JS3.copyProps(o, this);
+	if (o) JS3.setObjProps(o, this);
 }
 
 function JS3Arc(o)
 {
-	this.type = JS3.ARC; this.update = JS3.drawArc;
+	this.update = JS3.drawArc;
 	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
-	if (o) JS3.copyProps(o, this);
+	if (o) JS3.setObjProps(o, this);
 }
 
 function JS3Tri(o)
 {
-	this.type = JS3.TRIANGLE; this.update = JS3.drawTri;
+	this.update = JS3.drawTri;
 	this.p1 = {}; this.p2 = {}; this.p3 = {};		
 	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
-	if (o) JS3.copyProps(o, this);
+	if (o) JS3.setObjProps(o, this);
 }
 
 function JS3Rect(o)
 {
-	this.type = JS3.RECT; this.update = JS3.drawRect;		
+	this.update = JS3.drawRect;		
 	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];		
-	if (o) JS3.copyProps(o, this);
+	if (o) JS3.setObjProps(o, this);
 	if (this.width == undefined || this.height == undefined) this.width = this.height = this.size;
 }
 
 function JS3Circle(o)
 {
-	this.type = JS3.CIRCLE;	this.update = JS3.drawCirc;
+	this.update = JS3.drawCirc;
 	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
-	if (o) JS3.copyProps(o, this);	
+	if (o) JS3.setObjProps(o, this);	
 }
 
 function JS3Text(o)
 {
-	this.type = JS3.TEXT; this.update = JS3.drawText;
+	this.update = JS3.drawText;
 	for (var k in JS3.TEXTFIELD) this[k] = JS3.TEXTFIELD[k];	
-	if (o) JS3.copyProps(o, this);	
+	if (o) JS3.setObjProps(o, this);	
 }
 
 function Tween(obj, dur, props)
