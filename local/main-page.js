@@ -12,9 +12,9 @@ $(document).ready(function() {
 function initCnvs1()
 {
 	var stage = new JS3('x1');
-	var c = new JS3Circle( { size:50, x:65, y:stage.height/2, fillColor:"#ddd", strokeColor:"#ccc", strokeWidth:2} );
+	var c = new JS3Circle( { size:50, x:20, y:stage.height/2 - 25, fillColor:"#ddd", strokeColor:"#ccc", strokeWidth:2} );
 	stage.addChild(c);
-	function tween() { c.x = 65; stage.tween(c, 2, {x:520, ease:JS3.easeInOutQuad,
+	function tween() { c.x = 20; stage.tween(c, 2, {x:520, ease:JS3.easeInOutQuad,
 		//	onStart:function(){console.log('starting tween...'+this.duration)},
 			onComplete:function(){tween();}		
 		//	onComplete:function(){console.log('completed in '+(Date.now() - this.start) / 1000 + ' seconds'); tween();}
@@ -133,8 +133,8 @@ function updateX7()
 	var i = x7.numChildren;
 	while ( i-- ){
 		var c = x7.getChildAt(i);
-		if (c.x >= x7.width || c.x <= 0) c.dirX *=-1;
-		if (c.y >= x7.height || c.y <= 0) c.dirY *=-1;
+		if (c.x >= x7.width - c.width || c.x <= 0) c.dirX *=-1;
+		if (c.y >= x7.height - c.height || c.y <= 0) c.dirY *=-1;
 		c.x += c.dirX;
 		c.y += c.dirY;
 	}

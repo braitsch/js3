@@ -52,7 +52,7 @@ function addWorm()
 		c.strokeWidth = strkWidth;
 		c.dirX = Math.random() <= .5 ? - 1 : 1;
 		c.dirY = Math.random() <= .5 ? - 1 : 1;	
-	canvas.addChild(c);
+	canvas.addChild(c);	
 }
 
 function grow()

@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.42
+ * Version : 0.1.43
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -156,14 +156,8 @@ function JS3(cnvs)
 
 // --- static class methods --- //
 
-JS3.setObjProps = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; if (o1.alpha != undefined) o2.strokeAlpha = o2.fillAlpha = o1.alpha; o1 = null;}
 JS3.getRandomColor = function(){return '#' + Math.round(0xffffff * Math.random()).toString(16);}
-JS3.getRandomValue = function(n1, n2){if (n1 == undefined){return Math.random();}else if (n2 == undefined){return Math.random()*n1;}else{return (Math.random()*(n2-n1))+n1;}}
-
-// --- object definitions --- //
-
-JS3.GRAPHIC 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, size:25, fillAlpha:1, fillColor:'#333', strokeAlpha:1, strokeWidth:4, capStyle:'butt'};
-JS3.TEXTFIELD 	= {	x:0, y:0, alpha:1, scale:1, rotation:1, size:12, font:'Arial', color:'#333'};
+JS3.getRandomValue = function(n1, n2){if (n1 == undefined){return Math.random();}else if (n2 == undefined){return Math.random()*n1;}else{return (Math.random()*(n2-n1))+n1;}};
 
 // --- static drawing methods --- //
 
@@ -192,9 +186,20 @@ JS3.drawRect = function(o){
 	o.stage.globalAlpha = 1;
 }
 JS3.drawCirc = function(o){
-	o.stage.globalAlpha = o.alpha;	
- 	o.stage.beginPath();		
-    o.stage.arc(o.x, o.y, o.size/2, 0, 2 * Math.PI);
+	o.stage.globalAlpha = o.alpha;
+	ox = (o.width / 2) * .5522848;
+	oy = (o.height / 2) * .5522848;
+	xe = o.x + o.width;
+	ye = o.y + o.height;
+	xm = o.x + o.width/2;
+	ym = o.y + o.height/2;
+	o.stage.beginPath();
+	o.stage.moveTo(o.x, ym);
+	o.stage.bezierCurveTo(o.x, ym - oy, xm - ox, o.y, xm, o.y);
+	o.stage.bezierCurveTo(xm + ox, o.y, xe, ym - oy, xe, ym);
+	o.stage.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+	o.stage.bezierCurveTo(xm - ox, ye, o.x, ym + oy, o.x, ym);
+	o.stage.closePath();
 	if (o.fillColor) JS3.fill(o);
 	if (o.strokeColor) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
@@ -306,47 +311,68 @@ window.getAnimFrame(JS3.loop);
 
 function JS3Line(o)
 {
+	JS3getBaseProps(this);
+	JS3getLineProps(this);
 	this.update = JS3.drawLine;
-	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
-	if (o) JS3.setObjProps(o, this);
+	if (o) JS3.copyObj(o, this);
 }
 
 function JS3Arc(o)
 {
+	JS3getBaseProps(this);	
+	JS3getLineProps(this);	
 	this.update = JS3.drawArc;
-	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
-	if (o) JS3.setObjProps(o, this);
+	if (o) JS3.copyObj(o, this);
 }
 
 function JS3Tri(o)
 {
+	JS3getBaseProps(this);	
 	this.update = JS3.drawTri;
-	this.p1 = {}; this.p2 = {}; this.p3 = {};		
-	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
-	if (o) JS3.setObjProps(o, this);
+	if (o) JS3.copyObj(o, this);
+	this.p1 = {}; this.p2 = {}; this.p3 = {};
 }
 
 function JS3Rect(o)
 {
+	JS3getBaseProps(this);
 	this.update = JS3.drawRect;		
-	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];		
-	if (o) JS3.setObjProps(o, this);
-	if (this.width == undefined || this.height == undefined) this.width = this.height = this.size;
+	if (o) JS3.copyObj(o, this);
 }
 
 function JS3Circle(o)
 {
+	JS3getBaseProps(this);
 	this.update = JS3.drawCirc;
-	for (var k in JS3.GRAPHIC) this[k] = JS3.GRAPHIC[k];
-	if (o) JS3.setObjProps(o, this);	
+	if (o) JS3.copyObj(o, this);
 }
 
 function JS3Text(o)
 {
+	JS3getBaseProps(this);
+	JS3getTextProps(this);
 	this.update = JS3.drawText;
-	for (var k in JS3.TEXTFIELD) this[k] = JS3.TEXTFIELD[k];	
-	if (o) JS3.setObjProps(o, this);	
+	if (o) JS3.copyObj(o, this);	
 }
+
+function JS3getBaseProps(o)
+{
+	o.__defineGetter__("size", 	function()		{ return o.width;});
+	o.__defineSetter__("size", 	function(s)		{ o.width = o.height = s;});	
+	o.x=0;o.y=0; o.width=o.height=25; o.fillColor='#555'; o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=4;
+}
+
+function JS3getLineProps(o)
+{
+	o.capStyle='butt';
+}
+
+function JS3getTextProps(o)
+{
+	o.size=12; o.font='Arial'; o.color='#333';
+}
+
+JS3.copyObj = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; o1 = null;}
 
 function Tween(obj, dur, props)
 {
