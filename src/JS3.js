@@ -69,11 +69,9 @@ function JS3(cnvs)
 		this.run = function(func, delay, repeat, onComp){
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
-			var r = {f:func, d:delay, r:repeat, o:onComp}; _runners.push(r); initRunner(r);
+			_runners.push({f:func, d:delay, r:repeat, o:onComp, t:Date.now()});
 		}	
-		this.stop = function(func){
-			stopRunner(func);
-		}	
+		this.stop = function(func){stopRunner(func);}	
 		this.tween = function(obj, secs, props){
 			if (obj.isTweening) return;
 				obj.isTweening = true;
@@ -194,12 +192,8 @@ function JS3(cnvs)
 		var initTween = function(t){
 			t.start = Date.now(); _tweens.push(t)	
 		}
-		var initRunner = function(r){
-			r.int = setInterval(execRunner, r.d === undefined ? 1 : r.d * 1000, r);
-		}
-		var stopRunner = function(func)
-		{
-			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) { clearInterval(_runners[i].int); _runners.splice(i, 1); };
+		var stopRunner = function(func){
+			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) { _runners.splice(i, 1); };
 		}
 		var render = function()
 		{
@@ -242,7 +236,7 @@ function JS3(cnvs)
 		}
 		var loop = function()
 		{
-			execTweens(); if (_drawClean) drawBackground(); render();
+			execTweens(); execRunners(); if (_drawClean) drawBackground(); render();
 		}
 		var execTweens = function()
 		{
@@ -261,17 +255,23 @@ function JS3(cnvs)
 				}		
 			}	
 		}
-		var execRunner = function(r)
+		var execRunners = function()
 		{
-			r.f();
-			if (r.r != undefined) {
-				r.r--;
-				if (r.r == 0){
-					stopRunner(r.f);
-			// execute callback when run repeat count completes //
-					if (r.o != undefined) r.o();
+			var d = Date.now();
+			for (var i=0; i < _runners.length; i++){
+				var r = _runners[i];
+				if (r.d === undefined || d - r.t > r.d*1000) {
+					r.f(); r.t = d;
+					if (r.r != undefined) {
+						r.r--;
+						if (r.r == 0){
+							stopRunner(r.f);
+					// execute callback when run repeat count completes //
+							if (r.o != undefined) r.o();
+						}
+					}					
 				}
-			}	
+			}				
 		}
 // add this JS3 instance to the window animation loop //
 	JS3.func.push(loop);

@@ -92,7 +92,7 @@ function changeBallDirection()
 function onStart()
 {
 	canvas.run(addBalls, 1);
-	canvas.run(move);	
+	canvas.run(move);
 	if (spiders.length < 3) canvas.run(makeSpider, 3);
 	canvas.run(reach);
 	canvas.run(changeBallDirection, 2);
