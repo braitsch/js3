@@ -7,6 +7,6 @@
         <script type="text/javascript" src="./vendor/dat.gui.min.js"></script>
     	<script src="./src/JS3.js"></script>
     	<script src="./local/gallery.js"></script>
-    	<script src=<?php echo './gallery/'.$_GET['v'].'.js'?>></script>
+    	<script src=<?php echo './gallery/'. (empty($_GET['v']) ? 'honeycomb' : $_GET['v']) . '.js' ?>></script>
     </body>
 </html>

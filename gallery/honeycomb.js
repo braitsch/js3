@@ -8,7 +8,7 @@ function init()
 	addGui();	
 	canvas.drawClean = false;
 	canvas.background = '#fff';
-	canvas.windowTitle = 'Snakes &#187; Right Click & Select Save Image As'
+	canvas.windowTitle = 'HoneyComb &#187; Right Click & Select Save Image As'
 	onStart();
 }
 
