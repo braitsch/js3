@@ -13,7 +13,7 @@ $(document).ready(function() {
 
 function setCanvasSize()
 {
-  	var v = getViewport(); 
+  	var v = getViewport();
 	$('#cnvs').width(v.x - offsetW);
 	$('#cnvs').height(v.y - offsetH);
 	canvas.setSize(v.x - offsetW, v.y - offsetH);
@@ -26,4 +26,3 @@ function getViewport()
 }
 
 window.onresize = function(e) { setCanvasSize(); }
-    

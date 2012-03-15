@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.41
+ * Version : 0.1.42
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -64,16 +64,15 @@ function JS3(cnvs)
 			var t = new Tween(obj, secs, props);
 			t.delay == undefined ? initTween(t) : setTimeout(initTween, t.delay * 1000, t);
 		}
-		this.reset = function(){
+		this.clear = function(){
 			while(_children.length) {_children[0] = null; _children.splice(0, 1);}
 			while(_graphics.length){ _graphics[0] = null; _graphics.splice(0, 1);}
 			while(_tweens.length) {_tweens[0] = null; _tweens.splice(0, 1);}
 			while(_runners.length) {_runners[0] = null; _runners.splice(0, 1);}					
-			_children = []; _graphics = []; _tweens = []; _runners = [];
+			_children = []; _graphics = []; _tweens = []; _runners = []; drawBackground();
 		}
 		this.setSize = function(w, h){
-			_canvas.width = _width = w;
-			_canvas.height = _height = h;
+			_canvas.width = _width = w; _canvas.height = _height = h;
 		}			
 		this.save = function(){
 	// save canvas as a png //		
@@ -88,7 +87,6 @@ function JS3(cnvs)
 		
 	// basic drawing methods //	
 	
-		this.clear		= function(){ drawBackground() };				
 		this.drawLine	= function(o){ o.stage=_context;_graphics.push(new JS3Line(o)); 	}
 		this.drawArc	= function(o){ o.stage=_context;_graphics.push(new JS3Arc(o)); 		}
 		this.drawRect	= function(o){ o.stage=_context;_graphics.push(new JS3Rect(o));  	}

@@ -8,8 +8,8 @@ function init()
 	addGui();	
 	canvas.drawClean = false;
 	canvas.background = '#fff';
-	canvas.windowTitle = 'HoneyComb &#187; Right Click & Select Save Image As'
-	onStart();
+	canvas.windowTitle = 'HoneyComb &#187; Right Click & Select Save Image As';
+	canvas.run(addLine, 1);	canvas.run(draw);
 }
 
 function addLine()
@@ -25,7 +25,7 @@ function getNextColor()
 	n < palettes.length-1 ? n++ : n=0; return palettes[n];
 }
 
-function drip()
+function draw()
 {
 	for (var i=0; i < canvas.numChildren; i++) {
 		var k = canvas.getChildAt(i);
@@ -37,6 +37,8 @@ function drip()
 		if (k.y2 > canvas.height || k.y2 < 0 || (k.tick%4==0 && !drawStraight)) k.dirY *=-1;			
 	};
 }
+
+// --- datgui controller --- //
 
 function addGui()
 {
@@ -73,15 +75,3 @@ function addGui()
 	var div = document.getElementById('datgui');
 	div.appendChild(gui.domElement);
 };
-
-function onStart()
-{
-	canvas.run(drip);
-	canvas.run(addLine, 1);
-}
-
-function onStop()
-{
-	canvas.stop(drip);	
-	canvas.stop(addLine);	
-}
