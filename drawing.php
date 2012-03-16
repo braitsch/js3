@@ -5,9 +5,9 @@
             <div id="header">
                 <h1>Drawing Shapes</h1>
                 <p class='anchor-nav'>JS3 makes it easy to draw five basic primitive shapes. 
-                    <a href='#crt'>Circles</a>,
-                    <a href='#crt'>Rectangles</a>, 
-                    <a href='#crt'>Triangles</a>, 
+                    <a href='#cr'>Circles</a>,
+                    <a href='#cr'>Rectangles</a>, 
+                    <a href='#tri'>Triangles</a>, 
                     <a href='#la'>Lines</a> and 
                     <a href='#la'>Arcs.</a></p>
                 <hr>
@@ -22,9 +22,8 @@
         alpha       :Number = 1;
         scale       :Number = 1;
         rotation    :Number = 1;
-                    </code></pre><hr>
-                <h2 id='crt'>Circles, Rectangles and Triangles</h2>
-                <p>In addition to the base object properties defined above, Circles, Rectangles & Triangles also define fill & stroke values.<br>To disable the fill or stroke of a Shape, set its <strong><u>fill</u></strong> or <strong><u>stroke</u></strong> property to false.</p>
+                    </code></pre>
+                <p>In addition to the base object properties defined above, Circles, Rectangles, & Triangles also define fill & stroke values.<br>To disable the fill or stroke of a Shape, set its <strong><u>fill</u></strong> or <strong><u>stroke</u></strong> property to false.</p>
                     <pre><code>
         fill        :Boolean = true;
         fillColor   :Number = '#DDD';
@@ -33,7 +32,8 @@
         strokeColor :Number = '#CCC';
         strokeAlpha :Number = 1;
         strokeWidth :Number = 4;
-                    </code></pre>
+                    </code></pre><hr>
+                <h2 id='cr'>Circles and Rectangles</h2>                    
                 <p>The dimensions of Circles, Rectangles, & Triangles are defined by setting either their <b><u>size</u></b> property or their <b><u>width</u></b> and <b><u>height</u></b>.<br>Setting a Shape's <b><u>size</u></b> property constrains the object to equal dimensions.</p>
                     <pre><code>  
     // draw a circle with a diameter of 50 pixels //                
@@ -46,7 +46,7 @@
             c.height = 40;
         stage.addChild(c);             
                     </code></pre>
-                    <p><strong>Quick Note :</strong> Setting a Shape's size will overwrite any previous values that have been set for its width and height.<br>
+                    <p><strong>Quick Tip :</strong> Setting a Shape's size will overwrite any previous values that have been set for its width and height.<br>
                         The following examples show how to draw a Square and Rectangle.</p>
                     <pre><code>  
     // draw a 50 pixels x 50 pixels Square //                
@@ -58,25 +58,27 @@
             r.width = 80;
             r.height = 40;
         stage.addChild(r);             
-                    </code></pre>                        
+                    </code></pre><hr>
+                <h2 id='tri'>Triangles</h2>
                     <p>There are <strong><u>three</u></strong> ways to draw Triangles.<br> 
-                        In addition to setting its size, width & height you can also draw custom Triangles by specifying the x and y location of each of its three points.</p>
-                    <pre><code>
-    // draw a Triangle whose sides are 50 pixels in length //                    
+                        In addition to setting its size, width & height you can also draw custom Triangles by specifying the x and y location of each of its three points.<br></p>
+                    <p><strong>Quick Tip : </strong>Whenever you specify custom coordinate points, <strong><u>these points are always drawn relative to the Object's x & y position on the Stage.</u></strong></p>
+                    <pre><code class='javascript'>
+    // draw a Triangle whose sides are each 50 pixels in length //                    
         var t = new JS3Tri(); 
             t.size = 50;
         stage.addChild(t);
-    // draw a Triangle whose horizontal side is 80 pixels and whose vertical sides are 40 pixels in length //
+    // draw a Triangle with a varying width and height //
         var t = new JS3Tri(); 
             t.width = 80;
             t.height = 40;            
         stage.addChild(t);            
-    // draw a custom Triangle by specifying its three points relative to the its x & y position.
+    // draw a custom Triangle by specifying its three points //
         var t = new JS3Tri(); 
-    // position this Triangle at 50 pixels on the x and y axis    
+    // position this Triangle at 50 pixels on the x and y axis //   
             t.x = 50;
             t.y = 50;
-    // x1 will be drawn at the global coordinate of 80, y1 at 100 etc...
+    // x1 will be drawn at the global coordinate of 80, y1 at 100 etc... //
             t.x1 = 30;
             t.y1 = 50;
             t.x2 = 60;
@@ -94,7 +96,8 @@
         capStyle    :String = 'butt'; // (valid values are 'butt, round, or square')
                     </code></pre>
                 <p>To draw a line, simply define the x and y points to draw to.<br>
-                    The following snippet draws a horizontal line with a width of 100 pixels.</p>
+                    All lines & arcs start drawing from their x1 & y1 coordinates.<br>
+                    If these are not set the line will start drawing from the line's x and y coordinates and if these are not set it will start from 0,0 </p>
                     <pre style='width:445px;float:left;margin-right:10px;'><code class='javascript'>
     	var line = new JS3Line();
     	    line.color = '#ff0000';    	 

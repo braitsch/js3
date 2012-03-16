@@ -221,6 +221,7 @@ JS3.drawTri = function(o){
 	o.stage.globalAlpha = 1;
 }
 JS3.drawText = function(o){
+	console.log(o, o.text, o.x, o.y, o.stage)
 	o.stage.globalAlpha = o.alpha;
 	o.stage.font = o.size+'pt '+o.font;
 	o.stage.fillStyle = o.color;
@@ -370,7 +371,7 @@ function JS3getLineProps(o)
 
 function JS3getTextProps(o)
 {
-	o.size=12; o.font='Arial'; o.color='#333';
+	o.size=12; o.font='Arial'; o.color='#333'; o.align='center';
 }
 
 JS3.copyObj = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; o1 = null;}
