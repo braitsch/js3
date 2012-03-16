@@ -2,21 +2,21 @@
 var canvas;
 var offsetH = 42;
 var offsetW = 2;
+var winW, winH;
+var autoSize = false;
 
 $(document).ready(function() {
 	JS3.showFrameRate(0, 40);	
 	canvas = new JS3('cnvs');
 	canvas.background = '#ff0000';
-	setCanvasSize(); $('#cnvs').show(); init();
+	getWindowWidth(); init(); $('#cnvs').show(); 
 	$("#btn-download").click(function()  { window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3.js";});
 });
 
-function setCanvasSize()
+function getWindowWidth()
 {
   	var v = getViewport();
-	$('#cnvs').width(v.x - offsetW);
-	$('#cnvs').height(v.y - offsetH);
-	canvas.setSize(v.x - offsetW, v.y - offsetH);
+	winW = v.x - offsetW; winH = v.y - offsetH;
 }
 
 function getViewport()
@@ -25,4 +25,4 @@ function getViewport()
 	return {x:w.innerWidth||e.clientWidth||g.clientWidth, y:w.innerHeight||e.clientHeight||g.clientHeight};	
 }
 
-window.onresize = function(e) { setCanvasSize(); }
+window.onresize = function(e) { getWindowWidth(); if (autoSize) canvas.setSize(winW, winH);}

@@ -4,6 +4,7 @@ var maxBalls = 100;
 
 function init()
 {
+	autoSize = false; canvas.setSize(winW, 250);	
 	canvas.drawClean = true;
 	canvas.background = '#CCC';
 	onStart();

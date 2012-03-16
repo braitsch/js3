@@ -2,15 +2,18 @@
 var speed = 1;
 var spiders = [];
 var wiggle = 12;
-var maxNuts = 100;
+var maxBalls = 30;
 var palettes = [	['#E0E4CC', '#FA6900', '#C02942', '#69D2E7'],
-					['#E0E4CC', '#53777A', '#542437', '#ECD078'],
-					['#000000', '#ED0B65', '#B2A700', '#FCAE11']];
+					['#E0E4CC', '#53777A', '#542437', '#ECD078']];
 var colors = palettes[Math.floor(JS3.getRandomValue(palettes.length))];
 
 function init()
 {
+	autoSize = false; canvas.setSize(winW, 250);
+	console.log(winW);	
 	canvas.drawClean = true;
+	canvas.setSize = (winW, 200);
+	$('cnvs').width(winW);
 	canvas.background = colors[0];
 	onStart();
 }
@@ -20,18 +23,16 @@ function addBalls()
 	var i = 5;
 	while ( i-- ){
 		var c = new JS3Circle();
-			c.size = 3;
-			c.alpha = 0;
+			c.size = 10;
+			c.stroke = 'none';			
 			c.fillColor = colors[Math.round(JS3.getRandomValue(1, 2))];
-			c.stroke = false;
 			c.x = Math.random() * canvas.width;
 			c.y = Math.random() * canvas.height;
 			c.dirX = Math.round(Math.random()) == 0 ? -1 : 1;
 			c.dirY = Math.round(Math.random()) == 0 ? -1 : 1;		
 		canvas.addChild(c);
-		canvas.tween(c, 3, {alpha:1});		
 	}
-	if (canvas.numChildren >= maxNuts) canvas.stop(addBalls);	
+	if (canvas.numChildren >= maxBalls) canvas.stop(addBalls);	
 }
 
 function move()
@@ -39,8 +40,8 @@ function move()
 	var i = canvas.numChildren;
 	while ( i-- ){
 		var b = canvas.getChildAt(i);
-		if (b.x >= canvas.width || b.x <= 0) b.dirX *=-1;
-		if (b.y >= canvas.height || b.y <= 0) b.dirY *=-1;
+		if (b.x >= canvas.width-b.width/2 || b.x <= 0) b.dirX *=-1;
+		if (b.y >= canvas.height-b.height/2 || b.y <= 0) b.dirY *=-1;
 		b.x += speed * b.dirX;
 		b.y += speed * b.dirY;
 	}	
@@ -49,13 +50,12 @@ function move()
 function makeSpider()
 {	
 	var s = canvas.getChildAtRandom();
-		s.size = 35;
-		s.stroke = true;
+		s.size = 50;
 		s.spider = true;
 		s.strokeWidth = 3;
 		s.strokeColor = colors[3];
 	spiders.push(s);
-	if (spiders.length > 2) canvas.stop(makeSpider);
+	if (spiders.length > 4) canvas.stop(makeSpider);
 }
 
 function reach()
@@ -66,7 +66,7 @@ function reach()
 			var c = canvas.getChildAt(k);
 			if (c.spider == undefined){
 				if (Math.abs(s.x - c.x) < 75 && Math.abs(s.y - c.y) < 75) {
-					var o = {	strokeWidth:1, strokeColor:colors[3], x1:s.x, y1:s.y, x2:c.x, y2:c.y,	
+					var o = {	strokeWidth:1, strokeColor:colors[3], x1:s.x+s.width/2, y1:s.y+s.height/2, x2:c.x+c.width/2, y2:c.y+c.height/2,	
 								cx:((s.x+c.x)/2)+(JS3.getRandomValue(-wiggle, wiggle)), cy:((s.y+c.y)/2)+(JS3.getRandomValue(-wiggle, wiggle)) };
 					canvas.drawArc(o);									
 				};
@@ -93,7 +93,7 @@ function onStart()
 {
 	canvas.run(addBalls, 1);
 	canvas.run(move);
-	if (spiders.length < 3) canvas.run(makeSpider, 3);
+	canvas.run(makeSpider, 3);
 	canvas.run(reach);
 	canvas.run(changeBallDirection, 2);
 }

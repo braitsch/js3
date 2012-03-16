@@ -11,7 +11,8 @@ var rndmColor = false;
 
 function init()
 {
-	addGui();
+	addGui(); 
+	autoSize = true; canvas.setSize(winW, winH); 
 	canvas.drawClean = false;
 	canvas.background = bkgdColor;
 	canvas.windowTitle = 'TubeWorms &#187; Right Click & Select Save Image As';

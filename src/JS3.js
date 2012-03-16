@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.43
+ * Version : 0.1.44
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -355,8 +355,9 @@ function JS3Text(o)
 
 function JS3getBaseProps(o)
 {
-	o.__defineGetter__("size", 	function()		{ return o.width;});
-	o.__defineSetter__("size", 	function(s)		{ o.width = o.height = s;});	
+	o.__defineGetter__("size", 	 function()			{ return o.width;});
+	o.__defineSetter__("size", 	 function(s)		{ o.width = o.height = s;});
+	o.__defineSetter__("stroke", function(s)		{ if (s=='none') o.strokeColor=undefined});		
 	o.x=o.y=0; o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc';o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 }
 

@@ -8,6 +8,7 @@ var line = ['#D9CEB2', '#99B2B7'];
 
 function init()
 {
+	autoSize = false; canvas.setSize(winW, 250);	
 	canvas.drawClean = true;
 	canvas.background = '#D5DED9';
 	addBalls();
@@ -36,9 +37,8 @@ function addBalls()
 			c2.strokeColor = line[st];			
 			c2.x = c1.x + JS3.getRandomValue(30, 50);
 			c2.y = Math.random() * canvas.height;
-		sm.push(c2);	
-		var l1 = new JS3Line({x1:c1.x, y1:c1.y, x2:c2.x, y2:c2.y, strokeColor:line[st], strokeWidth:2});
-		ln.push(l1);
+		sm.push(c2);
+		ln.push(new JS3Line({strokeColor:line[st], strokeWidth:2}));
 	};
 	for (var i=0; i < joints; i++) canvas.addChild(ln[i]);
 	for (var i=0; i < joints; i++) canvas.addChild(sm[i]);
@@ -50,10 +50,10 @@ function move()
 	for (var i=0; i < joints; i++) {
 		sm[i].x -= sm[i].speed;
 		lg[i].x -= lg[i].speed;
-		ln[i].x1 = sm[i].x;
-		ln[i].y1 = sm[i].y;
-		ln[i].x2 = lg[i].x;
-		ln[i].y2 = lg[i].y;						
+		ln[i].x1 = sm[i].x + sm[i].width/2;
+		ln[i].y1 = sm[i].y + sm[i].height/2
+		ln[i].x2 = lg[i].x + lg[i].width/2;
+		ln[i].y2 = lg[i].y + lg[i].height/2		
 	}
 	 for (var i=0; i < joints; i++) {
 		if (sm[i].x < - 25){
