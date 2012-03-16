@@ -10,13 +10,19 @@ function init()
 	canvas.drawClean = false;
 	canvas.background = '#fff';
 	canvas.windowTitle = 'HoneyComb &#187; Right Click & Select Save Image As';
-	canvas.run(addLine, 1);	canvas.run(draw);
+	addLine(); canvas.run(addLine, 1); canvas.run(draw);
 }
 
 function addLine()
 {
-	var c = new JS3Line({x2:Math.random()*canvas.width, y2:Math.random()*canvas.height, strokeColor:getNextColor(), strokeWidth:thick, tick:0});
-	c.dirX = c.dirY = 1;
+	var c = new JS3Line();
+		c.x1 = Math.random()*canvas.width;
+		c.y1 = Math.random()*canvas.height;
+		c.x2 = c.x1 + speed; 
+		c.y2 = c.y1 + speed;
+		c.tick = 0; c.dirX = c.dirY = 1;
+		c.strokeWidth = thick;				
+		c.strokeColor = getNextColor();	
 	canvas.addChild(c);
 	if (canvas.numChildren >= maxLines) canvas.stop(addLine);
 }
@@ -30,10 +36,9 @@ function draw()
 {
 	for (var i=0; i < canvas.numChildren; i++) {
 		var k = canvas.getChildAt(i);
-		k.tick += Math.round(Math.random()*4);
-		k.x1 = k.x2; k.y1 = k.y2;
-		k.x2 += k.dirX * speed;
-		k.y2 += k.dirY * speed;
+			k.tick += Math.round(Math.random()*4);
+			k.x1 = k.x2; k.y1 = k.y2;
+			k.x2 += k.dirX * speed; k.y2 += k.dirY * speed;
 		if (k.x2 > canvas.width || k.x2 < 0 || (k.tick%2==0 && !drawStraight)) k.dirX *=-1;
 		if (k.y2 > canvas.height || k.y2 < 0 || (k.tick%4==0 && !drawStraight)) k.dirY *=-1;			
 	};

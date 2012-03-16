@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.45
+ * Version : 0.1.46
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -159,19 +159,19 @@ JS3.getRandomValue = function(n1, n2){if (n1 == undefined){return Math.random();
 
 // --- static drawing methods --- //
 
-JS3.drawLine = function(o){	
+JS3.drawLine = function(o){
 	o.stage.globalAlpha = o.alpha;
 	o.stage.beginPath();
-	o.stage.moveTo(o.x1, o.y1);  
-	o.stage.lineTo(o.x2, o.y2);
-	o.stage.closePath();
-	JS3.stroke(o);
-	o.stage.globalAlpha = 1;			
+	o.stage.moveTo(o.x+(o.x1||0), o.y+(o.y1||0));
+	o.stage.lineTo(o.x+(o.x2||0), o.y+(o.y2||0));
+	JS3.stroke(o);	
+	o.stage.globalAlpha = 1;
 }
-JS3.drawArc = function(o){
+JS3.drawArc = function(o){	
 	o.stage.globalAlpha = o.alpha;
-	o.stage.moveTo(o.x1, o.y1);	
- 	o.stage.quadraticCurveTo(o.cx, o.cy, o.x2, o.y2);
+	o.stage.beginPath();	
+	o.stage.moveTo(o.x+(o.x1||0), o.y+(o.y1||0));
+ 	o.stage.quadraticCurveTo(o.x+(o.cx||0), o.y+(o.cy||0), o.x+(o.x2||0), o.y+(o.y2||0));	
 	JS3.stroke(o);
 	o.stage.globalAlpha = 1;			
 }		
@@ -234,7 +234,7 @@ JS3.fill = function(o){
 	o.stage.fill();
 	o.stage.globalAlpha = 1;
 }
-JS3.stroke = function(o){			
+JS3.stroke = function(o){	
 	o.stage.globalAlpha = o.alpha * o.strokeAlpha;
 	o.stage.lineCap = o.capStyle;
     o.stage.lineWidth = o.strokeWidth;
@@ -364,6 +364,8 @@ function JS3getBaseProps(o)
 function JS3getLineProps(o)
 {
 	o.capStyle='butt';
+	o.__defineSetter__("color", 	function(s)		{ o.strokeColor=s;});	
+	o.__defineSetter__("thickness", function(s)		{ o.strokeWidth=s;});
 }
 
 function JS3getTextProps(o)

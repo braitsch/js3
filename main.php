@@ -13,7 +13,8 @@
         stage.tween(c, 2, {x:500});
                     </code></pre>
                     <canvas id="x1" width='585' height='102'></canvas>
-                </div><hr>
+                </div>
+                <hr>
                 <div id="features" class='clearfix'>
                     <h2>Key Features</h2>
                     <ul>
@@ -79,13 +80,12 @@
                     <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>
 Once these shapes are drawn, the objects that define them are immediately removed from memory.<br>This makes Shapes ideal for quickly drawing graphics to the screen where no further animation is desired.</p>
                 <pre><code>
-    	var stage = new JS3('my-canvas');
-    	stage.drawClean = false;
-       	stage.drawCircle( { size:50, x:50, y:25 } );
-        stage.drawRect( { width:80, height:50, x:120, y:25 } );
-    	stage.drawLine( { x1:220, y1:75, x2:270, y2:25 } );
-    	stage.drawArc( { x1:280, y1:75, x2:360, y2:75, cx:(280+360)/2, cy:-25 } );
-    	stage.drawTri( { size:50, x:380, y:25 } );		
+    	var stage = new JS3('x2');
+    	stage.drawCircle( { x:50, y:25, size:50 } );
+    	stage.drawRect( { x:120, y:25, width:80, height:50 } );
+    	stage.drawLine( { x:220, y:25, x1:0, y1:50, x2:50, y2:0 } );
+    	stage.drawArc( { x:280, y:25, x1:0, y1:50, cx:40, cy:-50, x2:80, y2:50 } );
+    	stage.drawTri( { x:380, y:25, size:50 } );
                 </code></pre>
                 <p>Results in drawing the following to the screen. <a href='./drawing.php'>Click here to learn more about drawing simple shapes.</a></p>
                 <canvas id="x2" width='898' height='100'></canvas>  
@@ -231,12 +231,9 @@ The "drawCircle" function just returns a basic circle and the "update" function 
                 </div>
                 <div class="clearfix"><hr></div>
                 <h2>More features & examples coming soon...</h2>
-                
-        <script type="text/javascript" src="./vendor/jquery-1.7.1.min.js"></script>        
-        <script type="text/javascript" src="./src/JS3.js"></script>
-        <script type="text/javascript" src="./local/main-page.js"></script>                   
-        <script type="text/javascript" src="./vendor/bootstrap-dropdown.js"></script>
-	    <script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>	            
+        <?php include ('./php/footer.php'); ?>        
+        <script type="text/javascript" src="./local/main-page.js"></script>            
+	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
     </body>
 </html>

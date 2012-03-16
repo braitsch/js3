@@ -5,13 +5,15 @@
         <script>
             var stage = new JS3('my-canvas');
                 stage.background = '#eee';
-            var c1 = new JS3Tri();
-                c1.x = 10
+            var c1 = new JS3Arc();
+                c1.x = 50;
                 c1.y = 50;
-                c1.width = 50;
-                c1.height = 30;
-                c1.stroke = false;
-                c1.fillColor = '#ff0000';
+                c1.y1 = 0;
+                c1.y2 = 50;
+                c1.cy = 25;
+                c1.cx = 50;
+                c1.thickness = 40;
+                c1.color = "#ff0000";
                 stage.addChild(c1);
         </script>
     </body> 

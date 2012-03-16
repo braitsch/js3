@@ -4,7 +4,12 @@
         <div id='content'>
             <div id="header">
                 <h1>Drawing Shapes</h1>
-                <p>JS3 makes it easy to draw five basic primitive shapes. Circles, Rectangles, Triangles, Lines and Arcs.</p>
+                <p class='anchor-nav'>JS3 makes it easy to draw five basic primitive shapes. 
+                    <a href='#crt'>Circles</a>,
+                    <a href='#crt'>Rectangles</a>, 
+                    <a href='#crt'>Triangles</a>, 
+                    <a href='#la'>Lines</a> and 
+                    <a href='#la'>Arcs.</a></p>
                 <hr>
             </div>
             <div id="drawing-basics">
@@ -18,7 +23,7 @@
         scale       :Number = 1;
         rotation    :Number = 1;
                     </code></pre><hr>
-                <h2>Circles, Rectangles and Triangles</h2>
+                <h2 id='crt'>Circles, Rectangles and Triangles</h2>
                 <p>In addition to the base object properties defined above, Circles, Rectangles & Triangles also define fill & stroke values.<br>To disable the fill or stroke of a Shape, set its <strong><u>fill</u></strong> or <strong><u>stroke</u></strong> property to false.</p>
                     <pre><code>
         fill        :Boolean = true;
@@ -79,22 +84,49 @@
             t.x3 = 90;
             t.y3 = 50;                                                        
         stage.addChild(c);             
-                    </code></pre>                            
-                        
+                    </code></pre>
                     <hr>                    
-                <h2>Lines and Arcs</h2>                    
-                    <p>Lines & Arcs define the following unique values :</p>
-                    <pre><code>  
+                <h2 id='la' class='anchor-nav'>Lines and Arcs</h2>                    
+                    <p>In addition to the base object properties, Lines & Arcs also have the following unique properites :</p>
+                    <pre><code class='javascript'>  
         color       :Number = '#333';
         thickness   :Number = 4;
         capStyle    :String = 'butt'; // (valid values are 'butt, round, or square')
-                    </code></pre><hr>               
+                    </code></pre>
+                <p>To draw a line, simply define the x and y points to draw to.<br>
+                    The following snippet draws a horizontal line with a width of 100 pixels.</p>
+                    <pre style='width:445px;float:left;margin-right:10px;'><code class='javascript'>
+    	var line = new JS3Line();
+    	    line.color = '#ff0000';    	 
+    	    line.x = 50;
+    	    line.y = 130;	
+    	    line.y2 = -100;
+    	    line.x2 = 340; 
+    	stage.addChild(line);
+                    </code></pre>
+                <canvas id="d1" width='440' height='173'></canvas>
+                <p class='clearfix'>
+                    Drawing an Arc is simple and just requires an additional point to "pull" the Line in one direction or another.<br>
+                    This third point is a control point defined with the properties <strong><u>cx</u></strong> and <strong><u>cy</u></strong>.</p>
+                    <pre style='width:445px;float:left;margin-right:10px;'><code class='javascript'>
+    	var arc = new JS3Arc();
+            arc.color = '#ff0000';	
+            arc.x = 50; 	
+            arc.y = 190;
+            arc.x1 = 0; 	
+            arc.y1 = 0;
+            arc.cy = -250; 	
+            arc.cx = 170;
+            arc.x2 = 340; 	
+            arc.y2 = 0;	
+        stage.addChild(arc);
+                    </code></pre>
+                <canvas id="d2" width='440' height='245'></canvas>
             </div>
         </div>
-        <script type="text/javascript" src="./vendor/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="./local/drawing.js"></script>         
-        <script type="text/javascript" src="./vendor/bootstrap-dropdown.js"></script>
-	    <script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>          
+        <?php include ('./php/footer.php'); ?>        
+        <script type="text/javascript" src="./local/drawing.js"></script>            
+	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
     </body>
 </html>

@@ -1,23 +1,12 @@
 
 var x3, x4, x5, x6, x7;
 
-$(document).ready(function() {
-	setNavOffsetY();	
+$(document).ready(function() {	
 	initCnvs1();
 	initCnvs2();
 	initCnvsControlled();
 	addButtonListeners();
-	$("#btn-download").click(function()  { window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3.js";});	
 });
-
-function setNavOffsetY()
-{
-    $("#main-subnav a").click(function() {
-	var a = $(this).attr("href");
-		a = a.substr(a.indexOf('#'));	
-  	$(window).scrollTop($(a).offset().top - 50);
-  	return false;});	
-}
 
 function initCnvs1()
 {
@@ -36,11 +25,11 @@ function initCnvs2()
 {
 	var stage = new JS3('x2');
 	stage.drawClean = false;
-   	stage.drawCircle( { size:50, x:50, y:25 } );
-    stage.drawRect( { width:80, height:50, x:120, y:25 } );
-	stage.drawLine( { x1:220, y1:75, x2:270, y2:25 } );
-	stage.drawArc( { x1:280, y1:75, x2:360, y2:75, cx:(280+360)/2, cy:-25 } );
-	stage.drawTri( { size:50, x:380, y:25 } );	
+	stage.drawCircle( { x:50, y:25, size:50 } );
+	stage.drawRect( { x:120, y:25, width:80, height:50 } );
+	stage.drawLine( { x:220, y:25, x1:0, y1:50, x2:50, y2:0 } );
+	stage.drawArc( { x:280, y:25, x1:0, y1:50, cx:40, cy:-50, x2:80, y2:50 } );
+	stage.drawTri( { x:380, y:25, size:50 } );
 }
 
 function initCnvsControlled()

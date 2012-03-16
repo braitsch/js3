@@ -20,8 +20,8 @@ function draw()
 			o.size = size;
 			o.stroke='none';
 			o.fillColor = '#555';			
-//			o.strokeWidth = 4;
-//			o.strokeColor = '#777';
+			o.strokeWidth = 4;
+			o.strokeColor = '#777';
 			o.x = 10 + ((size+padding) * (i%c));
 			o.y = 10 + ((size+padding) * Math.floor(i/c))
 		circs.push(o);

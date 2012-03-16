@@ -18,7 +18,7 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-    </script>        
+    </script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -30,7 +30,7 @@
                         <li class="divider-vertical"></li>
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Jump<b class="caret"></b></a>
-                            <ul id='main-subnav' class="dropdown-menu">
+                            <ul class="dropdown-menu anchor-nav">
                             <li><a href="./main.php#getting-started">Getting Started</a></li>
                             <li class="divider"></li>
                             <li><a href="./main.php#drawing-shapes">Drawing Shapes</a></li>
