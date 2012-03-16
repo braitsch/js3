@@ -2,12 +2,22 @@
 var x3, x4, x5, x6, x7;
 
 $(document).ready(function() {
+	setNavOffsetY();	
 	initCnvs1();
 	initCnvs2();
-	initCnvsControlled();			
+	initCnvsControlled();
 	addButtonListeners();
 	$("#btn-download").click(function()  { window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3.js";});	
 });
+
+function setNavOffsetY()
+{
+    $("#main-subnav a").click(function() {
+	var a = $(this).attr("href");
+		a = a.substr(a.indexOf('#'));	
+  	$(window).scrollTop($(a).offset().top - 50);
+  	return false;});	
+}
 
 function initCnvs1()
 {

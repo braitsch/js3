@@ -30,7 +30,7 @@
                         <li class="divider-vertical"></li>
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick Jump<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
+                            <ul id='main-subnav' class="dropdown-menu">
                             <li><a href="./main.php#getting-started">Getting Started</a></li>
                             <li class="divider"></li>
                             <li><a href="./main.php#drawing-shapes">Drawing Shapes</a></li>

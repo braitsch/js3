@@ -42,7 +42,7 @@
                     <p><strong>Quick Note :</strong> Setting a Shape's size will overwrite any previous values that have been set for its width and height.<br>
                         The following examples show how to draw a Square and Rectangle.</p>
                     <pre><code>  
-    // draw a Square with a diameter of 50 pixels //                
+    // draw a 50 pixels x 50 pixels Square //                
         var r = new JS3Rect(); 
             r.size = 50;
         stage.addChild(r);    
