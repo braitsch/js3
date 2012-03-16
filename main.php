@@ -111,8 +111,7 @@ The syntax is very similar to creating basic shapes, except that you must also m
                 <pre><code>
         var c = new JS3Circle();                     
         c.x = 75; 
-        c.y = stage.height/2; 
-        c.alpha = 1;                          
+        c.y = 25;                          
         stage.tween(c, 3, {x:800, alpha:0});
                 </code></pre>
                 <canvas id="x3" width='898' height='100'></canvas>  

@@ -22,7 +22,7 @@ function setNavOffsetY()
 function initCnvs1()
 {
 	var stage = new JS3('x1');
-	var c = new JS3Circle( { size:50, x:20, y:stage.height/2 - 25, fillColor:"#ddd", strokeColor:"#ccc", strokeWidth:2} );
+	var c = new JS3Circle( { size:50, x:20, y:25, fillColor:"#ddd", strokeColor:"#ccc", strokeWidth:2} );
 	stage.addChild(c);
 	function tween() { c.x = 20; stage.tween(c, 2, {x:510, ease:JS3.easeInOutQuad,
 		//	onStart:function(){console.log('starting tween...'+this.duration)},
@@ -62,7 +62,7 @@ function initCnvsControlled()
 function getSimpleCircle()
 {
 	var c = new JS3Circle();
-        c.x = 75; c.y = x3.height/2 - 25; c.size = 50; 
+        c.x = 75; c.y = 25; c.size = 50; 
 	return c;	
 }
 
@@ -81,7 +81,7 @@ function addButtonListeners()
 		var c = x3.getChildAt(0);
 		$(this).attr("disabled", true);
 		x3.tween(c, 3, {x:800, alpha:0, onComplete:function(){
-        	c.x = 75; c.y = x3.height/2; c.alpha = 1; $('#x3-btn').attr('disabled', false);
+        	c.x = 75; c.y = 25; c.alpha = 1; $('#x3-btn').attr('disabled', false);
 		}});
 	});
 	$('#x4-btn').click(function(){
@@ -92,7 +92,7 @@ function addButtonListeners()
 			onComplete:function(){
 			//	console.log('completed in '+(Date.now() - this.start) / 1000 + ' seconds');				
             	x4.tween(c, 1, {alpha:0, onComplete:function(){ 
-        			c.x = 75; c.y = x4.height/2; c.alpha = 1; $('#x4-btn').attr('disabled', false);	
+        			c.x = 75; c.y = 25; c.alpha = 1; $('#x4-btn').attr('disabled', false);	
 			}});
         }});
 	});	

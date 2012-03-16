@@ -19,10 +19,12 @@
         rotation    :Number = 1;
                     </code></pre><hr>
                 <h2>Circles, Rectangles and Triangles</h2>
-                <p>In addition to the base object properties defined above, Circles, Rectangles & Triangles also define fill & stroke values.<br>To turn off a Shape's fill or stroke set its <strong><u>fillAlpha</u></strong> or <strong><u>strokeAlpha</u></strong> property to zero.</p>
+                <p>In addition to the base object properties defined above, Circles, Rectangles & Triangles also define fill & stroke values.<br>To disable the fill or stroke of a Shape, set its <strong><u>fill</u></strong> or <strong><u>stroke</u></strong> property to false.</p>
                     <pre><code>
+        fill        :Boolean = true;
         fillColor   :Number = '#DDD';
         fillAlpha   :Number = 1;
+        stroke      :Boolean = true;        
         strokeColor :Number = '#CCC';
         strokeAlpha :Number = 1;
         strokeWidth :Number = 4;
@@ -56,16 +58,16 @@
                         In addition to setting its size, width & height you can also draw custom Triangles by specifying the x and y location of each of its three points.</p>
                     <pre><code>
     // draw a Triangle whose sides are 50 pixels in length //                    
-        var t = new JS3Triangle(); 
+        var t = new JS3Tri(); 
             t.size = 50;
         stage.addChild(t);
     // draw a Triangle whose horizontal side is 80 pixels and whose vertical sides are 40 pixels in length //
-        var t = new JS3Triangle(); 
+        var t = new JS3Tri(); 
             t.width = 80;
             t.height = 40;            
         stage.addChild(t);            
     // draw a custom Triangle by specifying its three points relative to the its x & y position.
-        var t = new JS3Triangle(); 
+        var t = new JS3Tri(); 
     // position this Triangle at 50 pixels on the x and y axis    
             t.x = 50;
             t.y = 50;

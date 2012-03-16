@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.44
+ * Version : 0.1.45
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -179,8 +179,8 @@ JS3.drawRect = function(o){
 	o.stage.globalAlpha = o.alpha;	
 	o.stage.beginPath();
 	o.stage.rect(o.x, o.y, o.width, o.height);
-	if (o.fillColor) JS3.fill(o);
-	if (o.strokeColor) JS3.stroke(o);			
+	if (o.fill) JS3.fill(o);
+	if (o.stroke) JS3.stroke(o);			
 	o.stage.globalAlpha = 1;
 }
 JS3.drawCirc = function(o){
@@ -198,25 +198,26 @@ JS3.drawCirc = function(o){
 	o.stage.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
 	o.stage.bezierCurveTo(xm - ox, ye, o.x, ym + oy, o.x, ym);
 	o.stage.closePath();
-	if (o.fillColor) JS3.fill(o);
-	if (o.strokeColor) JS3.stroke(o);
+	if (o.fill) JS3.fill(o);
+	if (o.stroke) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
 }
+
 JS3.drawTri = function(o){
 	o.stage.globalAlpha = o.alpha;	
  	o.stage.beginPath();
-	o.x1 = o.x1 || o.x;
-	o.y1 = o.y1 || o.y + o.size;
-	o.x2 = o.x2 || o.x + o.size/2;
-	o.y2 = o.y2 || o.y;
-	o.x3 = o.x3 || o.x + o.size;
-	o.y3 = o.y3 || o.y + o.size;							
-	o.stage.lineTo(o.x1, o.y1);
-	o.stage.lineTo(o.x2, o.y2);
-	o.stage.lineTo(o.x3, o.y3);
-	o.stage.lineTo(o.x1, o.y1);			
-	if (o.fillColor) JS3.fill(o);
-	if (o.strokeColor) JS3.stroke(o);
+	o.x1 = o.x1 || 0;
+	o.y1 = o.y1 || o.height || o.size;
+	o.x2 = o.x2 || o.width/2 || o.size/2;
+	o.y2 = o.y2 || 0;
+	o.x3 = o.x3 || o.width || o.size;
+	o.y3 = o.y3 || o.height || o.size;
+	o.stage.lineTo(o.x + o.x1, o.y + o.y1);
+	o.stage.lineTo(o.x + o.x2, o.y + o.y2);
+	o.stage.lineTo(o.x + o.x3, o.y + o.y3);
+	o.stage.lineTo(o.x + o.x1, o.y + o.y1);
+	if (o.fill) JS3.fill(o);
+	if (o.stroke) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
 }
 JS3.drawText = function(o){
@@ -328,7 +329,7 @@ function JS3Tri(o)
 	JS3getBaseProps(this);	
 	this.update = JS3.drawTri;
 	if (o) JS3.copyObj(o, this);
-	this.p1 = {}; this.p2 = {}; this.p3 = {};
+	this.p1 = {}; this.p2 = {}; this.p3 = {};	
 }
 
 function JS3Rect(o)
@@ -354,11 +355,10 @@ function JS3Text(o)
 }
 
 function JS3getBaseProps(o)
-{
-	o.__defineGetter__("size", 	 function()			{ return o.width;});
-	o.__defineSetter__("size", 	 function(s)		{ o.width = o.height = s;});
-	o.__defineSetter__("stroke", function(s)		{ if (s=='none') o.strokeColor=undefined});		
-	o.x=o.y=0; o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc';o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
+{	
+	o.__defineGetter__("size", 	 function()			{ return o._size;});
+	o.__defineSetter__("size", 	 function(s)		{ o._size=o.width=o.height=s;});	
+	o.x=o.y=0; o._size=o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 }
 
 function JS3getLineProps(o)

@@ -5,15 +5,14 @@
         <script>
             var stage = new JS3('my-canvas');
                 stage.background = '#eee';
-            var c1 = new JS3Circle();
-                c1.size = 50;
+            var c1 = new JS3Tri();
+                c1.x = 10
+                c1.y = 50;
+                c1.width = 50;
+                c1.height = 30;
+                c1.stroke = false;
                 c1.fillColor = '#ff0000';
                 stage.addChild(c1);
-            var c2 = new JS3Circle();
-                c2.fillColor = '#555';
-                c2.alpha = .5;
-                c2.width = 50; c2.height = 60;
-                stage.addChild(c2);
         </script>
     </body> 
 </html>    
