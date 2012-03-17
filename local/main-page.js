@@ -129,8 +129,18 @@ function updateX7()
 	var i = x7.numChildren;
 	while ( i-- ){
 		var c = x7.getChildAt(i);
-		if (c.x >= x7.width - c.width || c.x <= 0) c.dirX *=-1;
-		if (c.y >= x7.height - c.height || c.y <= 0) c.dirY *=-1;
+		if (c.x < 0) {
+			c.x = 0; c.dirX *=-1;
+		}
+		if (c.x >= x7.width - c.width){
+			c.x = x7.width-c.width; c.dirX *=-1;			
+		}
+		if (c.y < 0) {
+			c.y = 0; c.dirY *=-1;
+		}
+		if (c.y >= x7.height - c.height){
+			c.y = x7.height-c.height; c.dirY *=-1;
+		}
 		c.x += c.dirX;
 		c.y += c.dirY;
 	}
