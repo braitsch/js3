@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.46
+ * Version : 0.1.47
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -12,6 +12,7 @@ function JS3(cnvs)
 		var _context 	= _canvas.getContext("2d");
 		var _width 		= _canvas.width;
 		var _height 	= _canvas.height;
+		var _target		= undefined;		
 		var _children 	= [];
 		var _graphics	= [];
 		var _runners	= [];
@@ -94,6 +95,39 @@ function JS3(cnvs)
 		this.drawTri	= function(o){ o.stage=_context;_graphics.push(new JS3Tri(o));		}
 		this.drawText 	= function(o){ o.stage=_context;_graphics.push(new JS3Text(o)); 	}
 			
+	// mouse events //
+	
+		_canvas.addEventListener("mousemove", onMouseMove);
+		_canvas.addEventListener("mousedown", onMouseDown);
+		_canvas.addEventListener("mouseup", function(){_target = undefined;});
+		
+		function onMouseMove(e)
+		{
+		    var oX = 0; var oY = 0; var k = _canvas;
+		    do { oX += k.offsetLeft; oY += k.offsetTop; } while (k = k.offsetParent);		
+			_context.mx = e.pageX - oX; _context.my = e.pageY - oY;
+		// update mouse cursor //
+			var on = false;
+			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].dragable && _children[i].mouse) {
+				on=true; break;
+			}
+			window.document.body.style.cursor = on?'pointer':'default';
+		// update dragable target  //			
+			if (_target) {			
+				_target.x += _context.mx - _context.dx;
+				_target.y += _context.my - _context.dy;
+				_context.dy = _context.my; _context.dx = _context.mx;				
+			}
+		}
+		
+		function onMouseDown(e)
+		{
+			_context.dx = _context.mx; _context.dy = _context.my;
+			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].dragable && _children[i].mouse) {
+				_target = _children[i]; _children.splice(i, 1); _children.push(_target);
+			}
+		}			
+		
 	// private instance methods //
 		
 		var drawBackground = function(){
@@ -169,7 +203,7 @@ JS3.drawLine = function(o){
 }
 JS3.drawArc = function(o){	
 	o.stage.globalAlpha = o.alpha;
-	o.stage.beginPath();	
+	o.stage.beginPath();
 	o.stage.moveTo(o.x+(o.x1||0), o.y+(o.y1||0));
  	o.stage.quadraticCurveTo(o.x+(o.cx||0), o.y+(o.cy||0), o.x+(o.x2||0), o.y+(o.y2||0));	
 	JS3.stroke(o);
@@ -179,6 +213,8 @@ JS3.drawRect = function(o){
 	o.stage.globalAlpha = o.alpha;	
 	o.stage.beginPath();
 	o.stage.rect(o.x, o.y, o.width, o.height);
+	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
+	o.stage.closePath();	
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);			
 	o.stage.globalAlpha = 1;
@@ -197,6 +233,7 @@ JS3.drawCirc = function(o){
 	o.stage.bezierCurveTo(xm + ox, o.y, xe, ym - oy, xe, ym);
 	o.stage.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
 	o.stage.bezierCurveTo(xm - ox, ye, o.x, ym + oy, o.x, ym);
+	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
 	o.stage.closePath();
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
@@ -216,6 +253,8 @@ JS3.drawTri = function(o){
 	o.stage.lineTo(o.x + o.x2, o.y + o.y2);
 	o.stage.lineTo(o.x + o.x3, o.y + o.y3);
 	o.stage.lineTo(o.x + o.x1, o.y + o.y1);
+	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
+	o.stage.closePath();	
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
@@ -358,7 +397,7 @@ function JS3Text(o)
 function JS3getBaseProps(o)
 {	
 	o.__defineGetter__("size", 	 function()			{ return o._size;});
-	o.__defineSetter__("size", 	 function(s)		{ o._size=o.width=o.height=s;});	
+	o.__defineSetter__("size", 	 function(s)		{ o._size=o.width=o.height=s;});
 	o.x=o.y=0; o._size=o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 }
 
@@ -386,10 +425,11 @@ function Tween(obj, dur, props)
 	this.onStart	= props.onStart;
 	this.onComplete	= props.onComplete;
 	this.easeFunc	= props.ease || JS3.linear;
-	this.props 		= {};
-	if (props.x != undefined) this.props.x = {a:obj.x, b:props.x-obj.x};
-	if (props.y != undefined) this.props.y = {a:obj.y, b:props.y-obj.y};
-	if (props.alpha != undefined) this.props.alpha = {a:obj.alpha, b:props.alpha-obj.alpha}; props = null;
+	this.props 		= {};	
+	for (var p in props) if (isNumber(props[p])) this.props[p] = {a:obj[p], b:props[p]-obj[p]};
+}
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};

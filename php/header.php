@@ -49,9 +49,10 @@
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gallery<b class="caret"></b></a>
                             <ul class="dropdown-menu">
+                            <li><a href="./gallery.php?v=something">test</a></li>                                
                             <li><a href="./gallery.php?v=honeycomb">HoneyComb</a></li>
                             <li><a href="./gallery.php?v=lite-brite">LiteBrite</a></li>
-                            <li><a href="./gallery.php?v=tube-worms">TubeWorms</a></li>
+                            <li><a href="./gallery.php?v=tube-worms">TubeWorms</a></li>                            
                             <li class="divider"></li>                               
                             <li><a href="./gallery.php?v=joints">Joints</a></li>
                             <li><a href="./gallery.php?v=spiders">Spiders</a></li>
