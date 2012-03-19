@@ -30,7 +30,6 @@ function JS3(cnvs)
 	 	this.__defineSetter__("drawClean", 		function(b)		{ _drawClean = b;});
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	 	this.__defineSetter__("windowTitle", 	function(s)		{ _winTitle = s;});	
-	 	this.__defineSetter__("interactive", 	function(b)		{ b ? addMouseEvents() : remMouseEvents(); });		
 	
 	// display list management //	
 	
@@ -99,39 +98,15 @@ function JS3(cnvs)
 			
 	// mouse events //
 	
-		var addMouseEvents = function()
+		_canvas.addEventListener("click", onMouseClick);	
+		_canvas.addEventListener("mousemove", onMouseMove);
+		_canvas.addEventListener("mousedown", onMouseDown);
+		_canvas.addEventListener("mouseup", function(){_target = undefined;});
+		
+		function onMouseClick(e)
 		{
-			_canvas.addEventListener("mousedown", onMouseDown);	
-			_canvas.addEventListener("mouseup", onMouseUp);
-			_canvas.addEventListener("mousemove", onMouseMove);			
+			console.log('click', _target);
 		}
-		
-		var remMouseEvents = function()
-		{
-			_canvas.removeEventListener("mousedown", onMouseDown);	
-			_canvas.removeEventListener("mouseup", onMouseUp);
-			_canvas.removeEventListener("mousemove", onMouseMove);				
-		}
-		
-		function onMouseDown(e)
-		{	
-			_context.dx = _context.mx; _context.dy = _context.my;
-			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].mouse && _children[i].enabled) {
-				_target = _children[i]; _children.splice(i, 1); _children.push(_target); break;
-			}
-		}	
-		
-		function onMouseUp(e)
-		{
-			if (_target){
-				if (_dragObj == undefined){
-					if (_target._onClick) _target._onClick(_target);
-				} else{
-					if (_target._onDragComplete) _target._onDragComplete(_target);
-				}
-			}
-			_target = _dragObj = undefined;
-		}		
 		
 		function onMouseMove(e)
 		{
@@ -139,24 +114,25 @@ function JS3(cnvs)
 		    do { oX += k.offsetLeft; oY += k.offsetTop; } while (k = k.offsetParent);		
 			_context.mx = e.pageX - oX; _context.my = e.pageY - oY;
 		// update mouse cursor //
-			var m = false;
-			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].mouse && _children[i].enabled) { m=true; break; }
-			window.document.body.style.cursor = m ? 'pointer' : 'default';
-		// check for draggable target //	
-			if (_target){
-				if (_target.draggable) {
-					if (_dragObj == undefined){
-					 	_dragObj = _target;
-					 	if (_target._onDragStart != undefined) _target._onDragStart(_target);
-					}	else{
-						_target.x += _context.mx - _context.dx;
-						_target.y += _context.my - _context.dy;
-						_context.dy = _context.my; _context.dx = _context.mx;
-						if (_target._onDragChange != undefined) _target._onDragChange(_target);						
-					}
-				}
+			var on = false;
+			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].enabled && _children[i].mouse) { on=true; break; }
+			window.document.body.style.cursor = on?'pointer':'default';
+		// update draggable target  //			
+			if (_target.draggable) {
+				_target.x += _context.mx - _context.dx;
+				_target.y += _context.my - _context.dy;
+				_context.dy = _context.my; _context.dx = _context.mx;
+				if (_target._onDragChange != undefined) _target._onDragChange(_target);
 			}
-		}	
+		}
+		
+		function onMouseDown(e)
+		{	
+			_context.dx = _context.mx; _context.dy = _context.my;
+			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].enabled && _children[i].mouse && _children[i].draggable) {
+				_target = _children[i]; _children.splice(i, 1); _children.push(_target);
+			}
+		}			
 		
 	// private instance methods //
 		
@@ -427,13 +403,12 @@ function JS3Text(o)
 function JS3getBaseProps(o)
 {	
 	o.__defineGetter__("size", 	 		function()		{ return o._size;});
-	o.__defineSetter__("size", 	 		function(n)		{ o._size=o.width=o.height=n;});
-	o.__defineSetter__("click",			function(f)		{ o._onClick=f;o.enabled=true;});
-	o.__defineGetter__("draggable", 	function()		{ return o._draggable;});	
-	o.__defineSetter__("draggable",		function(b)		{ o._draggable=b; if (b==true) o.enabled=true;});	
-	o.__defineSetter__("drag",			function(f)		{ o._onDragChange=f;o.draggable=true;});
-	o.__defineSetter__("dragStart",		function(f)		{ o._onDragStart=f;o.draggable=true;});
-	o.__defineSetter__("dragComplete",	function(f)		{ o._onDragComplete=f;o.draggable=true;});
+	o.__defineSetter__("size", 	 		function(s)		{ o._size=o.width=o.height=s;});
+	o.__defineSetter__("onClick",		function(f)		{ o._onClick=f;o.enabled=true;});
+	o.__defineSetter__("onHover",		function(f)		{ o._onHover=f;o.enabled=true;});
+	o.__defineSetter__("onDragStart",	function(f)		{ o._onDragStart=f;o.enabled=o.draggable=true;});
+	o.__defineSetter__("onDragChange",	function(f)		{ o._onDragChange=f;o.enabled=o.draggable=true;});
+	o.__defineSetter__("onDragComplete",function(f)		{ o._onDragComplete=f;o.enabled=o.draggable=true;});
 	o.x=o.y=0; o._size=o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 }
 
