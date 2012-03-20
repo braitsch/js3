@@ -16,23 +16,18 @@ var easeFuncs = [ 'linear', 'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 'easeI
 'easeInOutSine', 'easeInExpo', 'easeOutExpo', 'easeInOutExpo', 'easeInCirc', 'easeOutCirc', 'easeInOutCirc'];
 
 $(document).ready(function() {	
-	init();
-});
-
-function init()
-{
 	stage = new JS3('js3-demo-canvas');
 	stage.background = '#eee';
 	stage.interactive = true;
 	drawCirc(); drawCross(); drawGui(); updateOut();
-}
+});
 
 function drawGui()
 {
 	guiObj = {
 		'Draw Shape'        : shapeType,
-		'X'					: stage.width/2,
-		'Y'					: stage.height/2,
+		'X'					: cx,
+		'Y'					: cy,
 		'Alpha'				: alpha,
 		'Duration'			: speed,		
 		'Ease Function'		: 'easeOutQuad',
@@ -53,8 +48,7 @@ function drawGui()
 		s4.onChange(function(val){easeFunc=getEaseIndex(val);updateOut();});
 	gui.add(guiObj, 'Tween');
 	document.getElementById('datgui').appendChild(gui.domElement);
-	$('.close-button').hide();
-	$('.c select').width(140);
+	$('.close-button').hide(); $('.c select').width(140);
 }
 
 function updateGui()
@@ -68,10 +62,6 @@ function updateOut()
 	var s = '\t<b>var</b> shape = <b>new</b> '+shapeType+'();<br>';
 		s += '\tstage.tween(shape, '+green(speed,1)+', {x:'+green(cross.x,0)+', y:'+green(cross.y,0)+', alpha:'+green(alpha,1)+', ease:'+green(easeFuncs[easeIndex])+'});';
 	$('#js3-demo-out').html(s);
-	$('#js3-demo-out').css('padding', '10px');
-//	var k = $('#js3-demo-out').hasClass('javascript')
-//	console.log(k)
-//	$('#js3-demo-out').attr('class', 'javascript');
 }
 
 function green(n, i)
@@ -120,6 +110,7 @@ function drawCross()
 	cross.src = './local/cross.png';
 	cross.drag = onCrossDrag;
 	stage.addChild(cross);
+	cx = cross.x; cy = cross.y;	
 }
 
 function getObjDefinition()
