@@ -4,7 +4,7 @@
         <div id='content'>
                 <div id="header">
                     <h1>Simple, Flash-like Tweening for the JavaScript Canvas</h1>
-                    <p>JS3 is a lightweight port of the familiar <a href='http://www.greensock.com/tweenlite/' target='blank'>TweenLite</a> ActionScript library for the JavaScript Canvas allowing you to do things like :</p>                    
+                    <p>JS3 is a fast, lightweight port of the familiar <a href='http://www.greensock.com/tweenlite/' target='blank'>TweenLite</a> ActionScript library for the JavaScript Canvas allowing you to do things like :</p>                    
                 </div>
                 <div id="header-example">
                     <pre id='x1-code'><code>                     
@@ -13,25 +13,26 @@
         stage.tween(c, 2, {x:500});
                     </code></pre>
                     <canvas id="x1" width='585' height='102'></canvas>
-                </div>
-                <hr>
+                </div><hr>
                 <div id="features" class='clearfix'>
-                    <h2>Key Features</h2>
+                    <h2>Core Features</h2>
                     <ul>
-                        <li>Simple API for drawing basic primitives: circles, rectangles, triangles, lines & arcs</li>
+                        <li>Simple API for drawing basic primitives: <a href='./drawing.php#cr'>Circles, Ellipses, Squares, Rectangles</a>, <a href='./drawing.php#tri'>Triangles</a>, <a href='./drawing.php#la'>Lines & Arcs</a></li>
+                        <li>Built in Mouse interactions: <a href='./mouse-events.php'>Click, Drag, RollOver, RollOut, etc..</a></li>
+                        <li>Support for loading images and writing text</li>                        
                         <li>Tween multiple properties at the same time: <b>x, y & alpha, etc..</b></li>
                         <li>Delayed Tweens, onStart & onComplete callbacks</li>
-                        <li>Sequence, or daisy-chain multiple tweens together using callbacks</li>                        
-                        <li>Support for all the popular easing equations :
-                            <ul>
-                                <li>linear ( straight / no ease ) easeInQuad, easeOutQuad, easeInOutQuad</li> 
-                                <li>easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc</li>                                
-                                <li>easeInQuint, easeOutQuint, easeIOutQuint, easeInSine, easeOutSine, easeInOutSine</li>
-                                <li>easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart</li>                                                                                                                                
-                            </ul>    
-                        </li>
+                        <li>Sequence, or daisy-chain multiple tweens together using callbacks</li>
                     </ul>
                 </div><hr>
+                <h2>Interactive Demo</h2>
+                <p >Move the Shape and Target around and paste the generated code into your HTML document.</p>                
+                <div id="js3-demo">                    
+                    <canvas id="js3-demo-canvas" width="623" height="196" style='float:left;margin-right:10px'></canvas>
+                    <div id="datgui" style='margin:-30px 10px 0 0;float:left'></div>
+                </div>
+                <pre style='margin-top:5px;'><code id='js3-demo-out' class='javascript'></code></pre>                
+                <hr>
                 <div id="getting-started">
                     <h2>Getting Started</h2>
                     <p>First things first, add a canvas tag to your HTML and give it a unique id.</p>
@@ -231,8 +232,10 @@ The "drawCircle" function just returns a basic circle and the "update" function 
                 </div>
                 <div class="clearfix"><hr></div>
                 <h2>More features & examples coming soon...</h2>
-        <?php include ('./php/footer.php'); ?>        
-        <script type="text/javascript" src="./local/main-page.js"></script>            
+        <?php include ('./php/footer.php'); ?>
+        <script type="text/javascript" src="./local/demo.js"></script>
+        <script type="text/javascript" src="./local/main-page.js"></script>
+        <script type="text/javascript" src="./vendor/dat.gui.min.js"></script>
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
     </body>

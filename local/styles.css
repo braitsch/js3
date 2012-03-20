@@ -20,6 +20,12 @@ canvas{
 	border-radius: 4px;	-webkit-border-radius: 4px; -moz-border-radius: 4px;
 }
 
+#js3-demo{
+/*	height:216px;*/
+	height:198px;background-color:#ffffff;border:1px solid #d0d0d0;padding:10px;position:relative;	
+	border-radius: 4px;	-webkit-border-radius: 4px; -moz-border-radius: 4px;
+}
+
 button i { padding-right:5px; }
 #btn-download { position:absolute; top:1px; right:10px; }
 
