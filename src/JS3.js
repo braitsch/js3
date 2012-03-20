@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.47
+ * Version : 0.1.48
  * Link : https://github.com/braitsch/JS3
  * Author : Stephen Braitsch :: @braitsch
 **/
@@ -190,6 +190,8 @@ function JS3(cnvs)
 				if (t.elapsed >= t.duration) {
 					_tweens.splice(i, 1);
 					t.object.isTweening = false;
+			// force obj to destination property 		
+					for(p in t.props) t.object[p] = t.props[p].a + t.props[p].b;
 			// fire the onComplete callback //				
 					if (t.onComplete != undefined) t.onComplete();
 				}		
@@ -269,7 +271,6 @@ JS3.drawCirc = function(o){
 	if (o.stroke) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
 }
-
 JS3.drawTri = function(o){
 	o.stage.globalAlpha = o.alpha;	
  	o.stage.beginPath();
@@ -284,10 +285,18 @@ JS3.drawTri = function(o){
 	o.stage.lineTo(o.x + o.x3, o.y + o.y3);
 	o.stage.lineTo(o.x + o.x1, o.y + o.y1);
 	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
-	o.stage.closePath();	
+	o.stage.closePath();
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
 	o.stage.globalAlpha = 1;
+}
+JS3.drawImage = function(o){
+	if (o.image.src==false) return;
+	o.stage.beginPath();
+	o.stage.rect(o.x, o.y, o.image.width, o.image.height);
+	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
+	o.stage.closePath();
+	o.stage.drawImage(o.image, o.x, o.y);	
 }
 JS3.drawText = function(o){
 	console.log(o, o.text, o.x, o.y, o.stage)
@@ -424,6 +433,14 @@ function JS3Text(o)
 	if (o) JS3.copyObj(o, this);	
 }
 
+function JS3Image(o)
+{
+	JS3getBaseProps(this);
+	JS3getImageProps(this);	
+	this.update = JS3.drawImage;
+	if (o) JS3.copyObj(o, this);
+}
+
 function JS3getBaseProps(o)
 {	
 	o.__defineGetter__("size", 	 		function()		{ return o._size;});
@@ -440,8 +457,15 @@ function JS3getBaseProps(o)
 function JS3getLineProps(o)
 {
 	o.capStyle='butt';
-	o.__defineSetter__("color", 	function(s)		{ o.strokeColor=s;});	
-	o.__defineSetter__("thickness", function(s)		{ o.strokeWidth=s;});
+	o.__defineSetter__("color", 		function(s)		{ o.strokeColor=s;});	
+	o.__defineSetter__("thickness", 	function(s)		{ o.strokeWidth=s;});
+}
+
+function JS3getImageProps(o)
+{
+	o.image = new Image();	
+	o.__defineSetter__("src", 			function(s)		{ o.image.src=s;});
+	o.__defineSetter__("ready", 		function(f)		{ o.image.onload=f;});
 }
 
 function JS3getTextProps(o)
