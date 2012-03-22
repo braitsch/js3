@@ -22,7 +22,7 @@ function drawGui()
 		'Draw Shape'        : shapeType,
 		'X'					: cx,
 		'Y'					: cy,
-		'Alpha'				: alpha,
+		'Opacity'			: alpha,
 		'ScaleX'			: scaleX,
 		'ScaleY'			: scaleY,						
 		'Duration'			: speed,		
@@ -36,7 +36,7 @@ function drawGui()
 		s2.onChange(function(val){cross.x=val;updateOut();})
 	var s3 = gui.add(guiObj, 'Y', 0, stage.height-cross.height);
 		s3.onChange(function(val){cross.y=val;updateOut();})		
-	var a1 = gui.add(guiObj, 'Alpha', 0, 1);
+	var a1 = gui.add(guiObj, 'Opacity', 0, 1);
 		a1.onChange(function(val){alpha=val;updateOut();})	
 	var s4 = gui.add(guiObj, 'ScaleX', 0, 5);
 		s4.onChange(function(val){scaleX=val;updateOut();})
@@ -60,7 +60,12 @@ function updateGui()
 function updateOut()
 {
 	var s = '\t<b>var</b> shape = <b>new</b> '+shapeType+'();<br>';
-		s += '\tstage.tween(shape, '+green(speed,1)+', {x:'+green(cross.x,0)+', y:'+green(cross.y,0)+', alpha:'+green(alpha,1)+', scaleX:'+green(scaleX,1)+', scaleY:'+green(scaleY,1)+', ease:'+green(easeFuncs[easeIndex])+'});';
+		s += '\tstage.tween(shape, '+green(speed,1)+', {x:'+green(cross.x,0)+', y:'+green(cross.y,0);
+// only show tween props if they're different from the default //
+	if (alpha!=1) s+=', alpha:'+green(alpha,1);
+	if (scaleX!=1) s+=', scaleX:'+green(scaleX,1);
+	if (scaleY!=1) s+=', scaleY:'+green(scaleY,1);
+		s+=', ease:'+green(easeFuncs[easeIndex])+'});';
 	$('#js3-demo-out').html(s);
 }
 
@@ -129,6 +134,13 @@ function onCrossDrag(o)
 	guiObj.X = cx = o.x; guiObj.Y = cy = o.y; updateGui();
 }
 
+function tweenShape()
+{
+	var x = cross.x + cross.width/2 - shape.width/2;
+	var y = cross.y + cross.height/2 - shape.height/2
+	stage.tween(shape, speed, {x:x, y:y, alpha:alpha, scaleX:scaleX, scaleY:scaleY, ease:easeFunc, onComplete:function(){sx=shape.x;sy=shape.y;}});
+}
+
 function getEaseIndex(s)
 {
 	for (var i = easeFuncs.length - 1; i >= 0; i--){
@@ -136,11 +148,4 @@ function getEaseIndex(s)
 			easeIndex = i; return window[easeFuncs[i]];
 		}
 	};
-}
-
-function tweenShape()
-{
-	var x = cross.x + cross.width/2 - shape.width/2;
-	var y = cross.y + cross.height/2 - shape.height/2
-	stage.tween(shape, speed, {x:x, y:y, alpha:alpha, scaleX:scaleX, scaleY:scaleY, ease:easeFunc, onComplete:function(){sx=shape.x;sy=shape.y;}});
 }

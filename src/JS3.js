@@ -1,9 +1,16 @@
 
 /**
- * JS3 - A simple AS3 drawing api for the JavaScript Canvas
- * Version : 0.1.51
- * Link : https://github.com/braitsch/JS3
- * Author : Stephen Braitsch :: @braitsch
+ * JS3 - A Drawing & Tweening API for the JavaScript Canvas
+ * Version : 0.1.52
+ * Documentation : http://quietless.com/js3/
+ *
+ * Copyright 2012 Stephen Braitsch :: @braitsch
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
 **/
 
 function JS3(cnvs)

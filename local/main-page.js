@@ -11,9 +11,9 @@ $(document).ready(function() {
 function initCnvs1()
 {
 	var stage = new JS3('x1');
-	var c = new JS3Circle( { size:50, x:20, y:25, fillColor:"#ddd", strokeColor:"#ccc", strokeWidth:2} );
+	var c = new JS3Circle( { size:50, x:20, y:25} );
 	stage.addChild(c);
-	function tween() { c.x = 20; stage.tween(c, 2, {x:510, ease:easeInOutQuad,
+	function tween() { c.x = 20; stage.tween(c, 2, {x:510, ease:easeInOutQuad, delay:.5,
 		//	onStart:function(){console.log('starting tween...'+this.duration)},
 			onComplete:function(){tween();}		
 		//	onComplete:function(){console.log('completed in '+(Date.now() - this.start) / 1000 + ' seconds'); tween();}
