@@ -242,17 +242,17 @@ JS3.drawArc = function(o){
 	o.stage.globalAlpha = 1;			
 }		
 JS3.drawRect = function(o){
-	o.stage.globalAlpha = o.alpha;	
+	JS3.translate(o);
 	o.stage.beginPath();
 	o.stage.rect(o.x, o.y, o.width, o.height);
 	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
 	o.stage.closePath();	
 	if (o.fill) JS3.fill(o);
-	if (o.stroke) JS3.stroke(o);			
-	o.stage.globalAlpha = 1;
+	if (o.stroke) JS3.stroke(o);
+	o.stage.restore();
 }
 JS3.drawCirc = function(o){
-	o.stage.globalAlpha = o.alpha;
+	JS3.translate(o);	
 	ox = (o.width / 2) * .5522848;
 	oy = (o.height / 2) * .5522848;
 	xe = o.x + o.width;
@@ -269,10 +269,10 @@ JS3.drawCirc = function(o){
 	o.stage.closePath();
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
-	o.stage.globalAlpha = 1;
+	o.stage.restore();
 }
 JS3.drawTri = function(o){
-	o.stage.globalAlpha = o.alpha;	
+	JS3.translate(o);
  	o.stage.beginPath();
 	o.x1 = o.x1 || 0;
 	o.y1 = o.y1 || o.height || o.size;
@@ -288,7 +288,7 @@ JS3.drawTri = function(o){
 	o.stage.closePath();
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
-	o.stage.globalAlpha = 1;
+	o.stage.restore();
 }
 JS3.drawImage = function(o){
 	if (o.image.src==false) return;
@@ -299,7 +299,6 @@ JS3.drawImage = function(o){
 	o.stage.drawImage(o.image, o.x, o.y);	
 }
 JS3.drawText = function(o){
-	console.log(o, o.text, o.x, o.y, o.stage)
 	o.stage.globalAlpha = o.alpha;
 	o.stage.font = o.size+'pt '+o.font;
 	o.stage.fillStyle = o.color;
@@ -320,6 +319,14 @@ JS3.stroke = function(o){
     o.stage.strokeStyle = o.strokeColor;	
 	o.stage.stroke();
 	o.stage.globalAlpha = 1;
+}
+JS3.translate = function(o){
+	o.stage.save();	
+	o.stage.globalAlpha = o.alpha;
+//  without offset, object scales from top-left //	
+//	o.stage.translate(-(o.x)*(o.scaleX-1), -(o.y)*(o.scaleY-1));	
+	o.stage.translate(-(o.x+o.width/2)*(o.scaleX-1), -(o.y+o.height/2)*(o.scaleY-1));
+	o.stage.scale(o.scaleX, o.scaleY);
 }
 
 // --- rob penners's easing equations from http://www.robertpenner.com/easing --- //
@@ -451,7 +458,8 @@ function JS3getBaseProps(o)
 	o.__defineSetter__("drag",			function(f)		{ o._onDragChange=f;o.draggable=true;});
 	o.__defineSetter__("dragStart",		function(f)		{ o._onDragStart=f;o.draggable=true;});
 	o.__defineSetter__("dragComplete",	function(f)		{ o._onDragComplete=f;o.draggable=true;});
-	o.x=o.y=0; o._size=o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scale=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
+	o.test=60;
+	o.x=o.y=0; o._size=o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scaleX=o.scaleY=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 }
 
 function JS3getLineProps(o)

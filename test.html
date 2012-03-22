@@ -1,0 +1,16 @@
+<html>
+     <body>                
+        <canvas id="my-canvas" width="800" height="100"></canvas>                        
+        <script src="./src/JS3.js"></script>
+        <script>
+            var stage = new JS3('my-canvas');
+                stage.background = '#eee';
+            var c1 = new JS3Circle({x:300, y:25});
+                stage.addChild(c1);
+            var c2 = new JS3Circle({x:100, y:25});
+                stage.addChild(c2);
+                stage.tween(c1, 1, {fillColor:'#ff0000', delay:1, scaleX:2, scaleY:2});
+        </script>
+        </body> 
+</html>    
+    
