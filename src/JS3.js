@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.52
+ * Version : 0.1.53
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -249,9 +249,10 @@ JS3.drawArc = function(o){
 	o.stage.globalAlpha = 1;			
 }		
 JS3.drawRect = function(o){
+	JS3.getCntrPt(o);
 	JS3.translate(o);
 	o.stage.beginPath();
-	o.stage.rect(o.x, o.y, o.width, o.height);
+	o.stage.rect(-o.cx, -o.cy, o.cx*2, o.cy*2);
 	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
 	o.stage.closePath();	
 	if (o.fill) JS3.fill(o);
@@ -259,40 +260,40 @@ JS3.drawRect = function(o){
 	o.stage.restore();
 }
 JS3.drawCirc = function(o){
-	JS3.translate(o);	
-	ox = (o.width / 2) * .5522848;
-	oy = (o.height / 2) * .5522848;
-	xe = o.x + o.width;
-	ye = o.y + o.height;
-	xm = o.x + o.width/2;
-	ym = o.y + o.height/2;
-	o.stage.beginPath();
-	o.stage.moveTo(o.x, ym);
-	o.stage.bezierCurveTo(o.x, ym - oy, xm - ox, o.y, xm, o.y);
-	o.stage.bezierCurveTo(xm + ox, o.y, xe, ym - oy, xe, ym);
-	o.stage.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
-	o.stage.bezierCurveTo(xm - ox, ye, o.x, ym + oy, o.x, ym);
+	JS3.getCntrPt(o);
+	var a1 = o.cx * .5522848;
+	var a2 = o.cy * .5522848;
+	JS3.translate(o);
+	o.stage.moveTo(-o.cx, 0);
+	o.stage.bezierCurveTo(-o.cx, -a2, -a1, -o.cy, 0, -o.cy);
+	o.stage.bezierCurveTo(a1, -o.cy, o.cx, -a2, o.cx, 0);
+	o.stage.bezierCurveTo(o.cx, a2, a1, o.cy, 0, o.cy);
+	o.stage.bezierCurveTo(-a1, o.cy, -o.cx, a2, -o.cx, 0);
+	o.stage.closePath();	
 	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
-	o.stage.closePath();
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
 	o.stage.restore();
 }
 JS3.drawTri = function(o){
-	JS3.translate(o);
+	var w = o.size;
+	var h = o.size * (Math.sqrt(3)/2);
+	o.x1 = o.x1 || 0
+	o.y1 = o.y1 || h
+	o.x2 = o.x2 || w/2;
+	o.y2 = o.y2 || 0
+	o.x3 = o.x3 || w;
+	o.y3 = o.y3 || h;
+	o.cx = w/2
+	o.cy = (o.y1+o.y2+o.y3)/3
+	JS3.translate(o);	
  	o.stage.beginPath();
-	o.x1 = o.x1 || 0;
-	o.y1 = o.y1 || o.height || o.size;
-	o.x2 = o.x2 || o.width/2 || o.size/2;
-	o.y2 = o.y2 || 0;
-	o.x3 = o.x3 || o.width || o.size;
-	o.y3 = o.y3 || o.height || o.size;
-	o.stage.lineTo(o.x + o.x1, o.y + o.y1);
-	o.stage.lineTo(o.x + o.x2, o.y + o.y2);
-	o.stage.lineTo(o.x + o.x3, o.y + o.y3);
-	o.stage.lineTo(o.x + o.x1, o.y + o.y1);
+	o.stage.moveTo(o.x1-w/2, o.y1-h/2)
+	o.stage.lineTo(o.x2-w/2, o.y2-h/2);
+	o.stage.lineTo(o.x3-w/2, o.y3-h/2)
+	o.stage.lineTo(o.x1-w/2, o.y1-h/2)
+	o.stage.closePath();	
 	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
-	o.stage.closePath();
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
 	o.stage.restore();
@@ -327,13 +328,19 @@ JS3.stroke = function(o){
 	o.stage.stroke();
 	o.stage.globalAlpha = 1;
 }
+JS3.getCntrPt = function(o){
+	o.cx = o.width / 2 || o.size / 2;
+	o.cy = o.height / 2 || o.size / 2;
+}
 JS3.translate = function(o){
 	o.stage.save();	
 	o.stage.globalAlpha = o.alpha;
-//  without offset, object scales from top-left //	
-//	o.stage.translate(-(o.x)*(o.scaleX-1), -(o.y)*(o.scaleY-1));	
-	o.stage.translate(-(o.x+o.width/2)*(o.scaleX-1), -(o.y+o.height/2)*(o.scaleY-1));
-	o.stage.scale(o.scaleX, o.scaleY);
+	o.stage.translate(o.x + o.cx, o.y + o.cy);
+	o.stage.scale(o.scaleX, o.scaleY);	
+    o.stage.rotate(o.rotation * Math.PI/180);
+}
+JS3.copyObj = function(o1, o2){ 
+	for (var k in o1) o2[k] = o1[k]; o1 = null;
 }
 
 // --- rob penners's easing equations from http://www.robertpenner.com/easing --- //
@@ -465,8 +472,7 @@ function JS3getBaseProps(o)
 	o.__defineSetter__("drag",			function(f)		{ o._onDragChange=f;o.draggable=true;});
 	o.__defineSetter__("dragStart",		function(f)		{ o._onDragStart=f;o.draggable=true;});
 	o.__defineSetter__("dragComplete",	function(f)		{ o._onDragComplete=f;o.draggable=true;});
-	o.test=60;
-	o.x=o.y=0; o._size=o.width=o.height=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scaleX=o.scaleY=o.rotation=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
+	o.x=o.y=o.rotation=0; o._size=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scaleX=o.scaleY=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 }
 
 function JS3getLineProps(o)
@@ -488,8 +494,6 @@ function JS3getTextProps(o)
 	o.size=12; o.font='Arial'; o.color='#333'; o.align='center';
 }
 
-JS3.copyObj = function(o1, o2){ for (var k in o1) o2[k] = o1[k]; o1 = null;}
-
 function Tween(obj, dur, props)
 {
 	this.object 	= obj;
@@ -503,8 +507,6 @@ function Tween(obj, dur, props)
 	this.props 		= {};	
 	for (var p in props) if (isNumber(props[p])) this.props[p] = {a:obj[p], b:props[p]-obj[p]};
 }
-function isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};
+var isNumber = function(n) { return !isNaN(parseFloat(n)) && isFinite(n); }
