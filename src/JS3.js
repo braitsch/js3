@@ -276,22 +276,24 @@ JS3.drawCirc = function(o){
 	o.stage.restore();
 }
 JS3.drawTri = function(o){
+// force equilateral if width / height undefined //	
 	var w = o.size;
 	var h = o.size * (Math.sqrt(3)/2);
-	o.x1 = o.x1 || 0
-	o.y1 = o.y1 || h
-	o.x2 = o.x2 || w/2;
-	o.y2 = o.y2 || 0
-	o.x3 = o.x3 || w;
-	o.y3 = o.y3 || h;
-	o.cx = w/2
-	o.cy = (o.y1+o.y2+o.y3)/3
-	JS3.translate(o);	
+	o.x1 = o.x1 || 0;
+	o.y1 = o.y1 || h * -2/3;
+	o.x2 = o.x2 || w / 2;
+	o.y2 = o.y2 || h / 3;
+	o.x3 = o.x3 || -w / 2;
+	o.y3 = o.y3 || h / 3;
+	o.cx = w/2;
+// equilateral offset //
+	o.cy = h/2 + ((h/2) / 3);
+	JS3.translate(o);
  	o.stage.beginPath();
-	o.stage.moveTo(o.x1-w/2, o.y1-h/2)
-	o.stage.lineTo(o.x2-w/2, o.y2-h/2);
-	o.stage.lineTo(o.x3-w/2, o.y3-h/2)
-	o.stage.lineTo(o.x1-w/2, o.y1-h/2)
+	o.stage.moveTo(o.x1, o.y1);
+	o.stage.lineTo(o.x2, o.y2);
+	o.stage.lineTo(o.x3, o.y3);
+	o.stage.lineTo(o.x1, o.y1);
 	o.stage.closePath();	
 	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
 	if (o.fill) JS3.fill(o);
