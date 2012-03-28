@@ -276,18 +276,11 @@ JS3.drawCirc = function(o){
 	o.stage.restore();
 }
 JS3.drawTri = function(o){
-// force equilateral if width / height undefined //	
-	var w = o.size;
-	var h = o.size * (Math.sqrt(3)/2);
-	o.x1 = o.x1 || 0;
-	o.y1 = o.y1 || h * -2/3;
-	o.x2 = o.x2 || w / 2;
-	o.y2 = o.y2 || h / 3;
-	o.x3 = o.x3 || -w / 2;
-	o.y3 = o.y3 || h / 3;
-	o.cx = w/2;
-// equilateral offset //
-	o.cy = h/2 + ((h/2) / 3);
+	if (o.width == o.height){
+		JS3.drawEquilateral(o)
+	}	else{
+		JS3.drawCustomTriangle(o)
+	}
 	JS3.translate(o);
  	o.stage.beginPath();
 	o.stage.moveTo(o.x1, o.y1);
@@ -299,6 +292,30 @@ JS3.drawTri = function(o){
 	if (o.fill) JS3.fill(o);
 	if (o.stroke) JS3.stroke(o);
 	o.stage.restore();
+}
+JS3.drawEquilateral = function(o){
+	var w = o.width;
+	var h = o.height * (Math.sqrt(3)/2);
+	o.x1 = 0;
+	o.y1 = h * -2/3;
+	o.x2 = w / 2;
+	o.y2 = h / 3;
+	o.x3 = -w / 2;
+	o.y3 = h / 3;
+	o.cx = w/2;
+	o.cy = h/2 + ((h/2) / 3);
+}
+JS3.drawCustomTriangle = function(o){
+	var w = o.width;
+	var h = o.height;
+	o.x1 = o.x1 || 0;
+	o.y1 = o.y1 || -h / 2
+	o.x2 = o.x2 || w / 2;
+	o.y2 = o.y2 || h / 2;
+	o.x3 = o.x3 || -w / 2;
+	o.y3 = o.y3 || h / 2;
+	o.cx = w/2;
+	o.cy = h/2;
 }
 JS3.drawImage = function(o){
 	if (o.image.src==false) return;
@@ -429,6 +446,7 @@ function JS3Arc(o)
 function JS3Tri(o)
 {
 	JS3getBaseProps(this);	
+	console.log(this.width);	
 	this.update = JS3.drawTri;
 	if (o) JS3.copyObj(o, this);
 	this.p1 = {}; this.p2 = {}; this.p3 = {};	
