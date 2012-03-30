@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.53
+ * Version : 0.1.54
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -232,66 +232,50 @@ JS3.getRandomValue = function(n1, n2){if (n1 == undefined){return Math.random();
 
 // --- static drawing methods --- //
 
-JS3.drawLine = function(o){
-	o.stage.globalAlpha = o.alpha;
-	o.stage.beginPath();
-	o.stage.moveTo(o.x+(o.x1||0), o.y+(o.y1||0));
-	o.stage.lineTo(o.x+(o.x2||0), o.y+(o.y2||0));
-	JS3.stroke(o);	
-	o.stage.globalAlpha = 1;
+JS3.drawLine = function(o){	
+	o.cx = (o.x1 + o.x2) / 2;
+	o.cy = (o.y1 + o.y2) / 2;
+	JS3.openShape(o);
+	o.stage.moveTo(o.x1-o.cx, o.y1-o.cy);
+	o.stage.lineTo(o.x2-o.cx, o.y2-o.cy);
+	JS3.drawShape(o);
 }
-JS3.drawArc = function(o){	
-	o.stage.globalAlpha = o.alpha;
-	o.stage.beginPath();
-	o.stage.moveTo(o.x+(o.x1||0), o.y+(o.y1||0));
- 	o.stage.quadraticCurveTo(o.x+(o.cx||0), o.y+(o.cy||0), o.x+(o.x2||0), o.y+(o.y2||0));	
+JS3.drawArc = function(o){
+	o.cx = (o.x1 + o.x2) / 2;
+	o.cy = (o.y1 + o.y2) / 2;
+	JS3.openShape(o);
+	o.stage.moveTo(o.x1-o.cx, o.y1-o.cy);
+ 	o.stage.quadraticCurveTo(o.xc-o.cx, o.yc-o.cy, o.x2-o.cx, o.y2-o.cy);
+	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
 	JS3.stroke(o);
-	o.stage.globalAlpha = 1;			
+	o.stage.restore();
 }		
 JS3.drawRect = function(o){
 	JS3.getCntrPt(o);
-	JS3.translate(o);
-	o.stage.beginPath();
+	JS3.openShape(o);
 	o.stage.rect(-o.cx, -o.cy, o.cx*2, o.cy*2);
-	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
-	o.stage.closePath();	
-	if (o.fill) JS3.fill(o);
-	if (o.stroke) JS3.stroke(o);
-	o.stage.restore();
+	JS3.drawShape(o);
 }
 JS3.drawCirc = function(o){
 	JS3.getCntrPt(o);
 	var a1 = o.cx * .5522848;
 	var a2 = o.cy * .5522848;
-	JS3.translate(o);
+	JS3.openShape(o);
 	o.stage.moveTo(-o.cx, 0);
 	o.stage.bezierCurveTo(-o.cx, -a2, -a1, -o.cy, 0, -o.cy);
 	o.stage.bezierCurveTo(a1, -o.cy, o.cx, -a2, o.cx, 0);
 	o.stage.bezierCurveTo(o.cx, a2, a1, o.cy, 0, o.cy);
 	o.stage.bezierCurveTo(-a1, o.cy, -o.cx, a2, -o.cx, 0);
-	o.stage.closePath();	
-	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
-	if (o.fill) JS3.fill(o);
-	if (o.stroke) JS3.stroke(o);
-	o.stage.restore();
+	JS3.drawShape(o);	
 }
 JS3.drawTri = function(o){
-	if (o.width == o.height){
-		JS3.drawEquilateral(o)
-	}	else{
-		JS3.drawCustomTriangle(o)
-	}
-	JS3.translate(o);
- 	o.stage.beginPath();
+	o.width == o.height ? JS3.drawEquilateral(o) : JS3.drawCustomTriangle(o);
+	JS3.openShape(o);
 	o.stage.moveTo(o.x1, o.y1);
 	o.stage.lineTo(o.x2, o.y2);
 	o.stage.lineTo(o.x3, o.y3);
 	o.stage.lineTo(o.x1, o.y1);
-	o.stage.closePath();	
-	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
-	if (o.fill) JS3.fill(o);
-	if (o.stroke) JS3.stroke(o);
-	o.stage.restore();
+	JS3.drawShape(o);
 }
 JS3.drawEquilateral = function(o){
 	var w = o.width;
@@ -319,11 +303,12 @@ JS3.drawCustomTriangle = function(o){
 }
 JS3.drawImage = function(o){
 	if (o.image.src==false) return;
-	o.stage.beginPath();
-	o.stage.rect(o.x, o.y, o.image.width, o.image.height);
-	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
-	o.stage.closePath();
-	o.stage.drawImage(o.image, o.x, o.y);	
+	o.cx = o.image.width / 2;
+	o.cy = o.image.height / 2;
+	JS3.openShape(o);
+	o.stage.rect(-o.cx, -o.cy, o.cx*2, o.cy*2);	
+	o.stage.drawImage(o.image, -o.cx, -o.cy);	
+	JS3.drawShape(o);
 }
 JS3.drawText = function(o){
 	o.stage.globalAlpha = o.alpha;
@@ -351,14 +336,22 @@ JS3.getCntrPt = function(o){
 	o.cx = o.width / 2 || o.size / 2;
 	o.cy = o.height / 2 || o.size / 2;
 }
-JS3.translate = function(o){
+JS3.openShape = function(o){
 	o.stage.save();	
 	o.stage.globalAlpha = o.alpha;
 	o.stage.translate(o.x + o.cx, o.y + o.cy);
 	o.stage.scale(o.scaleX, o.scaleY);	
     o.stage.rotate(o.rotation * Math.PI/180);
+	o.stage.beginPath();
 }
-JS3.copyObj = function(o1, o2){ 
+JS3.drawShape = function(o){
+	o.stage.closePath();	
+	o.mouse = o.stage.isPointInPath(o.stage.mx, o.stage.my);
+	if (o.fill) JS3.fill(o);
+	if (o.stroke) JS3.stroke(o);
+	o.stage.restore();	
+}
+JS3.copyProps = function(o1, o2){ 
 	for (var k in o1) o2[k] = o1[k]; o1 = null;
 }
 
@@ -432,7 +425,7 @@ function JS3Line(o)
 	JS3getBaseProps(this);
 	JS3getLineProps(this);
 	this.update = JS3.drawLine;
-	if (o) JS3.copyObj(o, this);
+	if (o) JS3.copyProps(o, this);
 }
 
 function JS3Arc(o)
@@ -440,15 +433,14 @@ function JS3Arc(o)
 	JS3getBaseProps(this);	
 	JS3getLineProps(this);	
 	this.update = JS3.drawArc;
-	if (o) JS3.copyObj(o, this);
+	if (o) JS3.copyProps(o, this);
 }
 
 function JS3Tri(o)
 {
-	JS3getBaseProps(this);	
-	console.log(this.width);	
+	JS3getBaseProps(this);
 	this.update = JS3.drawTri;
-	if (o) JS3.copyObj(o, this);
+	if (o) JS3.copyProps(o, this);
 	this.p1 = {}; this.p2 = {}; this.p3 = {};	
 }
 
@@ -456,14 +448,14 @@ function JS3Rect(o)
 {
 	JS3getBaseProps(this);
 	this.update = JS3.drawRect;		
-	if (o) JS3.copyObj(o, this);
+	if (o) JS3.copyProps(o, this);
 }
 
 function JS3Circle(o)
 {
 	JS3getBaseProps(this);
 	this.update = JS3.drawCirc;
-	if (o) JS3.copyObj(o, this);
+	if (o) JS3.copyProps(o, this);
 }
 
 function JS3Text(o)
@@ -471,7 +463,7 @@ function JS3Text(o)
 	JS3getBaseProps(this);
 	JS3getTextProps(this);
 	this.update = JS3.drawText;
-	if (o) JS3.copyObj(o, this);	
+	if (o) JS3.copyProps(o, this);	
 }
 
 function JS3Image(o)
@@ -479,7 +471,8 @@ function JS3Image(o)
 	JS3getBaseProps(this);
 	JS3getImageProps(this);	
 	this.update = JS3.drawImage;
-	if (o) JS3.copyObj(o, this);
+	this.fill = this.stroke = false;	
+	if (o) JS3.copyProps(o, this);
 }
 
 function JS3getBaseProps(o)
@@ -497,7 +490,7 @@ function JS3getBaseProps(o)
 
 function JS3getLineProps(o)
 {
-	o.capStyle='butt';
+	o.capStyle='butt'; o.x1=o.y1=o.cx=o.cy=o.x2=o.y2=0;
 	o.__defineSetter__("color", 		function(s)		{ o.strokeColor=s;});	
 	o.__defineSetter__("thickness", 	function(s)		{ o.strokeWidth=s;});
 }

@@ -5,22 +5,17 @@
         <script>
             var stage = new JS3('my-canvas');
                 stage.background = '#eee';
-            stage.interactive = true;    
-            var on = true;
+            stage.interactive = true;
             var x = 200; y = 100;
-            var c1 = new JS3Rect({x:x, y:y, size:50});
-            var c2 = new JS3Rect({x:x, y:y, size:200});
-            var c3 = new JS3Tri({x:x, y:y, width:40, height:30});            
-            stage.addChild(c2);            
-            stage.addChild(c1);
-            stage.addChild(c3);            
-            var spin = function()
-            {
-                c3.rotation +=1;
-            }
-        //    stage.run(spin);
-            stage.tween(c1, 1, {scaleX:4, scaleY:4, delay:1});
-            stage.tween(c3, 1, {scaleX:4, scaleY:4, delay:1.5});            
+            // var c1 = new JS3Rect({x:x, y:y, size:200});
+            // var c2 = new JS3Circle({x:x, y:y, size:100});            
+            // var c3 = new JS3Tri({x:x, y:y, size:50});
+             var ig = new JS3Image({x:x, y:y, src:'img.png'});
+            // stage.addChild(c1);            
+            // stage.addChild(c2);
+            // stage.addChild(c3);
+            stage.addChild(ig);
+            stage.tween(ig, 1, {scaleX:2, scaleY:2, rotation:90, delay:1})
         </script>
         </body> 
 </html>
