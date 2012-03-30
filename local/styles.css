@@ -21,12 +21,13 @@ canvas{
 }
 
 #js3-demo{
-/*	height:198px;*/	
-	height:254px;background-color:#ffffff;border:1px solid #d0d0d0;padding:10px;position:relative;	
+/*	add 28px for each new row */	
+/*	height:254px;*/
+	height:280px; background-color:#ffffff;border:1px solid #d0d0d0;padding:10px;position:relative;	
 	border-radius: 4px;	-webkit-border-radius: 4px; -moz-border-radius: 4px;
 }
 
 button i { padding-right:5px; }
 #btn-download { position:absolute; top:1px; right:10px; }
 
-#datgui {position:absolute; top:41px; right:0; background:#333;}
+#datgui {position:absolute; top:40px; right:0; background:#333;}

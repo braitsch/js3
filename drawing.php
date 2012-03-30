@@ -110,7 +110,7 @@
                 <canvas id="d1" width='440' height='173'></canvas>
                 <p class='clearfix'>
                     Drawing an Arc is simple and just requires an additional point to "pull" the Line in one direction or another.<br>
-                    This third point is a control point defined with the properties <strong><u>cx</u></strong> and <strong><u>cy</u></strong>.</p>
+                    This third point is a control point defined with the properties <strong><u>xc</u></strong> and <strong><u>yc</u></strong>.</p>
                     <pre style='width:445px;float:left;margin-right:10px;'><code class='javascript'>
     	var arc = new JS3Arc();
             arc.color = '#ff0000';	
@@ -118,8 +118,8 @@
             arc.y = 190;
             arc.x1 = 0; 	
             arc.y1 = 0;
-            arc.cy = -250; 	
-            arc.cx = 170;
+            arc.yc = -250; 	
+            arc.xc = 170;
             arc.x2 = 340; 	
             arc.y2 = 0;	
         stage.addChild(arc);

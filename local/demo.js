@@ -1,5 +1,5 @@
 
-var gui, guiObj, stage, cross, shape, alpha, speed, scaleX, scaleY, sx, sy, cx, cy;
+var gui, guiObj, stage, cross, shape, alpha, speed, scaleX, scaleY, rotation, sx, sy;
 var shapeType = 'JS3Circle';
 var easeFunc = easeOutQuad;
 var easeIndex = 2;
@@ -7,25 +7,29 @@ var easeFuncs = [ 'linear', 'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 'easeI
 'easeOutCubic', 'easeInOutCubic', 'easeInQuart', 'easeOutQuart','easeInOutQuart',
 'easeInQuint', 'easeOutQuint', 'easeInOutQuint', 'easeInSine', 'easeOutSine',
 'easeInOutSine', 'easeInExpo', 'easeOutExpo', 'easeInOutExpo', 'easeInCirc', 'easeOutCirc', 'easeInOutCirc'];
-alpha = speed = scaleX = scaleY = 1;
+alpha = speed = scaleX = scaleY = 1; rotation = 0;
 
 $(document).ready(function() {	
 	stage = new JS3('js3-demo-canvas');
 	stage.background = '#eee';
 	stage.interactive = true;
-	drawCirc(); drawCross(); drawGui(); updateOut();
+	drawCirc(); 
+	drawCross(); 
+	drawGui(); 
+	updateOut();
 });
 
 function drawGui()
 {
 	guiObj = {
-		'Draw Shape'        : shapeType,
-		'X'					: cx,
-		'Y'					: cy,
+		'Draw Shape'        : 'Circle',
+		'X'					: cross.x,
+		'Y'					: cross.y,
 		'Opacity'			: alpha,
 		'ScaleX'			: scaleX,
-		'ScaleY'			: scaleY,						
-		'Duration'			: speed,		
+		'ScaleY'			: scaleY,
+		'Rotation'			: rotation,			
+		'Duration'			: speed,
 		'Ease Function'		: 'easeOutQuad',
 		'Tween'				: tweenShape
 	}
@@ -41,11 +45,13 @@ function drawGui()
 	var s4 = gui.add(guiObj, 'ScaleX', 0, 5);
 		s4.onChange(function(val){scaleX=val;updateOut();})
 	var s5 = gui.add(guiObj, 'ScaleY', 0, 5);
-		s5.onChange(function(val){scaleY=val;updateOut();})			
+		s5.onChange(function(val){scaleY=val;updateOut();})	
+	var s6 = gui.add(guiObj, 'Rotation', -720, 720);
+		s6.onChange(function(val){rotation=val;updateOut();})					
 	var a2 = gui.add(guiObj, 'Duration', 0, 5);
 		a2.onChange(function(val){speed=val;updateOut();})
-	var s6 = gui.add(guiObj, 'Ease Function', easeFuncs);
-		s6.onChange(function(val){easeFunc=getEaseIndex(val);updateOut();});
+	var s7 = gui.add(guiObj, 'Ease Function', easeFuncs);
+		s7.onChange(function(val){easeFunc=getEaseIndex(val);updateOut();});
 	gui.add(guiObj, 'Tween');
 	document.getElementById('datgui').appendChild(gui.domElement);
 	$('.close-button').hide(); $('.c select').width(140);
@@ -65,6 +71,7 @@ function updateOut()
 	if (alpha!=1) s+=', alpha:'+green(alpha,1);
 	if (scaleX!=1) s+=', scaleX:'+green(scaleX,1);
 	if (scaleY!=1) s+=', scaleY:'+green(scaleY,1);
+	if (rotation!=0) s+=', rotation:'+green(rotation,0);	
 		s+=', ease:'+green(easeFuncs[easeIndex])+'});';
 	$('#js3-demo-out').html(s);
 }
@@ -110,12 +117,14 @@ function drawTri()
 function drawCross()
 {
 	cross = new JS3Image();
-	cross.x = cx || stage.width/2 - cross.width/2;
-	cross.y = cy || stage.height/2 - cross.height/2;
+	cross.ready = function(){
+		guiObj.X = cross.x = stage.width/2 - cross.width/2;
+		guiObj.Y = cross.y = stage.height/2 - cross.height/2;
+		updateGui();
+	}
 	cross.src = './local/cross.png';
 	cross.drag = onCrossDrag;
 	stage.addChild(cross);
-	cx = cross.x; cy = cross.y;	
 }
 
 function getObjDefinition()
@@ -131,14 +140,14 @@ function onShapeDrag(o)
 
 function onCrossDrag(o)
 {
-	guiObj.X = cx = o.x; guiObj.Y = cy = o.y; updateGui();
+	guiObj.X = cross.x = o.x; guiObj.Y = cross.y = o.y; updateGui();
 }
 
 function tweenShape()
 {
 	var x = cross.x + cross.width/2 - shape.width/2;
 	var y = cross.y + cross.height/2 - shape.height/2
-	stage.tween(shape, speed, {x:x, y:y, alpha:alpha, scaleX:scaleX, scaleY:scaleY, ease:easeFunc, onComplete:function(){sx=shape.x;sy=shape.y;}});
+	stage.tween(shape, speed, {x:x, y:y, alpha:alpha, scaleX:scaleX, scaleY:scaleY, rotation:rotation, ease:easeFunc, onComplete:function(){sx=shape.x;sy=shape.y;}});
 }
 
 function getEaseIndex(s)

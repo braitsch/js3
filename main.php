@@ -28,7 +28,7 @@
                 <h2>Interactive Demo</h2>
                 <p >Move the Shape and Target around and paste the generated code into your HTML document.</p>                
                 <div id="js3-demo">                    
-                    <canvas id="js3-demo-canvas" width="623" height="252" style='float:left;margin-right:10px'></canvas>
+                    <canvas id="js3-demo-canvas" width="623" height="278" style='float:left;margin-right:10px'></canvas>
                     <div id="datgui" style='margin:-30px 10px 0 0;float:left'></div>
                 </div>
                 <pre style='margin-top:5px;'><code id='js3-demo-out' class='javascript'></code></pre>                
@@ -81,12 +81,12 @@
                     <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>
 Once these shapes are drawn, the objects that define them are immediately removed from memory.<br>This makes Shapes ideal for quickly drawing graphics to the screen where no further animation is desired.</p>
                 <pre><code>
-    	var stage = new JS3('x2');
-    	stage.drawCircle( { x:50, y:25, size:50 } );
-    	stage.drawRect( { x:120, y:25, width:80, height:50 } );
-    	stage.drawLine( { x:220, y:25, x1:0, y1:50, x2:50, y2:0 } );
-    	stage.drawArc( { x:280, y:25, x1:0, y1:50, cx:40, cy:-50, x2:80, y2:50 } );
-    	stage.drawTri( { x:380, y:25, size:50 } );
+    	var stage = new JS3('my-canvas');
+        stage.drawCircle( { x:50, y:25, size:50 } );
+        stage.drawRect( { x:120, y:25, width:80, height:50 } );
+        stage.drawLine( { x:220, y:25, x1:0, y1:50, x2:50, y2:0 } );
+        stage.drawArc( { x:280, y:25, x1:0, y1:50, xc:40, yc:-50, x2:80, y2:50 } );
+        stage.drawTri( { x:380, y:25, size:58 } );
                 </code></pre>
                 <p>Results in drawing the following to the screen. <a href='./drawing.php'>Click here to learn more about drawing simple shapes.</a></p>
                 <canvas id="x2" width='898' height='100'></canvas>  

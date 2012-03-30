@@ -1,21 +1,16 @@
 <html>
      <body>                
-        <canvas id="my-canvas" width="800" height="400"></canvas>                        
+        <canvas id="my-canvas" width="800" height="100"></canvas>                        
         <script src="./src/JS3.js"></script>
         <script>
             var stage = new JS3('my-canvas');
                 stage.background = '#eee';
-            stage.interactive = true;
-            var x = 200; y = 100;
-            // var c1 = new JS3Rect({x:x, y:y, size:200});
-            // var c2 = new JS3Circle({x:x, y:y, size:100});            
-            // var c3 = new JS3Tri({x:x, y:y, size:50});
-             var ig = new JS3Image({x:x, y:y, src:'img.png'});
-            // stage.addChild(c1);            
-            // stage.addChild(c2);
-            // stage.addChild(c3);
-            stage.addChild(ig);
-            stage.tween(ig, 1, {scaleX:2, scaleY:2, rotation:90, delay:1})
+            var c1 = new JS3Circle({x:300, y:25});
+                stage.addChild(c1);
+            var c2 = new JS3Circle({x:100, y:25});
+                stage.addChild(c2);
+                stage.tween(c1, 1, {fillColor:'#ff0000', delay:1, scaleX:2, scaleY:2});
         </script>
         </body> 
-</html>
+</html>    
+    

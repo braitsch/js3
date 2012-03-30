@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.54
+ * Version : 0.1.55
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -302,6 +302,7 @@ JS3.drawCustomTriangle = function(o){
 	o.cy = h/2;
 }
 JS3.drawImage = function(o){
+//	console.log(o.x)
 	if (o.image.src==false) return;
 	o.cx = o.image.width / 2;
 	o.cy = o.image.height / 2;
@@ -500,6 +501,8 @@ function JS3getImageProps(o)
 	o.image = new Image();	
 	o.__defineSetter__("src", 			function(s)		{ o.image.src=s;});
 	o.__defineSetter__("ready", 		function(f)		{ o.image.onload=f;});
+	o.__defineGetter__("width", 	 	function()		{ return o.image.width;});
+	o.__defineGetter__("height", 	 	function()		{ return o.image.height;});	
 }
 
 function JS3getTextProps(o)

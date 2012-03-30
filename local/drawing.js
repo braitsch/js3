@@ -27,13 +27,13 @@ function drawCanvas()
 	arc.y = 190;
 	arc.x1 = 0; 	
 	arc.y1 = 0;
-	arc.cy = -250; 	
-	arc.cx = 170;
+	arc.yc = -250; 	
+	arc.xc = 170;
 	arc.x2 = 340; 	
 	arc.y2 = 0;	
 	s2.addChild(arc);
 	s2.drawText({text:'x1 / y1', y:210, x:50});
-	s2.drawText({text:'cx / cy', y:50, x:220});	
+	s2.drawText({text:'xc / yc', y:50, x:220});	
 	s2.drawText({text:'x2 / y2', y:210, x:390});	
 }
 
