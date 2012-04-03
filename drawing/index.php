@@ -4,7 +4,7 @@
         <div id='content'>
             <div id="header">
                 <h1>Drawing Shapes</h1>
-                <p class='anchor-nav'>JS3 makes it easy to draw five basic primitive shapes. 
+                <p class='anchor'>JS3 makes it easy to draw five basic primitive shapes. 
                     <a href='#cr'>Circles</a>,
                     <a href='#cr'>Rectangles</a>, 
                     <a href='#tri'>Triangles</a>, 
@@ -122,7 +122,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
         stage.addChild(c);             
                     </code></pre>
                     <hr>                    
-                <h2 id='la' class='anchor-nav'>Lines and Arcs</h2>                    
+                <h2 id='la'>Lines and Arcs</h2>                    
                     <p>In addition to the base object properties, Lines & Arcs also have the following unique properites :</p>
                     <pre><code class='javascript'>  
         color       :Number = '#333';

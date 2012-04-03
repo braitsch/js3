@@ -18,14 +18,14 @@
                     <pre><code>
         &lt;body&gt;                
         &lt;canvas id="my-canvas" width="800" height="100"&gt;&lt;/canvas&gt;                        
-        &lt;script src="https://raw.github.com/braitsch/js3/master/src/JS3.js"&gt;&lt;/script&gt;
+        &lt;script src="<?php echo $dl;?>"&gt;&lt;/script&gt;
         &lt;/body&gt;                
                     </code></pre>    
                     <p><b>3.</b> Initialize a new JS3 object and pass in the id of your canvas element.</p>
                     <pre><code>
         &lt;body&gt;                
         &lt;canvas id="my-canvas" width="800" height="100"&gt;&lt;/canvas&gt;                        
-        &lt;script src="https://raw.github.com/braitsch/js3/master/src/JS3.js"&gt;&lt;/script&gt;
+        &lt;script src="<?php echo $dl;?>"&gt;&lt;/script&gt;
         &lt;script&gt;
             var stage = new JS3('my-canvas');
         &lt;/script&gt;
@@ -37,7 +37,7 @@
                 <pre><code>
         &lt;body&gt;                
         &lt;canvas id="my-canvas" width="800" height="100"&gt;&lt;/canvas&gt;                        
-        &lt;script src="https://raw.github.com/braitsch/js3/master/src/JS3.js"&gt;&lt;/script&gt;
+        &lt;script src="<?php echo $dl;?>"&gt;&lt;/script&gt;
         &lt;script&gt;
             var stage = new JS3('my-canvas');
                 stage.background = '#CCC'

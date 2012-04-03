@@ -17,7 +17,10 @@
                 <div id="features" class='clearfix'>
                     <h2>Core Features</h2>
                     <ul>
-                        <li>Simple API for drawing basic primitives: <a href='./drawing.php#cr'>Circles, Ellipses, Squares, Rectangles</a>, <a href='./drawing.php#tri'>Triangles</a>, <a href='./drawing.php#la'>Lines & Arcs</a></li>
+                        <li>Simple API for drawing basic primitives: 
+                            <a href=<?php linkto('/drawing/#cr')?>>Circles, Ellipses, Squares, Rectangles</a>, 
+                            <a href=<?php linkto('/drawing/#tri')?>>Triangles</a>, 
+                            <a href=<?php linkto('/drawing/#la')?>>Lines & Arcs</a></li>
                         <li>Built in Mouse interactions: <a href='./mouse-events.php'>Click, Drag, RollOver, RollOut, etc..</a></li>
                         <li>Support for loading images and writing text</li>                        
                         <li>Tween multiple properties at the same time: <b>x, y & alpha, etc..</b></li>

@@ -4,7 +4,7 @@
         <div id='content'>
             <div id="header">
                 <h1>Mouse Events</h1>
-                <p class='anchor-nav'>All JS3Objects can easily be told to listen for Mouse Events</p><hr>
+                <p>All JS3Objects can easily be told to listen for Mouse Events</p><hr>
             </div>
             <div>
                 <h2>Enabling Mouse Events</h2>
