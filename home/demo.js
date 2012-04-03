@@ -122,7 +122,7 @@ function drawCross()
 		guiObj.Y = cross.y = stage.height/2 - cross.height/2;
 		updateGui();
 	}
-	cross.src = './local/cross.png';
+	cross.src = './home/cross.png';
 	cross.drag = onCrossDrag;
 	stage.addChild(cross);
 }

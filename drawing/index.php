@@ -1,5 +1,5 @@
 <?php
-    include ('./php/header.php'); 
+    include ('../local/header.php'); 
 ?>
         <div id='content'>
             <div id="header">
@@ -12,6 +12,41 @@
                     <a href='#la'>Arcs.</a></p>
                 <hr>
             </div>
+
+        <!-- drawing-shapes -->    
+                <div id="drawing-shapes">
+                    <h2>Drawing Shapes</h2>
+                    <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>
+Once these shapes are drawn, the objects that define them are immediately removed from memory.<br>This makes Shapes ideal for quickly drawing graphics to the screen where no further animation is desired.</p>
+                <pre><code>
+    	var stage = new JS3('my-canvas');
+        stage.drawCircle( { x:50, y:25, size:50 } );
+        stage.drawRect( { x:120, y:25, width:80, height:50 } );
+        stage.drawLine( { x:220, y:25, x1:0, y1:50, x2:50, y2:0 } );
+        stage.drawArc( { x:280, y:25, x1:0, y1:50, xc:40, yc:-50, x2:80, y2:50 } );
+        stage.drawTri( { x:380, y:25, size:58 } );
+                </code></pre>
+                <p>Results in drawing the following to the screen. <a href='./drawing.php'>Click here to learn more about drawing simple shapes.</a></p>
+                <canvas id="x2" width='898' height='100'></canvas>  
+                </div><hr> 
+                 
+        <!-- drawing-sprites -->    
+                <div id="drawing-sprites">
+                    <h2>Drawing Sprites</h2>
+                    <p>Sprites are objects that persist in memory allowing you to animate them over time.<br>
+The syntax is very similar to creating basic shapes, except that you must also manually add them to the display list.</p>
+                <pre><code>
+        var stage = new JS3('my-canvas');	
+        var c = new JS3Circle();
+            c.size = 50; c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2;
+        stage.addChild( c );	
+                </code></pre>
+                </div><hr>
+
+
+
+
+
             <div id="drawing-basics">
                 <h2>Drawing Basics</h2>
                 <p>All Shapes & Sprites inherit from a base graphics object with the following properties and default settings.<br>
@@ -127,8 +162,8 @@
                 <canvas id="d2" width='440' height='245'></canvas>
             </div>
         </div>
-        <?php include ('./php/footer.php'); ?>        
-        <script type="text/javascript" src="./local/drawing.js"></script>            
+        <?php include ('../local/footer.php'); ?>
+        <script type="text/javascript" src="./drawing.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
     </body>

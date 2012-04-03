@@ -1,6 +1,6 @@
-<script type="text/javascript" src="./vendor/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="./vendor/bootstrap-dropdown.js"></script>
-<script type="text/javascript" src="./src/JS3.js"></script>
+<script type="text/javascript" src=<?php linkto('/vendor/jquery-1.7.1.min.js')?>></script>
+<script type="text/javascript" src=<?php linkto('/vendor/bootstrap-dropdown.js')?>></script>
+<script type="text/javascript" src=<?php linkto('/src/JS3.js')?>></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $(".anchor-nav a").click(function() {

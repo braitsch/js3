@@ -1,36 +1,9 @@
-
 var x3, x4, x5, x6, x7;
 
-$(document).ready(function() {	
-	initCnvs1();
-	initCnvs2();
+$(document).ready(function() {
 	initCnvsControlled();
 	addButtonListeners();
 });
-
-function initCnvs1()
-{
-	var stage = new JS3('x1');
-	var c = new JS3Circle( { size:50, x:20, y:25} );
-	stage.addChild(c);
-	function tween() { c.x = 20; stage.tween(c, 2, {x:510, ease:easeInOutQuad, delay:.5,
-		//	onStart:function(){console.log('starting tween...'+this.duration)},
-			onComplete:function(){tween();}		
-		//	onComplete:function(){console.log('completed in '+(Date.now() - this.start) / 1000 + ' seconds'); tween();}
-		}); }
-	tween();
-}
-
-function initCnvs2()
-{
-	var stage = new JS3('x2');
-	stage.drawClean = false;
-	stage.drawCircle( { x:50, y:25, size:50 } );
-	stage.drawRect( { x:120, y:25, width:80, height:50 } );
-	stage.drawLine( { x:220, y:25, x1:0, y1:50, x2:50, y2:0 } );
-	stage.drawArc( { x:280, y:25, x1:0, y1:50, xc:40, yc:-50, x2:80, y2:50 } );
-	stage.drawTri( { x:380, y:25, size:58 } );
-}
 
 function initCnvsControlled()
 {
