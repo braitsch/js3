@@ -4,12 +4,7 @@
         <div id='content'>
             <div id="header">
                 <h1>Tweening</h1>
-                <p class='anchor-nav'>JS3 makes it easy to draw five basic primitive shapes. 
-                    <a href='#cr'>Circles</a>,
-                    <a href='#cr'>Rectangles</a>, 
-                    <a href='#tri'>Triangles</a>, 
-                    <a href='#la'>Lines</a> and 
-                    <a href='#la'>Arcs.</a></p>
+                <p></p>
                 <hr>
             </div>
 
@@ -140,7 +135,7 @@ The "drawCircle" function just returns a basic circle and the "update" function 
                 </div>
                 <div class="clearfix"><hr></div>
         <?php include ('../local/footer.php'); ?>
-        <script type="text/javascript" src="./images-and-text.js"></script>            
+        <script type="text/javascript" src="./tweening.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
     </body>

@@ -1,16 +1,23 @@
 $(document).ready(function() {
+	drawShapes();
 	drawCanvas();
 });
 
-function initCnvs2()
+function drawShapes()
 {
-	var stage = new JS3('x2');
+	var stage = new JS3('draw-1');
 	stage.drawClean = false;
 	stage.drawCircle( { x:50, y:25, size:50 } );
 	stage.drawRect( { x:120, y:25, width:80, height:50 } );
 	stage.drawLine( { x:220, y:25, x1:0, y1:50, x2:50, y2:0 } );
 	stage.drawArc( { x:280, y:25, x1:0, y1:50, xc:40, yc:-50, x2:80, y2:50 } );
 	stage.drawTri( { x:380, y:25, size:58 } );
+	stage = new JS3('draw-2');
+	var c = new JS3Circle();
+	c.size = 50; 
+	c.x = 50;
+	c.y = 25;
+	stage.addChild( c );
 }
 
 function drawCanvas()

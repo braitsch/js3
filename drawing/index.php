@@ -12,12 +12,11 @@
                     <a href='#la'>Arcs.</a></p>
                 <hr>
             </div>
-
-        <!-- drawing-shapes -->    
-                <div id="drawing-shapes">
-                    <h2>Drawing Shapes</h2>
-                    <p>You can draw simple shapes by calling the appropriate method and passing in an object that defines how the shape should be drawn.<br>
-Once these shapes are drawn, the objects that define them are immediately removed from memory.<br>This makes Shapes ideal for quickly drawing graphics to the screen where no further animation is desired.</p>
+            <div id="shapes-vs-sprite">
+                <h2>Shapes Vs. Sprites</h2>
+                <p>JS3 allows you to create persistent and non-persistent graphics, respectively called Shapes & Sprites.<br>
+The main difference is that Shapes are drawn to the canvas and then immediately removed from memory whereas Sprites persist allowing you to tween and interact with them after they are drawn.</p>
+                <p>You can draw a Shape by calling the desired Stage method and passing in an Object that describes how the Shape should be drawn.</p>
                 <pre><code>
     	var stage = new JS3('my-canvas');
         stage.drawCircle( { x:50, y:25, size:50 } );
@@ -26,26 +25,25 @@ Once these shapes are drawn, the objects that define them are immediately remove
         stage.drawArc( { x:280, y:25, x1:0, y1:50, xc:40, yc:-50, x2:80, y2:50 } );
         stage.drawTri( { x:380, y:25, size:58 } );
                 </code></pre>
-                <p>Results in drawing the following to the screen. <a href='./drawing.php'>Click here to learn more about drawing simple shapes.</a></p>
-                <canvas id="x2" width='898' height='100'></canvas>  
-                </div><hr> 
-                 
-        <!-- drawing-sprites -->    
-                <div id="drawing-sprites">
-                    <h2>Drawing Sprites</h2>
-                    <p>Sprites are objects that persist in memory allowing you to animate them over time.<br>
-The syntax is very similar to creating basic shapes, except that you must also manually add them to the display list.</p>
+            <p>These methods essentially stain the canvas with whatever type of Object you tell it to draw.</p>
+            <canvas id="draw-1" width='898' height='100'></canvas>
+            <p>Shapes are much more performant than Sprites. If tweening and interactivity are not needed, always draw Shapes instead of Sprites.</p><hr> 
+            <p>Sprites are analogous to DisplayObjects in AS3 in that you create them by using the <span style='color:blue;'>new</span> keyword and then by adding them to the Stage.<br>
+                They can be removed and added to the Stage as often as needed as well be animated and be told to listen for mouse events.</p>
                 <pre><code>
         var stage = new JS3('my-canvas');	
-        var c = new JS3Circle();
-            c.size = 50; c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2;
-        stage.addChild( c );	
+    // create a Sprite using the new keyword //    
+        var c = new JS3Circle(); 
+            c.x = 50;
+            c.y = 25;
+            c.size = 50;
+        stage.addChild( c );
+    // or you can pass an Object into the JS3Object constructor //
+        var c = new JS3Circle( {x:50, y:25, size:50} ); 
+        stage.addChild( c );    
                 </code></pre>
-                </div><hr>
-
-
-
-
+            <canvas id="draw-2" width='898' height='100'></canvas>
+            </div><hr>
 
             <div id="drawing-basics">
                 <h2>Drawing Basics</h2>

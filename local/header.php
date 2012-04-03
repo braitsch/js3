@@ -27,7 +27,7 @@
                 <div class="container" style="width: auto;">               
                     <ul class="nav pull-left">
                         <li class="divider-vertical"></li>
-                        <li><a href=<?php linkto('/home')?>>JS3</a></li>
+                        <li><a href=<?php linkto('')?>>JS3</a></li>
                         <li class="divider-vertical"></li>
                         <li><a href=<?php linkto('/getting-started')?>>Getting Started</a></li>                        
                         <li class="divider-vertical"></li>

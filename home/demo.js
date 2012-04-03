@@ -10,7 +10,7 @@ var easeFuncs = [ 'linear', 'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 'easeI
 alpha = speed = scaleX = scaleY = 1; rotation = 0;
 
 $(document).ready(function() {	
-	stage = new JS3('js3-demo-canvas');
+	stage = new JS3('demo-canvas');
 	stage.background = '#eee';
 	stage.interactive = true;
 	drawCirc(); 
@@ -122,7 +122,7 @@ function drawCross()
 		guiObj.Y = cross.y = stage.height/2 - cross.height/2;
 		updateGui();
 	}
-	cross.src = './cross.png';
+	cross.src = './home/cross.png';
 	cross.drag = onCrossDrag;
 	stage.addChild(cross);
 }

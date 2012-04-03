@@ -1,5 +1,5 @@
 <?php
-    include ('../local/header.php'); 
+    include ('./local/header.php'); 
 ?>
         <div id='content'>
                 <div id="header">
@@ -28,15 +28,15 @@
                 <h2>Interactive Demo</h2>
                 <p >Move the Shape and Target around and paste the generated code into your HTML document.</p>                
                 <div id="js3-demo">                    
-                    <canvas id="js3-demo-canvas" width="623" height="278" style='float:left;margin-right:10px'></canvas>
+                    <canvas id="demo-canvas" width="623" height="278" style='float:left;margin-right:10px'></canvas>
                     <div id="datgui" style='margin:-30px 10px 0 0;float:left'></div>
                 </div>
                 <pre style='margin-top:5px;'><code id='js3-demo-out' class='javascript'></code></pre>                
                 <hr>
-        <?php include ('../local/footer.php'); ?>
-        <script type="text/javascript" src="./demo.js"></script>
-        <script type="text/javascript" src="./home.js"></script>
-        <script type="text/javascript" src="../vendor/dat.gui.min.js"></script>
+        <?php include ('./local/footer.php'); ?>
+        <script type="text/javascript" src="./home/demo.js"></script>
+        <script type="text/javascript" src="./home/home.js"></script>
+        <script type="text/javascript" src="./vendor/dat.gui.min.js"></script>
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
     </body>
