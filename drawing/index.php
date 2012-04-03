@@ -14,7 +14,7 @@
             </div>
             <div id="shapes-vs-sprite">
                 <h2>Shapes Vs. Sprites</h2>
-                <p>JS3 allows you to create persistent and non-persistent graphics, respectively called Shapes & Sprites.<br>
+                <p>JS3 allows you to create non-persistent and persistent graphics, respectively called Shapes & Sprites.<br>
 The main difference is that Shapes are drawn to the canvas and then immediately removed from memory whereas Sprites persist allowing you to tween and interact with them after they are drawn.</p>
                 <p>You can draw a Shape by calling the desired Stage method and passing in an Object that describes how the Shape should be drawn.</p>
                 <pre><code>
@@ -29,7 +29,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
             <canvas id="draw-1" width='898' height='100'></canvas>
             <p>Shapes are much more performant than Sprites. If tweening and interactivity are not needed, always draw Shapes instead of Sprites.</p><hr> 
             <p>Sprites are analogous to DisplayObjects in AS3 in that you create them by using the <span style='color:blue;'>new</span> keyword and then by adding them to the Stage.<br>
-                They can be removed and added to the Stage as often as needed as well be animated and be told to listen for mouse events.</p>
+                They can be removed and added to the Stage as often as needed as well be <a href=<?php linkto('/tweening');?>>animated</a> and be told to listen for <a href=<?php linkto('/mouse-events');?>>mouse events</a>.</p>
                 <pre><code>
         var stage = new JS3('my-canvas');	
     // create a Sprite using the new keyword //    
@@ -158,7 +158,8 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
         stage.addChild(arc);
                     </code></pre>
                 <canvas id="d2" width='440' height='245'></canvas>
-            </div>
+<hr>
+            <p><b>Awesome, you're ready for the next section. Click here to learn about <a href=<?php linkto('/images-and-text');?>>images & text</a>.</b></p><hr>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./drawing.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
