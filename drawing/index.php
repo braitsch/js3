@@ -160,7 +160,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
                     </code></pre>
                 <canvas id="d2" width='440' height='245'></canvas>
 <hr>
-            <p><b>Awesome, you're ready for the next section. Click here to learn about <a href=<?php linkto('/images-and-text');?>>images & text</a>.</b></p><hr>
+            <p><b>Awesome, you're ready for the next section. Click here to learn about <a href=<?php linkto('/images-and-text');?>>Images & Text.</a></b></p><hr>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./drawing.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>

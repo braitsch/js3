@@ -1,4 +1,8 @@
-<?php $version='0.1.55'; $dl='https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js'; function linkto($n){ echo 'http://localhost:8888'.$n;} ?>
+<?php 
+$version='0.1.55'; $dl='https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js';
+$root = $_SERVER["REMOTE_ADDR"] == '127.0.0.1' ? 'http://localhost:8888' :  'http://quietless.com/js3';
+function linkto($n){ global $root; echo $root.$n;}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -25,9 +29,9 @@
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container" style="width: auto;">               
-                    <ul class="nav pull-left">
+                    <ul id='global-nav' class="nav pull-left">
                         <li class="divider-vertical"></li>
-                        <li><a href=<?php linkto('')?>>JS3</a></li>
+                        <li><a href=<?php linkto('/')?>>JS3</a></li>
                         <li class="divider-vertical"></li>
                         <li><a href=<?php linkto('/getting-started')?>>Getting Started</a></li>                        
                         <li class="divider-vertical"></li>

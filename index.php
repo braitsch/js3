@@ -21,8 +21,8 @@
                             <a href=<?php linkto('/drawing/#cr')?>>Circles, Ellipses, Squares, Rectangles</a>, 
                             <a href=<?php linkto('/drawing/#tri')?>>Triangles</a>, 
                             <a href=<?php linkto('/drawing/#la')?>>Lines & Arcs</a></li>
-                        <li>Built in Mouse interactions: <a href='./mouse-events.php'>Click, Drag, RollOver, RollOut, etc..</a></li>
-                        <li>Support for loading images and writing text</li>                        
+                        <li>Built in Mouse interactions: <a href=<?php linkto('/mouse-events')?>>Click, Drag, RollOver, RollOut, etc..</a></li>
+                        <li>Support for displaying <a href=<?php linkto('/images-and-text')?>>Images and Text</a></li>
                         <li>Tween multiple properties at the same time: <b>x, y & alpha, etc..</b></li>
                         <li>Delayed Tweens, onStart & onComplete callbacks</li>
                         <li>Sequence, or daisy-chain multiple tweens together using callbacks</li>
