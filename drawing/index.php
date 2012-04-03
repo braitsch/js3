@@ -16,7 +16,7 @@
                 <h2>Shapes Vs. Sprites</h2>
                 <p>JS3 allows you to create non-persistent and persistent graphics, respectively called Shapes & Sprites.<br>
 The main difference is that Shapes are drawn to the canvas and then immediately removed from memory whereas Sprites persist allowing you to tween and interact with them after they are drawn.</p>
-                <p>You can draw a Shape by calling the desired Stage method and passing in an Object that describes how the Shape should be drawn.</p>
+                <p>You can draw a Shape by calling the desired Stage method and passing in a generic Object that describes how the Shape should be drawn.</p>
                 <pre><code>
     	var stage = new JS3('my-canvas');
         stage.drawCircle( { x:50, y:25, size:50 } );
@@ -25,10 +25,10 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
         stage.drawArc( { x:280, y:25, x1:0, y1:50, xc:40, yc:-50, x2:80, y2:50 } );
         stage.drawTri( { x:380, y:25, size:58 } );
                 </code></pre>
-            <p>These methods essentially stain the canvas with whatever type of Object you tell it to draw.</p>
+            <p>These methods essentially stain the canvas with whatever type of Shape you tell it to draw.</p>
             <canvas id="draw-1" width='898' height='100'></canvas>
             <p>Shapes are much more performant than Sprites. If tweening and interactivity are not needed, always draw Shapes instead of Sprites.</p><hr> 
-            <p>Sprites are analogous to DisplayObjects in AS3 in that you create them by using the <span style='color:blue;'>new</span> keyword and then add them to the Stage.<br>
+            <p>Sprites are analogous to DisplayObjects in AS3 in that you create them by using the <span style='color:blue;'>new</span> keyword and then manually add them to the Stage.<br>
             Sprites can be removed and added to the Stage as often as desired as well be <a href=<?php linkto('/tweening');?>>animated</a> and told to listen for <a href=<?php linkto('/mouse-events');?>>mouse events</a>.</p>
                 <pre><code>
         var stage = new JS3('my-canvas');	
@@ -68,7 +68,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
         strokeWidth :Number = 4;
                     </code></pre><hr>
                 <h2 id='cr'>Circles and Rectangles</h2>                    
-                <p>The dimensions of Circles, Rectangles, & Triangles are defined by setting either their <b><u>size</u></b> property or their <b><u>width</u></b> and <b><u>height</u></b>.<br>Setting a Shape's <b><u>size</u></b> property constrains the object to equal dimensions.</p>
+                <p>The dimensions of Circles, Rectangles, & Triangles are defined by setting either their <b><u>size</u></b> property or their <b><u>width</u></b> and <b><u>height</u></b>.<br>Setting a Shape's <b><u>size</u></b> property constrains the Shape to equal dimensions.</p>
                     <pre><code>  
     // draw a circle with a diameter of 50 pixels //                
         var c = new JS3Circle(); 

@@ -59,7 +59,7 @@
         &lt;/body&gt;                
                 </code></pre>
             <canvas id="gs-canvas" width='898' height='100'></canvas><hr>
-            <p><b>Awesome, you're ready for the next section. Click here to learn more about <a href=<?php linkto('/drawing');?>>drawing shapes</a>.</b></p><hr>
+            <p><b>Awesome, you're ready for the next section. Click here to learn more about <a href=<?php linkto('/drawing');?>>drawing shapes.</a></b></p><hr>
                 
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./getting-started.js"></script>            
