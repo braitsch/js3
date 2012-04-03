@@ -8,12 +8,12 @@
             </div>
             <div>
                 <h2>Stage Properties</h2>
-                <p>The following properties of the Stage are read-only</p>
+                <p>The following properties of the Stage are <b>read-only</b>.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
-        stage.width = 0;
-        stage.height = 0;
-        stage.numChildren = 0;
+        stage.width;
+        stage.height;
+        stage.numChildren;
                 </code></pre>
                 <p>The following properties of the Stage can be read as well as written, default values are shown.</p>
         <pre><code class='javascript'>
@@ -21,7 +21,7 @@
         stage.interactive = false;          // tells the Stage to listen for mouse events
         stage.drawClean = true;             // tells the Stage to clear itself before drawing the next frame 
         stage.background = '#ffffff';       // the background color of the Stage
-        stage.windowTitle = 'My Canvas';    // the title of pop-up windows used when saving the Stage to .png 
+        stage.windowTitle = 'My Canvas';    // the title of pop-up windows used when saving the Stage to a .png
                 </code></pre>
 
                 <h2>Stage Methods</h2>
