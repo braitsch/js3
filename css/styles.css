@@ -3,7 +3,7 @@ body { background-color:#eee; }
 h1, h2 { margin-bottom:5px; }
 hr { border-top: 1px solid #CCC; border-bottom: 1px solid white;}
 button {float:right; margin-top:6px;}
-#content { width:900px; margin:80px auto; }
+#content { width:900px; margin:80px auto 30px auto; }
 #header { text-align:center; }
 p { padding-left:8px; }
 
@@ -31,3 +31,4 @@ button i { padding-right:5px; }
 #btn-download { position:absolute; top:1px; right:10px; }
 
 #datgui {position:absolute; top:40px; right:0; background:#333;}
+#footer {margin-top:80px; text-align:center;}

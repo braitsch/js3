@@ -139,7 +139,6 @@ The "drawCircle" function just returns a basic circle and the "update" function 
                 <button id='x7-btn' class='btn btn-primary'>Stop Updating</button>
                 </div>
                 <div class="clearfix"><hr></div>
-</div>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./images-and-text.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>

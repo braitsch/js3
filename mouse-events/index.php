@@ -44,8 +44,7 @@ Each method takes a callback function which will be executed each time that inte
         }     
                     </code></pre>
                     <p><strong>Quick Tip :</strong> Adding a Drag Function to an Object automatically sets its <u>draggable</u> property to <u>true</u>.<br>However you can always disable dragging by setting <u>draggable</u> or <u>enabled</u> to <u>false</u> without the need to remove the callback.</p>
-            </div><hr>            
-        </div>
+            </div><hr>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./mouse-events.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>

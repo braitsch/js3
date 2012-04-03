@@ -161,7 +161,6 @@ The syntax is very similar to creating basic shapes, except that you must also m
                     </code></pre>
                 <canvas id="d2" width='440' height='245'></canvas>
             </div>
-        </div>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./drawing.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
