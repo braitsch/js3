@@ -39,6 +39,8 @@
                         <li class="divider-vertical"></li>
                         <li><a href=<?php linkto('/mouse-events')?>>Mouse Events</a></li>
                         <li class="divider-vertical"></li>
+                        <li><a href=<?php linkto('/api')?>>API</a></li>
+                        <li class="divider-vertical"></li>
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gallery<b class="caret"></b></a>
                             <ul class="dropdown-menu">
