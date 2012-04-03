@@ -28,8 +28,8 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
             <p>These methods essentially stain the canvas with whatever type of Object you tell it to draw.</p>
             <canvas id="draw-1" width='898' height='100'></canvas>
             <p>Shapes are much more performant than Sprites. If tweening and interactivity are not needed, always draw Shapes instead of Sprites.</p><hr> 
-            <p>Sprites are analogous to DisplayObjects in AS3 in that you create them by using the <span style='color:blue;'>new</span> keyword and then by adding them to the Stage.<br>
-                They can be removed and added to the Stage as often as needed as well be <a href=<?php linkto('/tweening');?>>animated</a> and be told to listen for <a href=<?php linkto('/mouse-events');?>>mouse events</a>.</p>
+            <p>Sprites are analogous to DisplayObjects in AS3 in that you create them by using the <span style='color:blue;'>new</span> keyword and then add them to the Stage.<br>
+            Sprites can be removed and added to the Stage as often as desired as well be <a href=<?php linkto('/tweening');?>>animated</a> and told to listen for <a href=<?php linkto('/mouse-events');?>>mouse events</a>.</p>
                 <pre><code>
         var stage = new JS3('my-canvas');	
     // create a Sprite using the new keyword //    
@@ -53,7 +53,8 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
         x           :Number = 0;
         y           :Number = 0;
         alpha       :Number = 1;
-        scale       :Number = 1;
+        scaleX      :Number = 1;
+        scaleY      :Number = 1;        
         rotation    :Number = 1;
                     </code></pre>
                 <p>In addition to the base object properties defined above, Circles, Rectangles, & Triangles also define fill & stroke values.<br>To disable the fill or stroke of a Shape, set its <strong><u>fill</u></strong> or <strong><u>stroke</u></strong> property to false.</p>
