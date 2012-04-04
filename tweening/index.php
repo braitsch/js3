@@ -12,7 +12,7 @@
   <!-- basic-tweening -->                    
                 <div id="basic-tweening">
                     <h2>Basic Tweening</h2>                
-                <p>The simplest way to Tween an Object is by using the built in Tween method. The syntax is exactly the same as Tweenlite.</p>
+                <p>The simplest way to Tween an Object is by using the built in Tween method. The <a href=<?php linkto('/api/#api-tweening')?>>syntax</a> is exactly the same as Tweenlite.</p>
                 <pre><code class='javascript'>
         var c = new JS3Circle();                     
         c.x = 75; 
@@ -138,7 +138,7 @@ The "drawCircle" function just returns a basic circle and the "update" function 
                 <button id='x7-btn' class='btn btn-primary'>Stop Updating</button>
 			</div>
 			<div class="clearfix"></div><hr>
-            <p class='next-page'><b>Awesome, you're ready for the next section. Click here to learn <a href=<?php linkto('/mouse-events');?>>Mouse Events.</a></b></p><hr>
+            <p class='next-page'><b>Awesome, you're ready for the next section. Click here to learn about setting up for <a href=<?php linkto('/mouse-events');?>>Interactivity & Mouse Events.</a></b></p><hr>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./tweening.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>

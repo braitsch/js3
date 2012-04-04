@@ -18,7 +18,8 @@
                 <h2>Shapes Vs. Sprites</h2>
                 <p>JS3 allows you to create non-persistent and persistent graphics, respectively called Shapes & Sprites.<br>
 The main difference is that Shapes are drawn to the canvas and then immediately removed from memory whereas Sprites persist allowing you to tween and interact with them after they are drawn.</p>
-                <p>You can draw a Shape by calling the desired Stage method and passing in a generic Object that describes how the Shape should be drawn.</p>
+                <p>You can draw a Shape by calling the desired Stage method and passing in a generic Object that describes how the Shape should be drawn.<br>
+                    A full list of properties that can be used to describe how an Object is created are listed below in <a class='anchor' href='#drawing-basics'>drawing basics.</a></p>
                 <pre><code class='javascript'>
     	var stage = new JS3('my-canvas');
         stage.drawCircle( { x:50, y:25, size:50 } );
