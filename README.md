@@ -1,4 +1,4 @@
-###JS3 - A lightweight port of the AS3 [TweenLite](http://www.greensock.com/tweenlite/) library for the JavaScript Canvas
+###JS3 is a fast and lightweight drawing and animation library for the JavaScript Canvas 
 =============
 
-This is a work in progress, however you can view the evolving documentation [here](http://quietless.com/js3/) and a gallery of some examples [here](http://quietless.com/js3/gallery.php "gallery").
+This is a work in progress, however you can view the evolving documentation [here](http://quietless.com/js3/) and a gallery of some examples [here](http://quietless.com/js3/gallery/honeycomb "gallery").
