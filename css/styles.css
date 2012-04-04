@@ -9,6 +9,7 @@ p { padding-left:8px; }
 
 .clearfix { clear:both; }
 pre { padding:0; } pre code { background:white; }
+.next-page { text-align:center; }
 
 #home-canvas{ margin-left:10px;}
 #home-canvas-code{ width:300px; float:left;}

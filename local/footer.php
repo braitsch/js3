@@ -5,7 +5,7 @@
 <script type="text/javascript" src=<?php linkto('/src/JS3.js')?>></script>
 <script type="text/javascript">
 $(document).ready(function() {    
-    $(".anchor a").click(function() {
+    $(".anchor").click(function() {
         var a = $(this).attr("href");
 	    a = a.substr(a.indexOf('#'));
         $(window).scrollTop($(a).offset().top - 50);

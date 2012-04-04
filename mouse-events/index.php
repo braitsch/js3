@@ -9,13 +9,13 @@
             <div>
                 <h2>Enabling Mouse Events</h2>
                 <p>To optimize performance, Mouse Events are ignored by default. To tell the Stage to listen for Mouse Events set the Stage's <u>interactive</u> property to <u>true</u>.</p>
-                    <pre><code>  
+                    <pre><code class='javascript'>  
         stage = new JS3('my-canvas');
         stage.interactive = true;
                     </code></pre>
                 <p>All JS3Objects have two basic properties that control their interactivity.<br>
 To make any Object draggable, set its <u>draggable</u> property to <u>true</u>, likewise to tell any Object to ignore Mouse Events, set its <u>enabled</u> property to <u>false</u>.</p>
-                <pre><code>  
+                <pre><code class='javascript'>  
         var c = new JS3Circle();
         c.enabled   = true;     // default
         c.draggable = false;    // default
@@ -25,7 +25,7 @@ To make any Object draggable, set its <u>draggable</u> property to <u>true</u>, 
                 <h2>Adding Event Listeners</h2>
                 <p>JS3Objects have the following methods to listen for Mouse Interactions.<br>
 Each method takes a callback function which will be executed each time that interaction takes place.</p>
-                    <pre><code>  
+                    <pre><code class='javascript'>  
         var c = new JS3Circle();
         c.click = function(){ trace('I was clicked!'); };
         c.dragStart = function(){ trace('I am starting to be dragged!'); };
@@ -33,7 +33,7 @@ Each method takes a callback function which will be executed each time that inte
         c.dragComplete = function(){ trace('I am done being dragged!'); };        
                     </code></pre>
                 <p>The callbacks receive the Object they are associated with so you can do things like :</p>
-                    <pre><code>  
+                    <pre><code class='javascript'>  
         var c = new JS3Circle();
         c.name = 'my-circle';
         c.click = onCircleClick;

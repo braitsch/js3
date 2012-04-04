@@ -34,8 +34,10 @@
                     <canvas id="demo-canvas" width="623" height="278" style='float:left;margin-right:10px'></canvas>
                     <div id="datgui" style='margin:-30px 10px 0 0;float:left'></div>
                 </div>
-                <pre style='margin-top:5px;'><code id='js3-demo-out' class='javascript'></code></pre>                
-                <hr>
+                <pre style='margin-top:5px;'><code id='js3-demo-out' class='javascript'></code></pre><hr>
+
+            <p class='next-page'><b>Learn how to easily add JS3 to your project. <a href=<?php linkto('/getting-started');?>>Click here to get started.</a></b></p><hr>
+
         <?php include ('./local/footer.php'); ?>
         <script type="text/javascript" src="./home/demo.js"></script>
         <script type="text/javascript" src="./home/home.js"></script>

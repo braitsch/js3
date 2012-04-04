@@ -4,12 +4,12 @@
         <div id='content'>
             <div id="header">
                 <h1>Drawing Shapes</h1>
-                <p class='anchor'>JS3 makes it easy to draw five basic primitive shapes. 
-                    <a href='#cr'>Circles</a>,
-                    <a href='#cr'>Rectangles</a>, 
-                    <a href='#tri'>Triangles</a>, 
-                    <a href='#la'>Lines</a> and 
-                    <a href='#la'>Arcs.</a></p>
+                <p>JS3 makes it easy to draw five basic primitive shapes. 
+                    <a class='anchor' href='#cr'>Circles</a>,
+                    <a class='anchor' href='#cr'>Rectangles</a>, 
+                    <a class='anchor' href='#tri'>Triangles</a>, 
+                    <a class='anchor' href='#la'>Lines</a> and 
+                    <a class='anchor' href='#la'>Arcs.</a></p>
                 <hr>
             </div>
             <div id="shapes-vs-sprite">
@@ -158,9 +158,8 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
             arc.y2 = 0;	
         stage.addChild(arc);
                     </code></pre>
-                <canvas id="d2" width='440' height='245'></canvas>
-<hr>
-            <p><b>Awesome, you're ready for the next section. Click here to learn about <a href=<?php linkto('/images-and-text');?>>Images & Text.</a></b></p><hr>
+                <canvas id="d2" width='440' height='245'></canvas><hr>
+            <p class='next-page'><b>Awesome, you're ready for the next section. Click here to learn about <a href=<?php linkto('/images-and-text');?>>Images & Text.</a></b></p><hr>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./drawing.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>

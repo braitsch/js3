@@ -4,15 +4,16 @@
         <div id='content'>
             <div id="header">
                 <h1>Tweening</h1>
-                <p></p>
+                <p>Tweening in JS3 is based on the familiar syntax of the popular <a href='http://www.greensock.com/tweenlite/'>Tweenlite ActionScript library.</a><hr>
+				There are two ways to animate in JS3.<br>You can use <a class='anchor' href='#basic-tweening'>Tweens</a> to move individual objects or group objects together inside functions using <a class='anchor' href='#animating-timers'>Timers</a>.</p>
                 <hr>
             </div>
 
   <!-- basic-tweening -->                    
                 <div id="basic-tweening">
                     <h2>Basic Tweening</h2>                
-                <p>Once you've created a Sprite you can animate it using the familiar TweenLite syntax.</p>
-                <pre><code>
+                <p>The simplest way to Tween an Object is by using the built in Tween method. The syntax is exactly the same as Tweenlite.</p>
+                <pre><code class='javascript'>
         var c = new JS3Circle();                     
         c.x = 75; 
         c.y = 25;                          
@@ -24,10 +25,11 @@
                 <div class="clearfix"><hr></div>
                 
         <!-- chaining-tweens -->                    
-                <div id="chaining-tweens">
+                <div>
                     <h2>Chaining Tweens</h2>                
                 <p>You can also chain tweens together by specifying a callback to fire when the animation completes.</p>
-                <pre><code>                        
+                <pre><code class='javascript'> 
+        var c = new JS3Circle();	                     
         stage.tween(c, 3, {x:800, onComplete:function(){
             stage.tween(c, 1, {alpha:0});
         }});
@@ -36,22 +38,24 @@
                 <button id='x4-btn' class='btn btn-primary'>Tween Me</button>
                 </div>
                 <div class="clearfix"><hr></div>  
-                
+
+				<h2>Tween Syntax</h2>
+                <p>For a full list of the properties and callbacks you can pass to the Tween function, visit the <a href=<?php linkto('/api#api-tweening')?>>API section.</a></p><hr>
+
         <!-- timed-frames -->                    
                 <div id="animating-timers">
                     <h2>Animating with Timers</h2>
-                <p>You can control how often the canvas redraws itself by using the <strong><u>run</u></strong> method.<br>
+                <p>You can manually control how often the canvas redraws itself by using the <strong><u>run</u></strong> method.<br>
 This method takes two arguments, a function to call and how often to call it in seconds.<br>
 The snippet below draws a circle and moves it ten pixels to the right every time 1/4 of a second.</p>
                 <pre><code>                        
-        var c = new JS3Circle();
-            c.size = 75; c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2;
-        stage.addChild( c );               
+        var c = new JS3Circle();           
     	function update()
         {
-	        c.x +=10;
+	        c.x += 10;
 	        if (c.x >= 800) c.x = 75;
         }
+        stage.addChild( c );
         stage.run(update, .25);
                 </code></pre>
                 <canvas id="x5" width='898' height='100'></canvas>  
@@ -132,8 +136,9 @@ The "drawCircle" function just returns a basic circle and the "update" function 
                 </code></pre>
                 <canvas id="x7" width='898' height='100'></canvas>  
                 <button id='x7-btn' class='btn btn-primary'>Stop Updating</button>
-                </div>
-                <div class="clearfix"><hr></div>
+			</div>
+			<div class="clearfix"></div><hr>
+            <p class='next-page'><b>Awesome, you're ready for the next section. Click here to learn <a href=<?php linkto('/mouse-events');?>>Mouse Events.</a></b></p><hr>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./tweening.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
