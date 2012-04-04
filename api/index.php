@@ -4,10 +4,10 @@
         <div id='content'>
             <div id="header">
                 <h1>JS3 API</h1>
-                <p>The JS3 API has the following properties and methods to help you control the Stage.</p><hr>
+                <p>This page includes a detailed look at the Stage's <a class='anchor' href='#api-stage-props'>properites</a> & <a class='anchor' href='#api-stage-methods'>methods</a>, the <a class='anchor' href='#api-drawing'>drawing</a> & <a class='anchor' href='#api-tweening'>tweening</a> API as well as some convenient <a class='anchor' href='#api-static'>static utility methods</a>.</p><hr>
             </div>
             <div>
-                <h2>Stage Properties</h2>
+                <h2 id='api-stage-props'>Stage Properties</h2>
                 <p>The following properties of the Stage are <b>read-only</b>.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
@@ -24,7 +24,7 @@
         stage.windowTitle = 'My Canvas';    // the title of pop-up windows used when saving the Stage to a .png
                 </code></pre>
 
-                <h2>Stage Methods</h2>
+                <h2 id='api-stage-methods'>Stage Methods</h2>
                 <p>The following methods allow you to affect the internal display list.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
@@ -37,28 +37,19 @@
         stage.removeChild( obj:JS3Object ) : void
         stage.removeChildAt( index:Number ) : void
                 </code></pre>
-                
-                <p>The following methods allow you control tweens and timed animations. Optional parameters are in <span style='color:blue'>blue</span>.<br>
-                For more information on these Tweening methods, check the section on <a href=<?php linkto('/tweening')?>>Tweening.</a></p>
-                <pre><code class='javascript'>
-        stage = new JS3('my-canvas');
-        stage.run( Function, <span style='color:blue'>Delay, RepeatCount, onCompleteCallback</span> );
-        stage.stop( Function );
-        stage.tween( JS3Object, Duration, Properties );
-                </code></pre>
         
-                <p>The following are additional general utility methods for controlling the Stage.</p>
+                <p>And the following are additional general utility methods for controlling the Stage.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
-        stage.clear();  // stops all animations, removes all children and draws the background to stage.background
-        stage.setSize( width:Number, height:Number );
+        stage.clear();  // stops all animations, removes all children and colors the background to stage.background
+        stage.setSize( width:Number, height:Number ); // sets the size of the canvas, useful when the browser is resized.
         stage.save();  // opens a popup window allowing the user to save the current state of the Stage as a .png
                 </code></pre><hr>
                 
-                <h2>Drawing Methods</h2>
+                <h2 id='api-drawing'>Drawing Methods</h2>
                 <p>Use the following methods to draw a non-persistent Shape on the Stage.<br>
                 Each method requires an Object that describes how the Shape should be positioned and drawn.<br>
-                For more information about these methods, check the section on <a href=<?php linkto('/drawing')?>>drawing.</a></p>
+                For more information about these methods and what to pass into them, check the section on <a href=<?php linkto('/drawing')?>>drawing.</a></p>
         <pre><code class='javascript'>                
         stage = new JS3('my-canvas');
         stage.drawLine( {} );
@@ -103,16 +94,26 @@
         stage.tween(my-circle, 1, <span style='color:blue'>{x:100, alpha:.5, rotation:90, onStart:onStartFunc, onComplete:onCompleteFunc, delay:1}</span>);
         </code></pre><hr>
         
-        <h2 id='api-timers'>Timed Animation Methods</h2>
-        <p>Timed animations are controlled using the <u>run</u> & <u>stop</u> methods.<br>
-            Both methods simply take the function to start and stop executing.</p>
+                <h2 id='api-timers'>Timed Animation Methods</h2>
+                <p>Timed animations are controlled using the <u>run</u> & <u>stop</u> methods.<br>
+                    Both methods simply take the function to start and stop executing.</p>
         <pre><code class='javascript'>								
         stage.run( function ) : void
         stage.stop( function ) : void        
-        </code></pre>        
-        
-        
-                <h2>Static Methods</h2>
+        </code></pre>
+        <p>The run method also accepts three additional parameters :</p>
+        <pre><code class='javascript'>								
+        delay       : Number        // the number of seconds in between calls
+        repeatCount : Number        // number of times to call the function before stopping, default is infinite
+        onComplete  : Function      // a callback to execute when the repeatCount is reached
+        </code></pre>
+        <p>With the additional parameters specified, a call to <u>run</u> could look like the following :</p>
+        <pre><code class='javascript'>
+    // call the update function once a second, limit to ten times and then execute the onUpdateComplete function.        
+        stage.run(update, 1, 10, onUpdateComplete);
+        </code></pre><hr>
+                    
+                <h2 id='api-static'>Static Methods</h2>
                 <p>JS3 also includes a couple convenient static methods to help with common tasks.</p>
         <pre><code class='javascript'>
         JS3.getRandomColor() : Number
