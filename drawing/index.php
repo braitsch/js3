@@ -4,8 +4,10 @@
         <div id='content'>
             <div id="header">
                 <h1>Drawing Shapes</h1>
-                <p>JS3 makes it easy to draw five basic primitive shapes. 
+                <p>JS3 makes it easy to draw a number of basic primitive shapes : 
                     <a class='anchor' href='#cr'>Circles</a>,
+                    <a class='anchor' href='#cr'>Ellipses</a>,  
+                    <a class='anchor' href='#cr'>Squares</a>,                                      
                     <a class='anchor' href='#cr'>Rectangles</a>, 
                     <a class='anchor' href='#tri'>Triangles</a>, 
                     <a class='anchor' href='#la'>Lines</a> and 
@@ -17,7 +19,7 @@
                 <p>JS3 allows you to create non-persistent and persistent graphics, respectively called Shapes & Sprites.<br>
 The main difference is that Shapes are drawn to the canvas and then immediately removed from memory whereas Sprites persist allowing you to tween and interact with them after they are drawn.</p>
                 <p>You can draw a Shape by calling the desired Stage method and passing in a generic Object that describes how the Shape should be drawn.</p>
-                <pre><code>
+                <pre><code class='javascript'>
     	var stage = new JS3('my-canvas');
         stage.drawCircle( { x:50, y:25, size:50 } );
         stage.drawRect( { x:120, y:25, width:80, height:50 } );
@@ -30,7 +32,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
             <p>Shapes are much more performant than Sprites. If tweening and interactivity are not needed, always draw Shapes instead of Sprites.</p><hr> 
             <p>Sprites are analogous to DisplayObjects in AS3 in that you create them by using the <span style='color:blue;'>new</span> keyword and then manually add them to the Stage.<br>
             Sprites can be removed and added to the Stage as often as desired as well be <a href=<?php linkto('/tweening');?>>animated</a> and told to listen for <a href=<?php linkto('/mouse-events');?>>mouse events</a>.</p>
-                <pre><code>
+                <pre><code class='javascript'>
         var stage = new JS3('my-canvas');	
     // create a Sprite using the new keyword //    
         var c = new JS3Circle(); 
@@ -38,7 +40,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
             c.y = 25;
             c.size = 50;
         stage.addChild( c );
-    // or you can pass an Object into the JS3Object constructor //
+    // or you can optionally pass an Object definition into the Sprite's constructor //
         var c = new JS3Circle( {x:50, y:25, size:50} ); 
         stage.addChild( c );    
                 </code></pre>
@@ -48,8 +50,8 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
             <div id="drawing-basics">
                 <h2>Drawing Basics</h2>
                 <p>All Shapes & Sprites inherit from a base graphics object with the following properties and default settings.<br>
-                    Each of these properties can be tweened by setting them to a different value.</p>
-                    <pre><code>  
+                    Each of these properties can be <a href=<?php linkto('/tweening');?>>tweened</a> by setting them to a different value.</p>
+                    <pre><code class='javascript'>  
         x           :Number = 0;
         y           :Number = 0;
         alpha       :Number = 1;
@@ -58,7 +60,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
         rotation    :Number = 1;
                     </code></pre>
                 <p>In addition to the base object properties defined above, Circles, Rectangles, & Triangles also define fill & stroke values.<br>To disable the fill or stroke of a Shape, set its <strong><u>fill</u></strong> or <strong><u>stroke</u></strong> property to false.</p>
-                    <pre><code>
+                    <pre><code class='javascript'>
         fill        :Boolean = true;
         fillColor   :Number = '#DDD';
         fillAlpha   :Number = 1;
@@ -67,9 +69,38 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
         strokeAlpha :Number = 1;
         strokeWidth :Number = 4;
                     </code></pre><hr>
+                    
+                <h2>Positioning, Scaling & Rotation</h2>                    
+                <p>It is very important to note that all Shapes and Sprites are positioned on the Stage relative to their top left coordinate.<br>
+            This is exactly the same as the default positioning you are probably used to working with in the Flash authoring environment.<br>
+            Objects are scaled and rotated however from their center, which is automatically calculated from the Object's width, height and size.<br><br>
+            The following example shows a Square positioned at 10 pixels on the X and Y axis.</p>    
+                <pre><code class='javascript'>
+        var stage = new JS3('my-canvas');	
+        var r = new JS3Rect(); 
+            r.x = 10;
+            r.y = 10;
+        stage.addChild( r );  
+                </code></pre>
+            <canvas id="draw-3" width='898' height='100'></canvas>  
+            
+            
+        <p>Now note when scaling and rotation are applied, the Object scales and rotates from its center.</p>    
+                <pre><code class='javascript'>
+        var stage = new JS3('my-canvas');	
+        var r = new JS3Rect(); 
+            r.x = 10;
+            r.y = 10;
+            r.scaleX = 1.5;
+            r.scaleY = 1.5;	
+            r.rotation = 45;            
+        stage.addChild( r );  
+                </code></pre>
+            <canvas id="draw-4" width='898' height='100'></canvas>
+                    <hr>
                 <h2 id='cr'>Circles and Rectangles</h2>                    
                 <p>The dimensions of Circles, Rectangles, & Triangles are defined by setting either their <b><u>size</u></b> property or their <b><u>width</u></b> and <b><u>height</u></b>.<br>Setting a Shape's <b><u>size</u></b> property constrains the Shape to equal dimensions.</p>
-                    <pre><code>  
+                    <pre><code class='javascript'>  
     // draw a circle with a diameter of 50 pixels //                
         var c = new JS3Circle(); 
             c.size = 50;
@@ -82,7 +113,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
                     </code></pre>
                     <p><strong>Quick Tip :</strong> Setting a Shape's size will overwrite any previous values that have been set for its width and height.<br>
                         The following examples show how to draw a Square and Rectangle.</p>
-                    <pre><code>  
+                    <pre><code class='javascript'>  
     // draw a 50 pixels x 50 pixels Square //                
         var r = new JS3Rect(); 
             r.size = 50;
@@ -124,7 +155,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
                     <hr>                    
                 <h2 id='la'>Lines and Arcs</h2>                    
                     <p>In addition to the base object properties, Lines & Arcs also have the following unique properites :</p>
-                    <pre><code class='javascript'>  
+                    <pre><code class='javascript'>
         color       :Number = '#333';
         thickness   :Number = 4;
         capStyle    :String = 'butt'; // (valid values are 'butt, round, or square')
@@ -141,7 +172,8 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
     	    line.x2 = 340; 
     	stage.addChild(line);
                     </code></pre>
-                <canvas id="d1" width='440' height='173'></canvas>
+                <canvas id="line-1" width='440' height='173'></canvas>
+                
                 <p class='clearfix'>
                     Drawing an Arc is simple and just requires an additional point to "pull" the Line in one direction or another.<br>
                     This third point is a control point defined with the properties <strong><u>xc</u></strong> and <strong><u>yc</u></strong>.</p>
@@ -158,7 +190,7 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
             arc.y2 = 0;	
         stage.addChild(arc);
                     </code></pre>
-                <canvas id="d2" width='440' height='245'></canvas><hr>
+                <canvas id="line-2" width='440' height='245'></canvas><hr>
             <p class='next-page'><b>Awesome, you're ready for the next section. Click here to learn about <a href=<?php linkto('/images-and-text');?>>Images & Text.</a></b></p><hr>
         <?php include ('../local/footer.php'); ?>
         <script type="text/javascript" src="./drawing.js"></script>            

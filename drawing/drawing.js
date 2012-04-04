@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	drawShapes();
-	drawCanvas();
+	drawLines();
 });
 
 function drawShapes()
@@ -18,12 +18,25 @@ function drawShapes()
 	c.x = 50;
 	c.y = 25;
 	stage.addChild( c );
+	stage = new JS3('draw-3');
+	var c = new JS3Rect(); 
+	c.x = 10;
+	c.y = 10;
+	stage.addChild( c );
+	stage = new JS3('draw-4');
+	var c = new JS3Rect(); 
+	c.x = 10;
+	c.y = 10;
+	c.scaleX = 1.5;
+	c.scaleY = 1.5;	
+	c.rotation = 45;
+	stage.addChild( c );		
 }
 
-function drawCanvas()
+function drawLines()
 {
-	var s1 = new JS3('d1');
-	var s2 = new JS3('d2');	
+	var s1 = new JS3('line-1');
+	var s2 = new JS3('line-2');	
 		s1.drawClean = s2.drawClean = false;
 	drawGrid(s1); 
 	drawGrid(s2);

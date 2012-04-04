@@ -4,7 +4,7 @@
         <div id='content'>
                 <div id="header">
                     <h1>Simple, Flash-like Tweening for the JavaScript Canvas</h1>
-                    <p>JS3 is a fast, lightweight port of the familiar <a href='http://www.greensock.com/tweenlite/' target='blank'>TweenLite</a> ActionScript library for the JavaScript Canvas allowing you to do things like :</p>                    
+                    <p>JS3 is a fast and lightweight drawing and animation library for the JavaScript Canvas allowing you to easily do things like :</p>                    
                 </div>
                 <div id="header-example">
                     <pre id='home-canvas-code'><code>                     
