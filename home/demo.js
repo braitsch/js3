@@ -34,7 +34,7 @@ function drawGui()
 		'Tween'				: tweenShape
 	}
 	gui = new dat.GUI({ autoPlace: false });
-	var s1 = gui.add(guiObj, 'Draw Shape', [ 'Circle', 'Rectangle', 'Triangle' ] );
+	var s1 = gui.add(guiObj, 'Draw Shape', [ 'Circle', 'Rectangle', 'Triangle', 'Nyan Cat' ] );
 		s1.onChange(function(val){setShape(val);updateOut();});
 	var s2 = gui.add(guiObj, 'X', 0, stage.width-cross.width);
 		s2.onChange(function(val){cross.x=val;updateOut();})
@@ -92,6 +92,7 @@ function setShape(s)
 		case 'Circle' : drawCirc(); shapeType = 'JS3Circle'; break;
 		case 'Rectangle' : drawRect(); shapeType = 'JS3Rect'; break;
 		case 'Triangle' : drawTri(); shapeType = 'JS3Tri'; break;
+		case 'Nyan Cat' : drawImage(); shapeType = 'JS3Image'; break;		
 	}
 	drawCross();
 }
@@ -112,6 +113,13 @@ function drawTri()
 {
 	shape = new JS3Tri(getObjDefinition());
 	stage.addChild(shape);	
+}
+
+function drawImage()
+{
+	shape = new JS3Image(getObjDefinition());
+	shape.src = './images-and-text/nyancat.png';
+	stage.addChild(shape);
 }
 
 function drawCross()
