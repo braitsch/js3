@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.55
+ * Version : 0.1.56
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -302,7 +302,6 @@ JS3.drawCustomTriangle = function(o){
 	o.cy = h/2;
 }
 JS3.drawImage = function(o){
-//	console.log(o.x)
 	if (o.image.src==false) return;
 	o.cx = o.image.width / 2;
 	o.cy = o.image.height / 2;
@@ -311,13 +310,17 @@ JS3.drawImage = function(o){
 	o.stage.drawImage(o.image, -o.cx, -o.cy);	
 	JS3.drawShape(o);
 }
+
 JS3.drawText = function(o){
-	o.stage.globalAlpha = o.alpha;
 	o.stage.font = o.size+'pt '+o.font;
 	o.stage.fillStyle = o.color;
-	o.stage.textAlign = o.align;
-	o.stage.fillText(o.text, o.x, o.y);			
-	o.stage.globalAlpha = 1;			
+	o.stage.textAlign = 'left';
+	o.stage.textBaseline = 'top';
+	o.cy = JS3getTextHeight(o) / 2;	
+	o.cx = o.stage.measureText(o.text).width / 2;	
+	JS3.openShape(o);	
+	o.stage.fillText(o.text, -o.cx, -o.cy);				
+	JS3.drawShape(o);	
 }		
 JS3.fill = function(o){
 	o.stage.globalAlpha = o.alpha * o.fillAlpha;			
@@ -464,7 +467,7 @@ function JS3Text(o)
 	JS3getBaseProps(this);
 	JS3getTextProps(this);
 	this.update = JS3.drawText;
-	if (o) JS3.copyProps(o, this);	
+	if (o) JS3.copyProps(o, this);
 }
 
 function JS3Image(o)
@@ -507,7 +510,19 @@ function JS3getImageProps(o)
 
 function JS3getTextProps(o)
 {
-	o.size=12; o.font='Arial'; o.color='#333'; o.align='center';
+	o.size=12; o.font='Arial'; o.color='#333'; o.align='left';
+}
+
+function JS3getTextHeight(o)
+{
+	var b = document.getElementsByTagName("body")[0];
+	var d = document.createElement("div");
+	d.appendChild(document.createTextNode("M"));
+	d.setAttribute("style", "font-family:" + o.font + "; font-size:" + o.size + "pt; line-height:normal");
+	b.appendChild(d);
+	var h = d.offsetHeight;
+	b.removeChild(d);
+	return h;
 }
 
 function Tween(obj, dur, props)

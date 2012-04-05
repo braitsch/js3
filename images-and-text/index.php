@@ -29,7 +29,17 @@
         <canvas id="img-2" width='898' height='100'></canvas>
         <p><b>Supported Image file formats include <span style='color:blue'>png, jpg, </span>and <span style='color:blue'>gif.</span></b></p><hr>
         <h2>Rendering Text</h2>
-       
+        <p>Rendering Text on the canvas is as simple as creating a JS3Text Object and adding it to the Stage.</p>
+            <pre><code class='javascript'>
+        var stage = new JS3('my-canvas');
+        var text = new JS3Text( {text:'Hello World!'} );
+            text.x = 25; 
+            text.y = 25;
+            text.rotation = 180;
+        stage.addChild(text);
+            </code></pre>
+        <canvas id="img-3" width='898' height='100'></canvas>
+               
         <?php include ('../local/footer.php'); ?>        
         <script type="text/javascript" src="./images-and-text.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
