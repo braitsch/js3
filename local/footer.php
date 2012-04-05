@@ -12,8 +12,7 @@ $(document).ready(function() {
 	    return false;
 	    });
     $("#btn-download").click(function()  {
-        window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3.js";        
-//        window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3-"+'<?php echo $version;?>'+".js";
+        window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3-"+'<?php echo $version;?>'+".js";
     });
 // move to anchor offset if coming from another page // 
     var n = window.location.href.lastIndexOf('#');
