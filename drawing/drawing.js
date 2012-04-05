@@ -48,8 +48,8 @@ function drawLines()
 	line.x2 = 340; 
 	line.color = '#ff0000';
 	s1.addChild(line);
-	s1.drawText({text:'x1 / y1', x:50, y:150});
-	s1.drawText({text:'x2 / y2', x:390, y:60});	
+	s1.drawText({text:'x1 / y1', x:26, y:140});
+	s1.drawText({text:'x2 / y2', x:366, y:50});	
 	
 // arc example //	
 	var arc = new JS3Arc();
@@ -63,9 +63,9 @@ function drawLines()
 	arc.x2 = 340; 	
 	arc.y2 = 0;	
 	s2.addChild(arc);
-	s2.drawText({text:'x1 / y1', y:210, x:50});
-	s2.drawText({text:'xc / yc', y:50, x:220});	
-	s2.drawText({text:'x2 / y2', y:210, x:390});	
+	s2.drawText({text:'x1 / y1', x:26, y:210});
+	s2.drawText({text:'xc / yc', x:198, y:30});	
+	s2.drawText({text:'x2 / y2', x:366, y:210});	
 }
 
 function drawGrid(cnvs)

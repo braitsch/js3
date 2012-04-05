@@ -34,6 +34,10 @@ function JS3(cnvs)
 	 	this.__defineGetter__("width", 			function()		{ return _width;});
 	 	this.__defineGetter__("height", 		function()		{ return _height;});
 	 	this.__defineGetter__("numChildren", 	function()		{ return _children.length;});
+	 	this.__defineGetter__("position", 		function()		{ 
+			var x = 0; var y = 0; var e = _canvas;
+			while( e != null ) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+			return {x:x, y:y};});
 	 	this.__defineSetter__("drawClean", 		function(b)		{ _drawClean = b;});
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	 	this.__defineSetter__("windowTitle", 	function(s)		{ _winTitle = s;});	
@@ -402,12 +406,19 @@ JS3.getFrameRate = function(){
 	var now = window.mozAnimationStartTime || Date.now();
 	JS3.FR = 1000 / (now - JS3.FT); JS3.FT = now;			
 };
-JS3.showFrameRate = function(x, y){
+JS3.showFrameRate = function(x, y, stage){
 	if (document.getElementById('JS3FR')) return;
+	var x1 = 0; y1 = 0;
+	if (stage){
+		x1 = stage.position.x;		
+		y1 = stage.position.y;
+	}	
+	if (y) y1 += y;
+	if (x) x1 += x;
 	var d = document.createElement('div');
 		d.setAttribute('id', 'JS3FR');
 		d.style.position = "absolute";
-		d.style.top = y!=undefined ? y+'px' : '100px'; d.style.left = x!=undefined ? x+'px' : '100px';
+		d.style.top = y1+'px'; d.style.left = x1+'px';
 		d.style.background = "#333"; d.style.border = "1px solid #555";
 		d.style.color = '#00ff00'; d.style.padding = '10px';
 		d.style.fontSize = '16px'; d.style.fontFamily = 'Arial,sans-serif';

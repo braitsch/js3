@@ -4,10 +4,21 @@
         <div id='content'>
             <div id="header">
                 <h1>JS3 API</h1>
-                <p>This page includes a detailed look at the Stage's <a class='anchor' href='#api-stage-props'>properites</a> & <a class='anchor' href='#api-stage-methods'>methods</a>, the <a class='anchor' href='#api-drawing'>drawing</a> & <a class='anchor' href='#api-tweening'>tweening</a> API as well as some convenient <a class='anchor' href='#api-static'>static utility methods</a>.</p><hr>
+                <p>This page contains a detailed look at the JS3 API</a>
+                <div class="subnav" style='background-color:#F5F5F5'>
+                <ul class="nav nav-pills">
+                    <li style='margin-left:50px'><a class='anchor' href="#api-stage">Stage API</a></li>      
+                    <li><a class='anchor' href="#api-display-list">The Display List</a></li>      
+                    <li><a class='anchor' href="#api-drawing">Drawing API</a></li>
+                    <li><a class='anchor' href="#api-tweening">The Tween Method</a></li>
+                    <li><a class='anchor' href="#api-timers">Timed Animations</a></li>
+                    <li><a class='anchor' href="#api-framerate">Framerate Monitor</a></li>
+                    <li><a class='anchor' href="#api-utilities">Utility Methods</a></li>                    
+                </ul>
+                </div>
             </div>
             <div>
-                <h2 id='api-stage-props'>Stage Properties</h2>
+                <h2 id='api-stage'>Stage API</h2>
                 <p>The following properties of the Stage are <b>read-only</b>.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
@@ -23,9 +34,17 @@
         stage.background = '#ffffff';       // the background color of the Stage
         stage.windowTitle = 'My Canvas';    // the title of pop-up windows used when saving the Stage to a .png
                 </code></pre>
+                
+                <p>And the following are general utility methods for controlling the Stage.</p>
+                <pre><code class='javascript'>
+        stage = new JS3('my-canvas');
+        stage.clear();  // stops all animations, removes all children and colors the background to stage.background
+        stage.setSize( width:Number, height:Number ); // sets the size of the canvas, useful when the browser is resized.
+        stage.save();  // opens a popup window allowing the user to save the current state of the canvas as a .png
+                </code></pre><hr>
 
-                <h2 id='api-stage-methods'>Stage Methods</h2>
-                <p>The following methods allow you to affect the internal display list.</p>
+                <h2 id='api-display-list'>The Display List</h2>
+                <p>The following methods allow you to modify the internal display list.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
         stage.addChild( obj:JS3Object ) : void
@@ -36,20 +55,12 @@
         
         stage.removeChild( obj:JS3Object ) : void
         stage.removeChildAt( index:Number ) : void
-                </code></pre>
-        
-                <p>And the following are additional general utility methods for controlling the Stage.</p>
-                <pre><code class='javascript'>
-        stage = new JS3('my-canvas');
-        stage.clear();  // stops all animations, removes all children and colors the background to stage.background
-        stage.setSize( width:Number, height:Number ); // sets the size of the canvas, useful when the browser is resized.
-        stage.save();  // opens a popup window allowing the user to save the current state of the Stage as a .png
                 </code></pre><hr>
                 
                 <h2 id='api-drawing'>Drawing Methods</h2>
-                <p>Use the following methods to draw a non-persistent Shape on the Stage.<br>
+                <p>Use the following methods to draw non-persistent Shapes on the Stage.<br>
                 Each method requires an Object that describes how the Shape should be positioned and drawn.<br>
-                For more information about these methods and what to pass into them, check the section on <a href=<?php linkto('/drawing')?>>drawing.</a></p>
+                For more information about these methods and what you should pass into them, check the section on <a href=<?php linkto('/drawing')?>>drawing.</a></p>
         <pre><code class='javascript'>                
         stage = new JS3('my-canvas');
         stage.drawLine( {} );
@@ -112,9 +123,23 @@
     // call the update function once a second, limit to ten times and then execute the onUpdateComplete function.        
         stage.run(update, 1, 10, onUpdateComplete);
         </code></pre><hr>
+        
+                <h2 id='api-framerate'>Framerate Monitor</h2>
+                <p>JS3 includes a built-in FPS monitor that automatically updates once per second.<br>
+                    Note by default the monitor is absolutely positioned within the HTML document and is never a child of the Stage.<br>    
+                </p>
+        <pre><code class='javascript'>
+        JS3.showFrameRate( xPosition:Number, yPosition:Number ); 
+        </code></pre>
+                <p>If you'd like to position it relative to your Stage just pass your Stage instance in as the third argument.</p> 
+        <pre><code class='javascript'>
+        stage = new JS3('my-canvas');
+        JS3.showFrameRate(5, 5, stage);    
+        </code></pre>
+        <canvas id="api-1" width='898' height='100'></canvas><hr>        
                     
-                <h2 id='api-static'>Static Methods</h2>
-                <p>JS3 also includes a couple convenient static methods to help with common tasks.</p>
+                <h2 id='api-utilities'>Utility Methods</h2>
+                <p>JS3 also includes a couple convenient utility methods to help with common tasks.</p>
         <pre><code class='javascript'>
         JS3.getRandomColor() : Number
         JS3.getRandomValue() : Number
@@ -124,9 +149,11 @@
         JS3.getRandomValue() // returns a number between 0 and 1
         JS3.getRandomValue(n1) // returns a number between 0 and n1
         JS3.getRandomValue(n1, n2) // returns a number between n1 and n2        
-        </code></pre>                
-        </div><hr>
+        </code></pre><hr>
+        
+                
         <?php include ('../local/footer.php'); ?>
+	    <script type="text/javascript" src="./api.js"></script>        
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
     </body>
