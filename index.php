@@ -21,11 +21,10 @@
                             <a href=<?php linkto('/drawing/#cr')?>>Circles, Ellipses, Squares, Rectangles</a>, 
                             <a href=<?php linkto('/drawing/#tri')?>>Triangles</a>, 
                             <a href=<?php linkto('/drawing/#la')?>>Lines & Arcs</a></li>
-                        <li>Built in Mouse interactions: <a href=<?php linkto('/mouse-events')?>>Click, Drag, RollOver, RollOut, etc..</a></li>
-                        <li>Support for displaying <a href=<?php linkto('/images-and-text')?>>Images and Text</a></li>
-                        <li>Tween multiple properties at the same time: <b>x, y & alpha, etc..</b></li>
-                        <li>Delayed Tweens, onStart & onComplete callbacks</li>
-                        <li>Sequence, or daisy-chain multiple tweens together using callbacks</li>
+                        <li>Support for displaying <a href=<?php linkto('/images-and-text')?>>Images and Text</a></li>                            
+                        <li>Built-in Mouse interactions : <a href=<?php linkto('/mouse-events')?>>Click, Drag, RollOver, RollOut, etc..</a></li>
+                        <li>Powerful yet simple <a href=<?php linkto('/tweening')?>>Tween Engine</a>
+                            modeled after the popular <a href='http://www.greensock.com/tweenlite/' target='blank'>Tweenlite ActionScript library</a></li>
                     </ul>
                 </div><hr>
                 <h2>Interactive Demo</h2>
