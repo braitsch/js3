@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.57
+ * Version : 0.1.6
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -404,21 +404,17 @@ window.getAnimFrame = (function(){
 })();
 JS3.getFrameRate = function(){
 	var now = window.mozAnimationStartTime || Date.now();
-	JS3.FR = 1000 / (now - JS3.FT); JS3.FT = now;			
+	if (now - JS3.FT > 5){ JS3.FR = 1000 / (now - JS3.FT); JS3.FT = now;}
 };
 JS3.showFrameRate = function(x, y, stage){
 	if (document.getElementById('JS3FR')) return;
-	var x1 = 0; y1 = 0;
-	if (stage){
-		x1 = stage.position.x;		
-		y1 = stage.position.y;
-	}	
-	if (y) y1 += y;
-	if (x) x1 += x;
+	var xx = 0; yy = 0;
+	if (stage){ xx = stage.position.x; yy = stage.position.y; }	
+	if (x) xx += x; if (y) yy += y;
 	var d = document.createElement('div');
 		d.setAttribute('id', 'JS3FR');
 		d.style.position = "absolute";
-		d.style.top = y1+'px'; d.style.left = x1+'px';
+		d.style.left = xx+'px'; d.style.top = yy+'px';
 		d.style.background = "#333"; d.style.border = "1px solid #555";
 		d.style.color = '#00ff00'; d.style.padding = '10px';
 		d.style.fontSize = '16px'; d.style.fontFamily = 'Arial,sans-serif';
@@ -426,7 +422,7 @@ JS3.showFrameRate = function(x, y, stage){
 		d.innerHTML = '60.0 fps';		
 	document.body.appendChild(d);
 	setInterval(function(){
-		var n = JS3.FR.toFixed(1);
+		var n = JS3.FR.toFixed(1);		
 		d.innerHTML = n+' fps';		
 		if (n<15){d.style.color = '#ff0000';}else if (n>=15 && n<=30){d.style.color = '#ffff00';} else{d.style.color = '#00ff00';}
 	}, 1000);

@@ -63,10 +63,10 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
                 <p>In addition to the base object properties defined above, Circles, Rectangles, & Triangles also define fill & stroke values.<br>To disable the fill or stroke of a Shape, set its <strong><u>fill</u></strong> or <strong><u>stroke</u></strong> property to false.</p>
                     <pre><code class='javascript'>
         fill        :Boolean = true;
-        fillColor   :Number = '#DDD';
+        fillColor   :String = '#DDD';
         fillAlpha   :Number = 1;
         stroke      :Boolean = true;        
-        strokeColor :Number = '#CCC';
+        strokeColor :String = '#CCC';
         strokeAlpha :Number = 1;
         strokeWidth :Number = 4;
                     </code></pre><hr>
