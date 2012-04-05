@@ -65,8 +65,10 @@ function updateGui()
 
 function updateOut()
 {
-	var s = '\t<b>var</b> shape = <b>new</b> '+shapeType+'();<br>';
-		s += '\tstage.tween(shape, '+green(speed,1)+', {x:'+green(cross.x,0)+', y:'+green(cross.y,0);
+	var s = '\t<b>var</b> shape = <b>new</b> '+shapeType+'(';
+	s+= shapeType=='JS3Image'?"{src:'nyancat.png'}":'';
+	s+=');<br>';
+	s += '\tstage.tween(shape, '+green(speed,1)+', {x:'+green(cross.x,0)+', y:'+green(cross.y,0);
 // only show tween props if they're different from the default //
 	if (alpha!=1) s+=', alpha:'+green(alpha,1);
 	if (scaleX!=1) s+=', scaleX:'+green(scaleX,1);
