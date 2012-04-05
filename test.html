@@ -1,16 +1,30 @@
 <html>
-     <body>                
-        <canvas id="my-canvas" width="800" height="100"></canvas>                        
+  <body>                
+        <canvas id="my-canvas" width="200" height="100"></canvas>                        
         <script src="./src/JS3.js"></script>
         <script>
             var stage = new JS3('my-canvas');
-                stage.background = '#eee';
-            var c1 = new JS3Circle({x:300, y:25});
-                stage.addChild(c1);
-            var c2 = new JS3Circle({x:100, y:25});
-                stage.addChild(c2);
-                stage.tween(c1, 1, {fillColor:'#ff0000', delay:1, scaleX:2, scaleY:2});
+                stage.background = '#CCC';
+                stage.interactive = true;
+            var c1 = new JS3Circle();
+                c1.name = 'c1';
+                c1.strokeColor = '#EEE';
+                c1.strokeWidth = 4;
+                c1.fillColor = '#9C0C0C';                
+                c1.x = 25;
+                c1.y = 25;
+                c1.size = 50;
+            var c2 = new JS3Circle(); 
+                c2.name = 'c2';
+                c2.x = 60;
+                c2.y = 25;
+                c2.size = 50;                     
+            stage.addChild(c2);
+            stage.addChild(c1);
+            stage.click = function(o){ console.log(o.name + ' clicked') }            
+            stage.rollOver = function(o){ console.log(o.name + ' rollOver') };
+            stage.rollOut = function(o){ console.log(o.name + ' rollOut') };                        
         </script>
-        </body> 
+        </body>   
 </html>    
     

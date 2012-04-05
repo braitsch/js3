@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.6
+ * Version : 0.1.7
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -19,12 +19,16 @@ function JS3(cnvs)
 		var _context 	= _canvas.getContext("2d");
 		var _width 		= _canvas.width;
 		var _height 	= _canvas.height;
-		var _target		= undefined;
-		var _dragObj	= undefined;	
 		var _children 	= [];
 		var _graphics	= [];
 		var _runners	= [];
 		var _tweens		= [];
+		var _downObj	= undefined;
+		var _overObj	= undefined;		
+		var _dragObj	= undefined;
+		var _onClick	= undefined;
+		var _onRollOver	= undefined;
+		var _onRollOut	= undefined;
 		var _drawClean 	= true;
 		var _background = '#ffffff';
 		var _winTitle	= 'My Canvas';
@@ -38,6 +42,9 @@ function JS3(cnvs)
 			var x = 0; var y = 0; var e = _canvas;
 			while( e != null ) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
 			return {x:x, y:y};});
+	 	this.__defineSetter__("click", 			function(f)		{ _onClick = f;});
+	 	this.__defineSetter__("rollOver", 		function(f)		{ _onRollOver = f;});
+	 	this.__defineSetter__("rollOut", 		function(f)		{ _onRollOut = f;});		
 	 	this.__defineSetter__("drawClean", 		function(b)		{ _drawClean = b;});
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	 	this.__defineSetter__("windowTitle", 	function(s)		{ _winTitle = s;});	
@@ -124,46 +131,64 @@ function JS3(cnvs)
 			_canvas.removeEventListener("mousemove", onMouseMove);				
 		}
 		
-		function onMouseDown(e)
+		var onMouseDown = function(e)
 		{	
 			_context.dx = _context.mx; _context.dy = _context.my;
 			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].mouse && _children[i].enabled) {
-				_target = _children[i]; _children.splice(i, 1); _children.push(_target); break;
+				_downObj = _children[i]; _children.splice(i, 1); _children.push(_downObj); break;
 			}
 		}	
 		
-		function onMouseUp(e)
-		{
-			if (_target){
+		var onMouseUp = function(e)
+		{		
+			if (_downObj){
 				if (_dragObj == undefined){
-					if (_target._onClick) _target._onClick(_target);
+					if (_onClick != undefined) _onClick(_downObj);
+					if (_downObj._onClick != undefined) _downObj._onClick(_downObj);
 				} else{
-					if (_target._onDragComplete) _target._onDragComplete(_target);
+					if (_downObj._onDragComplete != undefined) _downObj._onDragComplete(_downObj);
 				}
 			}
-			_target = _dragObj = undefined;
-		}		
+			_downObj = _dragObj = undefined;
+		}
 		
-		function onMouseMove(e)
+		var onMouseMove = function(e)
 		{
 		    var oX = 0; var oY = 0; var k = _canvas;
 		    do { oX += k.offsetLeft; oY += k.offsetTop; } while (k = k.offsetParent);		
 			_context.mx = e.pageX - oX; _context.my = e.pageY - oY;
+		// detect rollOver & rollOuts //			
+			var m = false;	
+			for (var i = _children.length - 1; i >= 0; i--) {
+				var k = _children[i];
+				if (k.mouse && k.enabled) {
+					if (k != _overObj){
+						if (_onRollOver != undefined) _onRollOver(k);
+						if (k._onRollOver != undefined) k._onRollOver(k);
+					} 
+					m=true; break;
+				}
+			}
+			if (_overObj != undefined) {
+				if (_overObj != k || m==false) {
+					if (_onRollOut != undefined) _onRollOut(_overObj);				
+					if (_overObj._onRollOut != undefined) _overObj._onRollOut(_overObj);
+				}
+			}
+			_overObj = m ? k : undefined;
 		// update mouse cursor //
-			var m = false;
-			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].mouse && _children[i].enabled) { m=true; break; }
 			window.document.body.style.cursor = m ? 'pointer' : 'default';
 		// check for draggable target //	
-			if (_target){
-				if (_target.draggable) {
+			if (_downObj){
+				if (_downObj.draggable) {
 					if (_dragObj == undefined){
-					 	_dragObj = _target;
-					 	if (_target._onDragStart != undefined) _target._onDragStart(_target);
+					 	_dragObj = _downObj;
+					 	if (_downObj._onDragStart != undefined) _downObj._onDragStart(_downObj);
 					}	else{
-						_target.x += _context.mx - _context.dx;
-						_target.y += _context.my - _context.dy;
+						_downObj.x += _context.mx - _context.dx;
+						_downObj.y += _context.my - _context.dy;
 						_context.dy = _context.my; _context.dx = _context.mx;
-						if (_target._onDragChange != undefined) _target._onDragChange(_target);						
+						if (_downObj._onDragChange != undefined) _downObj._onDragChange(_downObj);						
 					}
 				}
 			}
@@ -493,6 +518,8 @@ function JS3getBaseProps(o)
 	o.__defineGetter__("size", 	 		function()		{ return o._size;});
 	o.__defineSetter__("size", 	 		function(n)		{ o._size=o.width=o.height=n;});
 	o.__defineSetter__("click",			function(f)		{ o._onClick=f;o.enabled=true;});
+	o.__defineSetter__("rollOver",		function(f)		{ o._onRollOver=f;o.enabled=true;});
+	o.__defineSetter__("rollOut",		function(f)		{ o._onRollOut=f;o.enabled=true;});		
 	o.__defineGetter__("draggable", 	function()		{ return o._draggable;});	
 	o.__defineSetter__("draggable",		function(b)		{ o._draggable=b; if (b==true) o.enabled=true;});	
 	o.__defineSetter__("drag",			function(f)		{ o._onDragChange=f;o.draggable=true;});

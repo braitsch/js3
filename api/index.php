@@ -125,7 +125,7 @@
         </code></pre><hr>
         
                 <h2 id='api-framerate'>Framerate Monitor</h2>
-                <p>JS3 includes a built-in FPS monitor that automatically updates once per second.<br>
+                <p>JS3 includes a simple FPS monitor that automatically updates once per second.<br>
                     Note by default the monitor is absolutely positioned within the HTML document and is never a child of the Stage.<br>    
                 </p>
         <pre><code class='javascript'>
