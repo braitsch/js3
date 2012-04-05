@@ -32,14 +32,29 @@
         <p>Rendering Text on the canvas is as simple as creating a JS3Text Object and adding it to the Stage.</p>
             <pre><code class='javascript'>
         var stage = new JS3('my-canvas');
-        var text = new JS3Text( {text:'Hello World!'} );
-            text.x = 25; 
-            text.y = 25;
-            text.rotation = 180;
+        var text = new JS3Text( {text:'Hello World!', bold:true, color:'green', size:20} );
+            text.x = 50;
+            text.y = 35;
         stage.addChild(text);
             </code></pre>
         <canvas id="img-3" width='898' height='100'></canvas>
-               
+        <p>And of course you can scale and rotate JS3Objects just as you would any other Sprite.</p>        
+            <pre><code class='javascript'>
+        var stage = new JS3('my-canvas');
+        var text = new JS3Text( {text:'Hello World!', bold:true, color:'green', size:20} );
+            text.x = 50;
+            text.y = 35;
+        stage.run(function(){
+            text.rotation += 1;
+        });  
+        stage.addChild(text);
+            </code></pre>
+        <canvas id="img-4" width='898' height='100'></canvas> 
+        <p>Support for rendering text on an HTML5 canvas is still somewhat in its infancy.<br>
+            Many more features will be added here as the spec and browser support evolves...</p><hr>
+            
+        <p class='next-page'><b>Awesome, you're ready for the next section. Click here to learn about <a href=<?php linkto('/tweening');?>>Tweening & Animating with Timers.</a></b></p><hr>
+                                  
         <?php include ('../local/footer.php'); ?>        
         <script type="text/javascript" src="./images-and-text.js"></script>            
 	    <script type="text/javascript" src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>

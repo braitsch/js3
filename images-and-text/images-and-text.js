@@ -16,15 +16,16 @@ function drawImage()
 	img.rotation = 90;
 	stage.addChild(img);
 	
-	var x = 50; var y = 35;
 	var stage = new JS3('img-3');	
-    var text = new JS3Text( {text:'Hello World!'} );
-    text.x = x; 
-	text.y = y;
+    var text = new JS3Text( {text:'Hello World!', bold:true, color:'green', size:20} );
+	text.x = 50;
+	text.y = 35;
     stage.addChild(text);
-    var text = new JS3Text( {text:'Hello World!'} );
-    text.x = x; 
-	text.y = y;
-	text.rotation = 45;	
-    stage.addChild(text);
+
+	var stage = new JS3('img-4');
+	var text = new JS3Text( {text:'Hello World!', bold:true, color:'green', size:20} );
+	text.x = 50;
+	text.y = 35;
+	stage.run(function(){ text.rotation +=1; });  
+	stage.addChild(text);
 }

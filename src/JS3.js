@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.56
+ * Version : 0.1.57
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -312,20 +312,22 @@ JS3.drawImage = function(o){
 }
 
 JS3.drawText = function(o){
-	o.stage.font = o.size+'pt '+o.font;
-	o.stage.fillStyle = o.color;
+	var s = o.bold ? 'Bold ' : '';
+	s+= o.italic ? 'Italic ' : '';
+	o.stage.font = s+o.size+'pt '+o.font;
 	o.stage.textAlign = 'left';
 	o.stage.textBaseline = 'top';
 	o.cy = JS3getTextHeight(o) / 2;	
 	o.cx = o.stage.measureText(o.text).width / 2;	
-	JS3.openShape(o);	
-	o.stage.fillText(o.text, -o.cx, -o.cy);				
+	JS3.openShape(o);
+	if (o.fill) JS3.fill(o);
+	if (o.stroke) JS3.stroke(o);
 	JS3.drawShape(o);	
 }		
 JS3.fill = function(o){
 	o.stage.globalAlpha = o.alpha * o.fillAlpha;			
-    o.stage.fillStyle = o.fillColor;
-	o.stage.fill();
+    o.stage.fillStyle = o.color || o.fillColor;
+	o instanceof JS3Text ? o.stage.fillText(o.text, -o.cx, -o.cy) : o.stage.fill();
 	o.stage.globalAlpha = 1;
 }
 JS3.stroke = function(o){	
@@ -333,7 +335,7 @@ JS3.stroke = function(o){
 	o.stage.lineCap = o.capStyle;
     o.stage.lineWidth = o.strokeWidth;
     o.stage.strokeStyle = o.strokeColor;	
-	o.stage.stroke();
+	o instanceof JS3Text ? o.stage.strokeText(o.text, -o.cx, -o.cy) : o.stage.stroke();
 	o.stage.globalAlpha = 1;
 }
 JS3.getCntrPt = function(o){
@@ -501,7 +503,7 @@ function JS3getLineProps(o)
 
 function JS3getImageProps(o)
 {
-	o.image = new Image();	
+	o.image = new Image();
 	o.__defineSetter__("src", 			function(s)		{ o.image.src=s;});
 	o.__defineSetter__("ready", 		function(f)		{ o.image.onload=f;});
 	o.__defineGetter__("width", 	 	function()		{ return o.image.width;});
@@ -510,7 +512,7 @@ function JS3getImageProps(o)
 
 function JS3getTextProps(o)
 {
-	o.size=12; o.font='Arial'; o.color='#333'; o.align='left';
+	o.size=12; o.font='Arial'; o.color='#333'; o.stroke=o.bold=o.italic=false;
 }
 
 function JS3getTextHeight(o)
