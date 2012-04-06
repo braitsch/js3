@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.7
+ * Version : 0.1.71
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -298,7 +298,13 @@ JS3.drawCirc = function(o){
 	JS3.drawShape(o);	
 }
 JS3.drawTri = function(o){
-	o.width == o.height ? JS3.drawEquilateral(o) : JS3.drawCustomTriangle(o);
+	if (JS3.checkPoints(o) == true){
+		JS3.drawCustomTriangle(o);
+	} else if (o.width == o.height){
+		JS3.drawEquilateral(o);	
+	}	else{
+		JS3.drawCustomTriangle(o);
+	}
 	JS3.openShape(o);
 	o.stage.moveTo(o.x1, o.y1);
 	o.stage.lineTo(o.x2, o.y2);
@@ -306,9 +312,14 @@ JS3.drawTri = function(o){
 	o.stage.lineTo(o.x1, o.y1);
 	JS3.drawShape(o);
 }
+JS3.checkPoints = function(o){
+	var set = true;
+	for (var i = o.pts.length-1; i >= 0; i--) if (o.pts[i] == undefined) {set = false; break;}
+	return set;	
+}
 JS3.drawEquilateral = function(o){
-	var w = o.width;
-	var h = o.height * (Math.sqrt(3)/2);
+	var w = o.width || o.size;
+	var h = o.height || o.size * (Math.sqrt(3)/2);
 	o.x1 = 0;
 	o.y1 = h * -2/3;
 	o.x2 = w / 2;
@@ -318,17 +329,30 @@ JS3.drawEquilateral = function(o){
 	o.cx = w/2;
 	o.cy = h/2 + ((h/2) / 3);
 }
+JS3.drawSizedTriangle = function(o){
+	var w = o.width || o.size;
+	var h = o.height || o.size;
+	o.x1 = 0;
+	o.y1 = -h / 2
+	o.x2 = w / 2;
+	o.y2 = h / 2;
+	o.x3 = -w / 2;
+	o.y3 = h / 2;
+	o.cx = (o.x1 + o.x2 + o.x3) / 3;
+	o.cy = (o.y1 + o.y2 + o.y3) / 3;
+}
 JS3.drawCustomTriangle = function(o){
-	var w = o.width;
-	var h = o.height;
-	o.x1 = o.x1 || 0;
-	o.y1 = o.y1 || -h / 2
-	o.x2 = o.x2 || w / 2;
-	o.y2 = o.y2 || h / 2;
-	o.x3 = o.x3 || -w / 2;
-	o.y3 = o.y3 || h / 2;
-	o.cx = w/2;
-	o.cy = h/2;
+	console.log(o.pts)
+	var w = o.width || o.size;
+	var h = o.height || o.size;
+	o.x1 = o.pts[0] || 0;
+	o.y1 = o.pts[1] || -h / 2
+	o.x2 = o.pts[2] || w / 2;
+	o.y2 = o.pts[3] || h / 2;
+	o.x3 = o.pts[4] || -w / 2;
+	o.y3 = o.pts[5] || h / 2;
+	o.cx = (o.x1 + o.x2 + o.x3) / 3;
+	o.cy = (o.y1 + o.y2 + o.y3) / 3;
 }
 JS3.drawImage = function(o){
 	if (o.image.src==false) return;
@@ -477,9 +501,9 @@ function JS3Arc(o)
 function JS3Tri(o)
 {
 	JS3getBaseProps(this);
+	JS3getPolyProps(this);	
 	this.update = JS3.drawTri;
 	if (o) JS3.copyProps(o, this);
-	this.p1 = {}; this.p2 = {}; this.p3 = {};	
 }
 
 function JS3Rect(o)
@@ -533,6 +557,17 @@ function JS3getLineProps(o)
 	o.capStyle='butt'; o.x1=o.y1=o.cx=o.cy=o.x2=o.y2=0;
 	o.__defineSetter__("color", 		function(s)		{ o.strokeColor=s;});	
 	o.__defineSetter__("thickness", 	function(s)		{ o.strokeWidth=s;});
+}
+
+function JS3getPolyProps(o)
+{
+	o.pts = [];
+	o.__defineSetter__("x1", 		function(n)		{ o.pts[0] = n;});	
+	o.__defineSetter__("y1", 		function(n)		{ o.pts[1] = n;});
+	o.__defineSetter__("x2", 		function(n)		{ o.pts[2] = n;});	
+	o.__defineSetter__("y2", 		function(n)		{ o.pts[3] = n;});
+	o.__defineSetter__("x3", 		function(n)		{ o.pts[4] = n;});	
+	o.__defineSetter__("y3", 		function(n)		{ o.pts[5] = n;});		
 }
 
 function JS3getImageProps(o)

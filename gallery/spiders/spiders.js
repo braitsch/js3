@@ -10,7 +10,6 @@ var colors = palettes[Math.floor(JS3.getRandomValue(palettes.length))];
 function init()
 {
 	autoSize = false; canvas.setSize(winW, 250);
-	console.log(winW);	
 	canvas.drawClean = true;
 	canvas.setSize = (winW, 200);
 	$('cnvs').width(winW);
@@ -50,11 +49,11 @@ function move()
 function makeSpider()
 {	
 	var s = canvas.getChildAtRandom();
-		s.size = 50;
 		s.spider = true;
 		s.strokeWidth = 3;
 		s.strokeColor = colors[3];
 	spiders.push(s);
+	canvas.tween(s, 2, {size:50});	
 	if (spiders.length > 4) canvas.stop(makeSpider);
 }
 
@@ -66,8 +65,9 @@ function reach()
 			var c = canvas.getChildAt(k);
 			if (c.spider == undefined){
 				if (Math.abs(s.x - c.x) < 75 && Math.abs(s.y - c.y) < 75) {
-					var o = {	strokeWidth:1, strokeColor:colors[3], x1:s.x+s.width/2, y1:s.y+s.height/2, x2:c.x+c.width/2, y2:c.y+c.height/2,	
-								cx:((s.x+c.x)/2)+(JS3.getRandomValue(-wiggle, wiggle)), cy:((s.y+c.y)/2)+(JS3.getRandomValue(-wiggle, wiggle)) };
+					var o = {	strokeWidth:2, strokeColor:colors[3], x1:s.x+s.width/2, y1:s.y+s.height/2, x2:c.x+c.width/2, y2:c.y+c.height/2,	
+								xc:((s.x+c.x)/2)+(JS3.getRandomValue(-wiggle, wiggle)), 
+								yc:((s.y+c.y)/2)+(JS3.getRandomValue(-wiggle, wiggle)) };
 					canvas.drawArc(o);									
 				};
 			};
