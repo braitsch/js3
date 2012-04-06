@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.1.7
+ * Version : 0.2.0
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -298,37 +298,53 @@ JS3.drawCirc = function(o){
 	JS3.drawShape(o);	
 }
 JS3.drawTri = function(o){
-	o.width == o.height ? JS3.drawEquilateral(o) : JS3.drawCustomTriangle(o);
+	if (o.pts.length == 6){
+		JS3.drawTriByPoints(o);
+	} else if (o.width == o.height){
+		JS3.drawTriEquilateral(o);
+	}	else{
+		JS3.drawTriDistorted(o);
+	}
 	JS3.openShape(o);
-	o.stage.moveTo(o.x1, o.y1);
-	o.stage.lineTo(o.x2, o.y2);
-	o.stage.lineTo(o.x3, o.y3);
-	o.stage.lineTo(o.x1, o.y1);
+	o.stage.moveTo(o._x1, o._y1);
+	o.stage.lineTo(o._x2, o._y2);
+	o.stage.lineTo(o._x3, o._y3);
+	o.stage.lineTo(o._x1, o._y1);
 	JS3.drawShape(o);
 }
-JS3.drawEquilateral = function(o){
-	var w = o.width;
-	var h = o.height * (Math.sqrt(3)/2);
-	o.x1 = 0;
-	o.y1 = h * -2/3;
-	o.x2 = w / 2;
-	o.y2 = h / 3;
-	o.x3 = -w / 2;
-	o.y3 = h / 3;
+JS3.drawTriEquilateral = function(o){
+	var w = o.width || o.size;
+	var h = (o.height || o.size) * (Math.sqrt(3)/2);
+	o._x1 = 0;
+	o._y1 = h * -2/3;
+	o._x2 = w / 2;
+	o._y2 = h / 3;
+	o._x3 = -w / 2;
+	o._y3 = h / 3;
 	o.cx = w/2;
 	o.cy = h/2 + ((h/2) / 3);
 }
-JS3.drawCustomTriangle = function(o){
-	var w = o.width;
-	var h = o.height;
-	o.x1 = o.x1 || 0;
-	o.y1 = o.y1 || -h / 2
-	o.x2 = o.x2 || w / 2;
-	o.y2 = o.y2 || h / 2;
-	o.x3 = o.x3 || -w / 2;
-	o.y3 = o.y3 || h / 2;
+JS3.drawTriDistorted = function(o){
+	var w = o.width || o.size;
+	var h = o.height || o.size;
+	o._x1 = 0;
+	o._y1 = -h / 2
+	o._x2 = w / 2;
+	o._y2 = h / 2;
+	o._x3 = -w / 2;
+	o._y3 = h / 2;
 	o.cx = w/2;
 	o.cy = h/2;
+}
+JS3.drawTriByPoints = function(o){	
+	o.cx = (o.pts[0] + o.pts[2] + o.pts[4]) / 3;	
+	o.cy = (o.pts[1] + o.pts[3] + o.pts[5]) / 3;	
+	o._x1 = o.pts[0] - o.cx;
+	o._y1 = o.pts[1] - o.cy;
+	o._x2 = o.pts[2] - o.cx;
+	o._y2 = o.pts[3] - o.cy;
+	o._x3 = o.pts[4] - o.cx;
+	o._y3 = o.pts[5] - o.cy;
 }
 JS3.drawImage = function(o){
 	if (o.image.src==false) return;
@@ -339,7 +355,6 @@ JS3.drawImage = function(o){
 	o.stage.drawImage(o.image, -o.cx, -o.cy);	
 	JS3.drawShape(o);
 }
-
 JS3.drawText = function(o){
 	var s = o.bold ? 'Bold ' : '';
 	s+= o.italic ? 'Italic ' : '';
@@ -477,9 +492,9 @@ function JS3Arc(o)
 function JS3Tri(o)
 {
 	JS3getBaseProps(this);
+	JS3getPolyProps(this);	
 	this.update = JS3.drawTri;
 	if (o) JS3.copyProps(o, this);
-	this.p1 = {}; this.p2 = {}; this.p3 = {};	
 }
 
 function JS3Rect(o)
@@ -517,6 +532,10 @@ function JS3getBaseProps(o)
 {	
 	o.__defineGetter__("size", 	 		function()		{ return o._size;});
 	o.__defineSetter__("size", 	 		function(n)		{ o._size=o.width=o.height=n;});
+	o.__defineGetter__("width", 	 	function()		{ return o._width;});
+	o.__defineSetter__("width", 	 	function(n)		{ o._width=n; o.pts=[];});
+	o.__defineGetter__("height", 	 	function()		{ return o._height;});
+	o.__defineSetter__("height", 	 	function(n)		{ o._height=n; o.pts=[];});		
 	o.__defineSetter__("click",			function(f)		{ o._onClick=f;o.enabled=true;});
 	o.__defineSetter__("rollOver",		function(f)		{ o._onRollOver=f;o.enabled=true;});
 	o.__defineSetter__("rollOut",		function(f)		{ o._onRollOut=f;o.enabled=true;});		
@@ -533,6 +552,17 @@ function JS3getLineProps(o)
 	o.capStyle='butt'; o.x1=o.y1=o.cx=o.cy=o.x2=o.y2=0;
 	o.__defineSetter__("color", 		function(s)		{ o.strokeColor=s;});	
 	o.__defineSetter__("thickness", 	function(s)		{ o.strokeWidth=s;});
+}
+
+function JS3getPolyProps(o)
+{
+	o.pts = [];
+	o.__defineSetter__("x1", 			function(n)		{ o.pts[0] = n;});	
+	o.__defineSetter__("y1", 			function(n)		{ o.pts[1] = n;});
+	o.__defineSetter__("x2", 			function(n)		{ o.pts[2] = n;});	
+	o.__defineSetter__("y2", 			function(n)		{ o.pts[3] = n;});
+	o.__defineSetter__("x3", 			function(n)		{ o.pts[4] = n;});	
+	o.__defineSetter__("y3", 			function(n)		{ o.pts[5] = n;});	
 }
 
 function JS3getImageProps(o)
