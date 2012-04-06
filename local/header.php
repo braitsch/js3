@@ -7,7 +7,7 @@ function linkto($n){ global $root; echo $root.$n;}
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>JS3 - A lightweight port of the AS3 TweenLite library for the JavaScript Canvas</title>
+        <title>JS3 is a fast and lightweight drawing and animation library for the HTML5 JavaScript Canvas</title>
         <meta name="description" content="A lightweight port of the AS3 TweenLite library for the JavaScript Canvas">
         <meta name="author" content="Stephen Braitsch">    
         <link href=<?php linkto('/vendor/bootstrap.min.css')?> rel="stylesheet">
