@@ -38,9 +38,10 @@
                 <p>And the following are general utility methods for controlling the Stage.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
-        stage.clear();  // stops all animations, removes all children and colors the background to stage.background
+        stage.save(); 	// opens a popup window allowing the user to save the current state of the canvas as a .png
+        stage.clear();  // removes all graphics and children from the Stage 
+        stage.reset();  // calls clear() and also stops all tweens and functions passed to stage.run()
         stage.setSize( width:Number, height:Number ); // sets the size of the canvas, useful when the browser is resized.
-        stage.save();  // opens a popup window allowing the user to save the current state of the canvas as a .png
                 </code></pre><hr>
 
                 <h2 id='api-display-list'>The Display List</h2>

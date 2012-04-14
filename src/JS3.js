@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.0
+ * Version : 0.2.1
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -76,7 +76,8 @@ function JS3(cnvs)
 		this.run = function(func, delay, repeat, onComp){
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
-			_runners.push({f:func, d:delay, r:repeat, o:onComp, t:Date.now()});
+			var r = new Runner(func, delay, repeat, onComp);
+			_runners.push(r); return r;
 		}	
 		this.stop = function(func){stopRunner(func);}	
 		this.tween = function(obj, secs, props){
@@ -87,10 +88,13 @@ function JS3(cnvs)
 		}
 		this.clear = function(){
 			while(_children.length) {_children[0] = null; _children.splice(0, 1);}
-			while(_graphics.length){ _graphics[0] = null; _graphics.splice(0, 1);}
+			while(_graphics.length){ _graphics[0] = null; _graphics.splice(0, 1);}				
+			_children = []; _graphics = []; drawBackground();
+		}
+		this.reset = function(){
 			while(_tweens.length) {_tweens[0] = null; _tweens.splice(0, 1);}
-			while(_runners.length) {_runners[0] = null; _runners.splice(0, 1);}					
-			_children = []; _graphics = []; _tweens = []; _runners = []; drawBackground();
+			while(_runners.length) {_runners[0] = null; _runners.splice(0, 1);}
+			_tweens = []; _runners = []; this.clear();
 		}
 		this.setSize = function(w, h){
 			_canvas.width = _width = w; _canvas.height = _height = h;
@@ -603,6 +607,16 @@ function Tween(obj, dur, props)
 	this.easeFunc	= props.ease || linear;
 	this.props 		= {};	
 	for (var p in props) if (isNumber(props[p])) this.props[p] = {a:obj[p], b:props[p]-obj[p]};
+}
+
+function Runner(func, delay, repeat, onComp)
+{
+	this.f 			= func;
+	this.d 			= delay;
+	this.r			= repeat;
+	this.o 			= onComp;	
+	this.t 			= Date.now();
+	this.__defineSetter__("delay", 		function(n)		{ this.d=n;});
 }
 
 var trace = function(m){ try{ console.log(m); } catch(e){ return; }};
