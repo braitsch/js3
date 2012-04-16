@@ -1,0 +1,33 @@
+<html>
+   <body>                
+        <canvas id="my-canvas" width="800" height="100"></canvas>                        
+        <script src="./src/JS3.js"></script>
+        <script>
+            var stage = new JS3('my-canvas');
+                stage.background = '#CCC';
+				stage.interactive = true;
+            var c1 = new JS3Circle();
+				c1.name = 'c1';
+                c1.strokeColor = '#EEE';
+                c1.strokeWidth = 4;
+                c1.fillColor = '#9C0C0C';                
+                c1.x = 25;
+                c1.y = 35;
+            stage.addChild(c1);
+            var c2 = new JS3Circle();
+				c2.size = 50;
+				c2.name = 'c2';
+                c2.strokeColor = '#EEE';
+                c2.strokeWidth = 4;
+                c2.fillColor = '#9C0C0C';                
+                c2.x = 45;
+                c2.y = 35;
+            stage.addChild(c2);
+			function onEvent(o)
+			{
+				console.log(o.type, o.target, o.x, o.y);
+			}
+			stage.click = onEvent;
+        </script>
+        </body>                
+</html>

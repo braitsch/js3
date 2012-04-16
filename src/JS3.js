@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.1
+ * Version : 0.2.2
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -15,6 +15,7 @@
 
 function JS3(cnvs)
 {
+		var _root		= this;	
 		var _canvas 	= document.getElementById(cnvs);
 		var _context 	= _canvas.getContext("2d");
 		var _width 		= _canvas.width;
@@ -22,16 +23,12 @@ function JS3(cnvs)
 		var _children 	= [];
 		var _graphics	= [];
 		var _runners	= [];
-		var _tweens		= [];
-		var _downObj	= undefined;
-		var _overObj	= undefined;		
-		var _dragObj	= undefined;
-		var _onClick	= undefined;
-		var _onRollOver	= undefined;
-		var _onRollOut	= undefined;
+		var _tweens		= [];		
 		var _drawClean 	= true;
 		var _background = '#ffffff';
 		var _winTitle	= 'My Canvas';
+		var _mouseUp	= Date.now();		
+		var _downObj, _overObj, _dragObj, _clickInt, _stageEnter;
 	
 	// public getters & setters //
 	
@@ -41,14 +38,12 @@ function JS3(cnvs)
 	 	this.__defineGetter__("position", 		function()		{ 
 			var x = 0; var y = 0; var e = _canvas;
 			while( e != null ) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
-			return {x:x, y:y};});
-	 	this.__defineSetter__("click", 			function(f)		{ _onClick = f;});
-	 	this.__defineSetter__("rollOver", 		function(f)		{ _onRollOver = f;});
-	 	this.__defineSetter__("rollOut", 		function(f)		{ _onRollOut = f;});		
+			return {x:x, y:y};});		
 	 	this.__defineSetter__("drawClean", 		function(b)		{ _drawClean = b;});
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	 	this.__defineSetter__("windowTitle", 	function(s)		{ _winTitle = s;});	
-	 	this.__defineSetter__("interactive", 	function(b)		{ b ? addMouseEvents() : remMouseEvents(); });		
+	 	this.__defineSetter__("interactive", 	function(b)		{ b ? addMouseEvents() : remMouseEvents(); });
+		JS3setMouseEvents(this);
 	
 	// display list management //	
 	
@@ -76,14 +71,14 @@ function JS3(cnvs)
 		this.run = function(func, delay, repeat, onComp){
 		// prevent double running //	
 			for (var i = _runners.length - 1; i >= 0; i--) if (func == _runners[i].f) return;
-			var r = new Runner(func, delay, repeat, onComp);
+			var r = new JS3Runner(func, delay, repeat, onComp);
 			_runners.push(r); return r;
 		}	
 		this.stop = function(func){stopRunner(func);}	
 		this.tween = function(obj, secs, props){
 			if (obj.isTweening) return;
 				obj.isTweening = true;
-			var t = new Tween(obj, secs, props);
+			var t = new JS3Tween(obj, secs, props);
 			t.delay == undefined ? initTween(t) : setTimeout(initTween, t.delay * 1000, t);
 		}
 		this.clear = function(){
@@ -123,80 +118,123 @@ function JS3(cnvs)
 	
 		var addMouseEvents = function()
 		{
-			_canvas.addEventListener("mousedown", onMouseDown);	
-			_canvas.addEventListener("mouseup", onMouseUp);
-			_canvas.addEventListener("mousemove", onMouseMove);			
+			_canvas.addEventListener("mousedown", onMD);	
+			_canvas.addEventListener("mouseup", onMU);
+			_canvas.addEventListener("mousemove", onMM);
+			_canvas.addEventListener("mouseover", onOVR);
+			_canvas.addEventListener("mouseout", onOUT);
 		}
-		
 		var remMouseEvents = function()
 		{
-			_canvas.removeEventListener("mousedown", onMouseDown);	
-			_canvas.removeEventListener("mouseup", onMouseUp);
-			_canvas.removeEventListener("mousemove", onMouseMove);				
+			_canvas.removeEventListener("mousedown", onMD);	
+			_canvas.removeEventListener("mouseup", onMU);
+			_canvas.removeEventListener("mousemove", onMM);	
+			_canvas.removeEventListener("mouseover", onOVR);
+			_canvas.removeEventListener("mouseout", onOUT);
 		}
-		
-		var onMouseDown = function(e)
-		{	
+		var onMD = function(e)
+		{
 			_context.dx = _context.mx; _context.dy = _context.my;
-			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].mouse && _children[i].enabled) {
-				_downObj = _children[i]; _children.splice(i, 1); _children.push(_downObj); break;
-			}
-		}	
-		
-		var onMouseUp = function(e)
-		{		
-			if (_downObj){
-				if (_dragObj == undefined){
-					if (_onClick != undefined) _onClick(_downObj);
-					if (_downObj._onClick != undefined) _downObj._onClick(_downObj);
-				} else{
-					if (_downObj._onDragComplete != undefined) _downObj._onDragComplete(_downObj);
+			var k = getMouseObject();
+			if (k) { _downObj = k; onMouseEvent(k, 'mouseDown'); };
+			onMouseEvent(_root, 'mouseDown');
+		}
+		var onMU = function(e)
+		{
+			if (_dragObj){
+				onMouseEvent(_dragObj, 'dragComplete'); _dragObj = undefined;
+			}	else{
+				if (_clickInt){
+			        clearInterval(_clickInt); _clickInt = null; onDoubleClick();
+				}	else{
+			        _clickInt = setTimeout(function(){ _clickInt = null; onSingleClick(); }, 200);
 				}
 			}
-			_downObj = _dragObj = undefined;
+			var k = getMouseObject();
+			if (k) onMouseEvent(k, 'mouseUp');
+			onMouseEvent(_root, 'mouseUp');
 		}
-		
-		var onMouseMove = function(e)
+		var onMM = function(e)
+		{
+			getMousePosition(e); 
+		// detect rollOver & rollOuts //			
+			var k = getMouseObject();
+			var m = false;
+			if (k){
+				if (k != _overObj){
+					onMouseEvent(k, 'mouseOver'); m = true;
+				}
+			}
+			if (_overObj != undefined) {
+				if (_overObj != k) {
+					onMouseEvent(_overObj, 'mouseOut');
+				}
+			}
+			_overObj = k || undefined;
+		// update mouse cursor //
+			window.document.body.style.cursor = k ? 'pointer' : 'default';
+		// check for draggable target //
+			if (_downObj){
+				if (_downObj.draggable) {
+					if (_dragObj == undefined){
+						_dragObj = _downObj;
+						onMouseEvent(_downObj, 'dragStart');
+					}	else{
+						_downObj.x += _context.mx - _context.dx;
+						_downObj.y += _context.my - _context.dy;
+						_context.dy = _context.my; 
+						_context.dx = _context.mx;
+						onMouseEvent(_downObj, 'dragChange');
+					}
+				}
+			}
+		 	if (_stageEnter) {
+				_stageEnter = false;
+				onMouseEvent(_root, 'mouseOver') 
+			}	else{
+				onMouseEvent(_root, 'mouseMove');
+			}
+		}
+		var onOVR = function(e)
+		{
+			_stageEnter = true;
+		}
+		var onOUT = function(e)
+		{
+			onMouseEvent(_root, 'mouseOut');			
+		}		
+		var onMouseEvent = function(o, e)
+		{
+			if (o['_'+e]) o['_'+e](getMouseEvent(e, o));
+		}		
+		var onSingleClick = function()
+		{
+			var k = getMouseObject();
+			if (k) if (k == _downObj) onMouseEvent(k, 'click'); 
+			_downObj = undefined;
+			onMouseEvent(_root, 'click');
+		}
+		var onDoubleClick = function()
+		{
+			var k = getMouseObject();
+			if (k) if (k == _downObj) onMouseEvent(k, 'doubleClick'); 
+			_downObj = undefined;			
+			onMouseEvent(_root, 'doubleClick');
+		}	
+		var getMouseObject = function()
+		{
+			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].mouse && _children[i].enabled) return _children[i];
+		}
+		var getMouseEvent = function (t, o)
+		{
+			return new JS3Event(t, o, _context.mx, _context.my);
+		}		
+		var getMousePosition = function(e)
 		{
 		    var oX = 0; var oY = 0; var k = _canvas;
 		    do { oX += k.offsetLeft; oY += k.offsetTop; } while (k = k.offsetParent);		
 			_context.mx = e.pageX - oX; _context.my = e.pageY - oY;
-		// detect rollOver & rollOuts //			
-			var m = false;	
-			for (var i = _children.length - 1; i >= 0; i--) {
-				var k = _children[i];
-				if (k.mouse && k.enabled) {
-					if (k != _overObj){
-						if (_onRollOver != undefined) _onRollOver(k);
-						if (k._onRollOver != undefined) k._onRollOver(k);
-					} 
-					m=true; break;
-				}
-			}
-			if (_overObj != undefined) {
-				if (_overObj != k || m==false) {
-					if (_onRollOut != undefined) _onRollOut(_overObj);				
-					if (_overObj._onRollOut != undefined) _overObj._onRollOut(_overObj);
-				}
-			}
-			_overObj = m ? k : undefined;
-		// update mouse cursor //
-			window.document.body.style.cursor = m ? 'pointer' : 'default';
-		// check for draggable target //	
-			if (_downObj){
-				if (_downObj.draggable) {
-					if (_dragObj == undefined){
-					 	_dragObj = _downObj;
-					 	if (_downObj._onDragStart != undefined) _downObj._onDragStart(_downObj);
-					}	else{
-						_downObj.x += _context.mx - _context.dx;
-						_downObj.y += _context.my - _context.dy;
-						_context.dy = _context.my; _context.dx = _context.mx;
-						if (_downObj._onDragChange != undefined) _downObj._onDragChange(_downObj);						
-					}
-				}
-			}
-		}	
+		}
 		
 	// private instance methods //
 		
@@ -539,16 +577,9 @@ function JS3getBaseProps(o)
 	o.__defineGetter__("width", 	 	function()		{ return o._width;});
 	o.__defineSetter__("width", 	 	function(n)		{ o._width=n; o.pts=[];});
 	o.__defineGetter__("height", 	 	function()		{ return o._height;});
-	o.__defineSetter__("height", 	 	function(n)		{ o._height=n; o.pts=[];});		
-	o.__defineSetter__("click",			function(f)		{ o._onClick=f;o.enabled=true;});
-	o.__defineSetter__("rollOver",		function(f)		{ o._onRollOver=f;o.enabled=true;});
-	o.__defineSetter__("rollOut",		function(f)		{ o._onRollOut=f;o.enabled=true;});		
-	o.__defineGetter__("draggable", 	function()		{ return o._draggable;});	
-	o.__defineSetter__("draggable",		function(b)		{ o._draggable=b; if (b==true) o.enabled=true;});	
-	o.__defineSetter__("drag",			function(f)		{ o._onDragChange=f;o.draggable=true;});
-	o.__defineSetter__("dragStart",		function(f)		{ o._onDragStart=f;o.draggable=true;});
-	o.__defineSetter__("dragComplete",	function(f)		{ o._onDragComplete=f;o.draggable=true;});
+	o.__defineSetter__("height", 	 	function(n)		{ o._height=n; o.pts=[];});
 	o.x=o.y=o.rotation=0; o._size=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scaleX=o.scaleY=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
+	JS3setObjEvents(o);
 }
 
 function JS3getLineProps(o)
@@ -595,7 +626,35 @@ function JS3getTextHeight(o)
 	return h;
 }
 
-function Tween(obj, dur, props)
+function JS3setObjEvents(o)
+{
+	JS3setMouseEvents(o);
+	o.__defineGetter__("draggable", 	function()		{ return o._draggable;});
+	o.__defineSetter__("draggable",		function(b)		{ o._draggable=b; if (b==true) o.enabled=true;});	
+	o.__defineSetter__("dragStart",		function(f)		{ o._dragStart=f;o.draggable=true;});
+	o.__defineSetter__("dragChange",	function(f)		{ o._dragChange=f;o.draggable=true;});	
+	o.__defineSetter__("dragComplete",	function(f)		{ o._dragComplete=f;o.draggable=true;});	
+}
+function JS3setMouseEvents(o)
+{
+	o.__defineSetter__("click",			function(f)		{ o._click=f;o.enabled=true;});
+	o.__defineSetter__("dclick",		function(f)		{ o._doubleClick=f;o.enabled=true;});
+	o.__defineSetter__("over",			function(f)		{ o._mouseOver=f;o.enabled=true;});
+	o.__defineSetter__("out",			function(f)		{ o._mouseOut=f;o.enabled=true;});		
+	o.__defineSetter__("down",			function(f)		{ o._mouseDown=f;o.enabled=true;});
+	o.__defineSetter__("up",			function(f)		{ o._mouseUp=f;o.enabled=true;});
+	o.__defineSetter__("move",			function(f)		{ o._mouseMove=f;o.enabled=true;});
+}
+
+function JS3Event(t, o, x, y)
+{
+	this.x			= x;
+	this.y			= y;	
+	this.type		= t;
+	this.target		= o;	
+}
+
+function JS3Tween(obj, dur, props)
 {
 	this.object 	= obj;
 	this.duration 	= dur * 1000;
@@ -606,18 +665,21 @@ function Tween(obj, dur, props)
 	this.onComplete	= props.onComplete;
 	this.easeFunc	= props.ease || linear;
 	this.props 		= {};	
-	for (var p in props) if (isNumber(props[p])) this.props[p] = {a:obj[p], b:props[p]-obj[p]};
+	for (var p in props) if (JS3isNumber(props[p])) this.props[p] = {a:obj[p], b:props[p]-obj[p]};
 }
 
-function Runner(func, delay, repeat, onComp)
+function JS3Runner(func, delay, repeat, onComp)
 {
 	this.f 			= func;
 	this.d 			= delay;
 	this.r			= repeat;
-	this.o 			= onComp;	
+	this.o 			= onComp;
 	this.t 			= Date.now();
-	this.__defineSetter__("delay", 		function(n)		{ this.d=n;});
+	this.__defineSetter__("delay", 			function(n)		{ this.d=n;});
+	this.__defineSetter__("onComplete", 	function(f)		{ this.o=f;});	
+	this.__defineSetter__("repeatCount", 	function(n)		{ this.r=n;});
 }
 
-var trace = function(m){ try{ console.log(m); } catch(e){ return; }};
-var isNumber = function(n) { return !isNaN(parseFloat(n)) && isFinite(n); }
+function JS3Trace(m) { try{ console.log(m); } catch(e){ return; }}
+function JS3isNumber(n) { return !isNaN(parseFloat(n)) && isFinite(n); }
+if (trace == undefined) var trace = JS3Trace;
