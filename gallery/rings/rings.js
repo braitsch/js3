@@ -82,7 +82,7 @@ function addGui()
 		s1.onChange(function(val){width=val;});
 	var s1 = gui.add(o, 'Stroke Variance', 0, 100);
 		s1.onChange(function(val){widthVar=val;});	
-	var s1 = gui.add(o, 'Life', 1, 300);
+	var s1 = gui.add(o, 'Life', 1, 500);
 		s1.onChange(function(val){life=val;});	
 	var s1 = gui.add(o, 'Life Variance', 0, 100);
 		s1.onChange(function(val){lifeVar=val;});
