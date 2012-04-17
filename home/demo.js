@@ -133,24 +133,24 @@ function drawCross()
 		updateGui();
 	}
 	cross.src = './home/cross.png';
-	cross.drag = onCrossDrag;
+	cross.dragChange = onCrossDrag;
 	stage.addChild(cross);
 }
 
 function getObjDefinition()
 {
-	return {x:sx || 50, y:sy || 50, size:50, drag:onShapeDrag}; 
-//	draggable:true, click:onClick, dragStart:onDragStart, drag:onCrossDrag, dragComplete:onDragComplete};
+	return {x:sx || 50, y:sy || 50, size:50, dragChange:onShapeDrag}; 
+//	draggable:true, click:onClick, dragStart:onDragStart, dragChange:onCrossDrag, dragComplete:onDragComplete};
 }
 
-function onShapeDrag(o)
+function onShapeDrag(e)
 {
-	sx=o.x;sy=o.y;
+	sx=e.x;sy=e.y;
 }
 
-function onCrossDrag(o)
+function onCrossDrag(e)
 {
-	guiObj.X = cross.x = o.x; guiObj.Y = cross.y = o.y; updateGui();
+	guiObj.X = cross.x = e.x; guiObj.Y = cross.y = e.y; updateGui();
 }
 
 function tweenShape()

@@ -16,9 +16,11 @@ function init()
 {
 	autoSize = true; canvas.setSize(winW, winH); addGui();
 	canvas.windowTitle = 'Rings &#187; Right Click & Select Save Image As';
-	canvas.background = bkgdColor;	
-	canvas.run(fadeRing); runner = canvas.run(drawRing, 10/saturation); drawRing();
-	document.getElementById("cnvs").addEventListener("mousedown", getMousePosition, false);	
+	canvas.background = bkgdColor;
+	canvas.interactive = true;	
+	canvas.run(fadeRing); 
+	canvas.click = function(e){ drawRing(e.x, e.y) };	
+	runner = canvas.run(drawRing, 10/saturation); drawRing();
 }
 
 function drawRing(xx, yy)
@@ -49,20 +51,6 @@ function fadeRing()
 			if (k.alpha < 0) canvas.removeChildAt(i);
 		}
 	};
-}
-
-function getMousePosition(e)
-{
-	if (e.x != undefined && e.y != undefined) {
-		startX = event.x;
-		startY = event.y;
-	}	else {
-	// firefox //		
-		startX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-		startY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-	}
-	startY -= 40; // subtract abs y position of the window canvas
-	drawRing(startX, startY)
 }
 
 // --- datgui controller --- //

@@ -15,28 +15,21 @@ function init()
 	autoSize = true; canvas.setSize(winW, winH); 
 	canvas.drawClean = false;
 	canvas.background = bkgdColor;
+	canvas.click = onCanvasClick;
+	canvas.interactive = true;		
 	canvas.windowTitle = 'TubeWorms &#187; Right Click & Select Save Image As';
 	startX = canvas.width / 2; startY = canvas.height / 2;
-	document.getElementById("cnvs").addEventListener("mousedown", getMousePosition, false);
 	setTimeout(draw, 500);	
 }
 
-function getMousePosition(e)
+function onCanvasClick(e)
 {
-	if (e.x != undefined && e.y != undefined) {
-		startX = event.x;
-		startY = event.y;
-	}	else {
-	// firefox //		
-		startX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-		startY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-	}
-	startY -= 40; // subtract abs y position of the window canvas
-	// stop any active worms from growing //
+	startX = e.x;
+	startY = e.y;	
+// stop any active worms from growing //
 	while (canvas.numChildren) canvas.removeChildAt(0);
 	draw();
 }
-
 
 function draw()
 {

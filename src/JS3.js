@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.2
+ * Version : 0.2.3
  * Documentation : http://quietless.com/js3/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -27,7 +27,6 @@ function JS3(cnvs)
 		var _drawClean 	= true;
 		var _background = '#ffffff';
 		var _winTitle	= 'My Canvas';
-		var _mouseUp	= Date.now();		
 		var _downObj, _overObj, _dragObj, _clickInt, _stageEnter;
 	
 	// public getters & setters //
@@ -43,15 +42,15 @@ function JS3(cnvs)
 	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
 	 	this.__defineSetter__("windowTitle", 	function(s)		{ _winTitle = s;});	
 	 	this.__defineSetter__("interactive", 	function(b)		{ b ? addMouseEvents() : remMouseEvents(); });
-		JS3setMouseEvents(this);
+		JS3setStageEvents(this);
 	
 	// display list management //	
 	
 		this.addChild = function(o){
-			o.stage = _context; _children.push(o);
+			o.parent = _root; o.stage = _context; _children.push(o);
 		}	
 		this.addChildAt = function(o, n){
-			if (n <= _children.length) _children.splice(n, 0, o);
+			if (n <= _children.length) o.parent = _root; o.stage = _context; _children.splice(n, 0, o);
 		}			
 		this.getChildAt = function(n){
 			return _children[n];
@@ -59,11 +58,11 @@ function JS3(cnvs)
 		this.getChildAtRandom = function(){
 			return _children[Math.floor(Math.random()*_children.length)];
 		}
-		this.removeChild = function(o, k){
-			for (var i = _children.length - 1; i >= 0; i--){ if (_children[i] == o){ removeChildAt(i, k); break; }};
+		this.removeChild = function(o){
+			for (var i = _children.length - 1; i >= 0; i--){ if (_children[i] == o){ removeChildAt(i); break; }};
 		}		
-		this.removeChildAt = function(i, k){
-			if (k) _children[i] = null; _children.splice(i, 1); 
+		this.removeChildAt = function(i){
+			_children[i].parent = null; _children[i].stage = null; _children.splice(i, 1); 
 		}					
 		
 	// 	animation methods //
@@ -135,14 +134,13 @@ function JS3(cnvs)
 		var onMD = function(e)
 		{
 			_context.dx = _context.mx; _context.dy = _context.my;
-			var k = getMouseObject();
-			if (k) { _downObj = k; onMouseEvent(k, 'mouseDown'); };
-			onMouseEvent(_root, 'mouseDown');
+			_downObj = _overObj;
+			onMouseEvent(_overObj, 'mouseDown');
 		}
 		var onMU = function(e)
 		{
 			if (_dragObj){
-				onMouseEvent(_dragObj, 'dragComplete'); _dragObj = undefined;
+				onMouseEvent(_dragObj, 'dragComplete'); _dragObj = _downObj = undefined;
 			}	else{
 				if (_clickInt){
 			        clearInterval(_clickInt); _clickInt = null; onDoubleClick();
@@ -150,29 +148,20 @@ function JS3(cnvs)
 			        _clickInt = setTimeout(function(){ _clickInt = null; onSingleClick(); }, 200);
 				}
 			}
-			var k = getMouseObject();
-			if (k) onMouseEvent(k, 'mouseUp');
-			onMouseEvent(_root, 'mouseUp');
+			onMouseEvent(_overObj, 'mouseUp');
 		}
 		var onMM = function(e)
 		{
 			getMousePosition(e); 
-		// detect rollOver & rollOuts //			
+		// detect rollOver & rollOuts //
 			var k = getMouseObject();
-			var m = false;
-			if (k){
-				if (k != _overObj){
-					onMouseEvent(k, 'mouseOver'); m = true;
-				}
+			if (k != _overObj){
+				onMouseEvent(k, 'mouseOver');
+				onMouseEvent(_overObj, 'mouseOut');
 			}
-			if (_overObj != undefined) {
-				if (_overObj != k) {
-					onMouseEvent(_overObj, 'mouseOut');
-				}
-			}
-			_overObj = k || undefined;
+			_overObj = k;
 		// update mouse cursor //
-			window.document.body.style.cursor = k ? 'pointer' : 'default';
+			window.document.body.style.cursor = _overObj != _root ? 'pointer' : 'default';
 		// check for draggable target //
 			if (_downObj){
 				if (_downObj.draggable) {
@@ -190,9 +179,9 @@ function JS3(cnvs)
 			}
 		 	if (_stageEnter) {
 				_stageEnter = false;
-				onMouseEvent(_root, 'mouseOver') 
+				onMouseEvent(_root, 'stageEnter') 
 			}	else{
-				onMouseEvent(_root, 'mouseMove');
+				onMouseEvent(k, 'mouseMove');
 			}
 		}
 		var onOVR = function(e)
@@ -201,33 +190,31 @@ function JS3(cnvs)
 		}
 		var onOUT = function(e)
 		{
-			onMouseEvent(_root, 'mouseOut');			
+			onMouseEvent(_root, 'stageLeave');
 		}		
 		var onMouseEvent = function(o, e)
 		{
-			if (o['_'+e]) o['_'+e](getMouseEvent(e, o));
+			var t = o;
+			while(o){ if (o['_'+e]) o['_'+e](getMouseEvent(e, t, o)); o = o.parent; }
 		}		
 		var onSingleClick = function()
 		{
-			var k = getMouseObject();
-			if (k) if (k == _downObj) onMouseEvent(k, 'click'); 
+			if (_overObj == _downObj) onMouseEvent(_overObj, 'click'); 
 			_downObj = undefined;
-			onMouseEvent(_root, 'click');
 		}
 		var onDoubleClick = function()
 		{
-			var k = getMouseObject();
-			if (k) if (k == _downObj) onMouseEvent(k, 'doubleClick'); 
-			_downObj = undefined;			
-			onMouseEvent(_root, 'doubleClick');
+			if (_overObj == _downObj) onMouseEvent(_overObj, 'doubleClick'); 
+			_downObj = undefined;
 		}	
 		var getMouseObject = function()
 		{
-			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].mouse && _children[i].enabled) return _children[i];
+			for (var i = _children.length - 1; i >= 0; i--) if (_children[i].mouse && _children[i].enabled) return _children[i]; return _root;
 		}
-		var getMouseEvent = function (t, o)
+		var getMouseEvent = function (type, target, owner)
 		{
-			return new JS3Event(t, o, _context.mx, _context.my);
+			var e = new JS3Event(type, target, owner, _context.mx, _context.my);
+			if (target == _root) e.target.name = 'Stage'; return e;
 		}		
 		var getMousePosition = function(e)
 		{
@@ -628,30 +615,36 @@ function JS3getTextHeight(o)
 
 function JS3setObjEvents(o)
 {
-	JS3setMouseEvents(o);
+	o.__defineSetter__("click",			function(f)		{ o._click=f; o.enabled=true;});
+	o.__defineSetter__("dclick",		function(f)		{ o._doubleClick=f; o.enabled=true;});
+	o.__defineSetter__("up",			function(f)		{ o._mouseUp=f; o.enabled=true;});	
+	o.__defineSetter__("down",			function(f)		{ o._mouseDown=f; o.enabled=true;});
+	o.__defineSetter__("over",			function(f)		{ o._mouseOver=f; o.enabled=true;});
+	o.__defineSetter__("out",			function(f)		{ o._mouseOut=f; o.enabled=true;});	
 	o.__defineGetter__("draggable", 	function()		{ return o._draggable;});
 	o.__defineSetter__("draggable",		function(b)		{ o._draggable=b; if (b==true) o.enabled=true;});	
 	o.__defineSetter__("dragStart",		function(f)		{ o._dragStart=f;o.draggable=true;});
-	o.__defineSetter__("dragChange",	function(f)		{ o._dragChange=f;o.draggable=true;});	
-	o.__defineSetter__("dragComplete",	function(f)		{ o._dragComplete=f;o.draggable=true;});	
+	o.__defineSetter__("dragChange",	function(f)		{ o._dragChange=f;o.draggable=true;});
+	o.__defineSetter__("dragComplete",	function(f)		{ o._dragComplete=f;o.draggable=true;});
 }
-function JS3setMouseEvents(o)
+function JS3setStageEvents(o)
 {
-	o.__defineSetter__("click",			function(f)		{ o._click=f;o.enabled=true;});
-	o.__defineSetter__("dclick",		function(f)		{ o._doubleClick=f;o.enabled=true;});
-	o.__defineSetter__("over",			function(f)		{ o._mouseOver=f;o.enabled=true;});
-	o.__defineSetter__("out",			function(f)		{ o._mouseOut=f;o.enabled=true;});		
-	o.__defineSetter__("down",			function(f)		{ o._mouseDown=f;o.enabled=true;});
-	o.__defineSetter__("up",			function(f)		{ o._mouseUp=f;o.enabled=true;});
-	o.__defineSetter__("move",			function(f)		{ o._mouseMove=f;o.enabled=true;});
+	o.__defineSetter__("click",			function(f)		{ o._click=f;});
+	o.__defineSetter__("dclick",		function(f)		{ o._doubleClick=f;});
+	o.__defineSetter__("up",			function(f)		{ o._mouseUp=f;});
+	o.__defineSetter__("down",			function(f)		{ o._mouseDown=f;});	
+	o.__defineSetter__("move",			function(f)		{ o._mouseMove=f;});	
+	o.__defineSetter__("enter",			function(f)		{ o._stageEnter=f;});
+	o.__defineSetter__("leave",			function(f)		{ o._stageLeave=f;});	
 }
 
-function JS3Event(t, o, x, y)
+function JS3Event(type, target, owner, x, y)
 {
 	this.x			= x;
 	this.y			= y;	
-	this.type		= t;
-	this.target		= o;	
+	this.type		= type;
+	this.target		= target;
+	this.owner		= owner;	
 }
 
 function JS3Tween(obj, dur, props)

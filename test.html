@@ -22,10 +22,11 @@
                 c2.fillColor = '#9C0C0C';                
                 c2.x = 45;
                 c2.y = 35;
+            c1.enabled = true;                
             stage.addChild(c2);
 			function onEvent(o)
 			{
-				console.log(o.type, o.target, o.x, o.y);
+				console.log(o.type, o.target, o.owner, o.x, o.y);
 			}
 			stage.click = onEvent;
         </script>
