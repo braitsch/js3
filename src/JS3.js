@@ -27,7 +27,8 @@ function JS3(cnvs)
 		var _drawClean 	= true;
 		var _background = '#ffffff';
 		var _winTitle	= 'My Canvas';
-		var _downObj, _overObj, _dragObj, _clickInt, _stageEnter;
+		var _clickInt	= 0;
+		var _downObj, _overObj, _dragObj, _stageEnter;
 	
 	// public getters & setters //
 	
@@ -142,11 +143,9 @@ function JS3(cnvs)
 			if (_dragObj){
 				onMouseEvent(_dragObj, 'dragComplete'); _dragObj = _downObj = undefined;
 			}	else{
-				if (_clickInt){
-			        clearInterval(_clickInt); _clickInt = null; onDoubleClick();
-				}	else{
-			        _clickInt = setTimeout(function(){ _clickInt = null; onSingleClick(); }, 200);
-				}
+				var n = Date.now();
+					n - _clickInt > 200 ? onSingleClick() : onDoubleClick();
+				_clickInt = n;
 			}
 			onMouseEvent(_overObj, 'mouseUp');
 		}
