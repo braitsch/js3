@@ -22,9 +22,10 @@
                             <a href=<?php linkto('/drawing/#tri')?>>Triangles</a>, 
                             <a href=<?php linkto('/drawing/#la')?>>Lines & Arcs</a></li>
                         <li>Support for displaying <a href=<?php linkto('/images-and-text')?>>Images and Text</a></li>                            
-                        <li>Built-in Mouse interactions : <a href=<?php linkto('/mouse-events')?>>Click, Drag, RollOver, RollOut, etc..</a></li>
+                        <li>Built-in Mouse interactions : <a href=<?php linkto('/mouse-events')?>>Click, Drag, MouseOver, MouseOut, etc..</a></li>
                         <li>Powerful yet simple <a href=<?php linkto('/tweening')?>>Tween Engine</a>
                             modeled after the popular <a href='http://www.greensock.com/tweenlite/' target='blank'>Tweenlite ActionScript library</a></li>
+                        <li>Lightweight footprint : The <a href=<?php echo $dl;?>>Entire Library Minified</a> is only 16kb</i> 
                     </ul>
                 </div><hr>
                 <h2>Interactive Demo</h2>
@@ -35,7 +36,7 @@
                 </div>
                 <pre style='margin-top:5px;'><code id='js3-demo-out' class='javascript'></code></pre><hr>
 
-            <p class='next-page'><b>Learn how to easily add JS3 to your project. <a href=<?php linkto('/getting-started');?>>Click here to get started.</a></b></p><hr>
+            <p class='next-page'><b>Learn the entire JS3 library in <u>10 minutes.</u> <a href=<?php linkto('/getting-started');?>>Click here to get started.</a></b></p><hr>
 
         <?php include ('./local/footer.php'); ?>
         <script type="text/javascript" src="./home/demo.js"></script>
