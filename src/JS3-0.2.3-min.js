@@ -2,7 +2,7 @@
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
  * Version : 0.2.3
- * Documentation : http://quietless.com/js3/
+ * Documentation : http://js3.quietless.com/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
  *
