@@ -1,8 +1,7 @@
 
-var speed = 1;
 var spiders = [];
-var wiggle = 12;
-var maxBalls = 30;
+var wiggle = 10;
+var maxBalls = 50;
 var palettes = [	['#E0E4CC', '#FA6900', '#C02942', '#69D2E7'],
 					['#E0E4CC', '#53777A', '#542437', '#ECD078']];
 var colors = palettes[Math.floor(JS3.getRandomValue(palettes.length))];
@@ -28,7 +27,8 @@ function addBalls()
 			c.x = Math.random() * canvas.width;
 			c.y = Math.random() * canvas.height;
 			c.dirX = Math.round(Math.random()) == 0 ? -1 : 1;
-			c.dirY = Math.round(Math.random()) == 0 ? -1 : 1;		
+			c.dirY = Math.round(Math.random()) == 0 ? -1 : 1;
+			c.speed = JS3.getRandomValue(.3, 1.2)		
 		canvas.addChild(c);
 	}
 	if (canvas.numChildren >= maxBalls) canvas.stop(addBalls);	
@@ -38,11 +38,21 @@ function move()
 {	
 	var i = canvas.numChildren;
 	while ( i-- ){
-		var b = canvas.getChildAt(i);
-		if (b.x >= canvas.width-b.width/2 || b.x <= 0) b.dirX *=-1;
-		if (b.y >= canvas.height-b.height/2 || b.y <= 0) b.dirY *=-1;
-		b.x += speed * b.dirX;
-		b.y += speed * b.dirY;
+		var c = canvas.getChildAt(i);
+		if (c.x < 0) {
+			c.x = 0; c.dirX *=-1;
+		}
+		if (c.x >= canvas.width - c.width){
+			c.x = canvas.width - c.width; c.dirX *=-1;			
+		}
+		if (c.y < 0) {
+			c.y = 0; c.dirY *=-1;
+		}
+		if (c.y >= canvas.height - c.height){
+			c.y = canvas.height - c.height; c.dirY *=-1;
+		}
+		c.x += c.speed * c.dirX;
+		c.y += c.speed * c.dirY;	
 	}	
 }
 

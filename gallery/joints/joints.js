@@ -10,6 +10,7 @@ function init()
 {
 	autoSize = false; canvas.setSize(winW, 250);	
 	canvas.drawClean = true;
+	canvas.interactive = true;
 	canvas.background = '#D5DED9';
 	addBalls();
 	onStart();
@@ -28,6 +29,8 @@ function addBalls()
 			c1.strokeColor = line[st];			
 			c1.x = n*i;
 			c1.y = Math.random() * canvas.height;
+			c1.dragStart = onDragStart;
+			c1.dragComplete = onDragComplete;			
 		lg.push(c1);		
 		var c2 = new JS3Circle();
 			c2.size = 25;
@@ -37,6 +40,8 @@ function addBalls()
 			c2.strokeColor = line[st];			
 			c2.x = c1.x + JS3.getRandomValue(30, 50);
 			c2.y = Math.random() * canvas.height;
+			c2.dragStart = onDragStart;
+			c2.dragComplete = onDragComplete;				
 		sm.push(c2);
 		ln.push(new JS3Line({strokeColor:line[st], strokeWidth:2}));
 	};
@@ -48,8 +53,8 @@ function addBalls()
 function move()
 {	
 	for (var i=0; i < joints; i++) {
-		sm[i].x -= sm[i].speed;
-		lg[i].x -= lg[i].speed;
+		if (sm[i].dragging != true) sm[i].x -= sm[i].speed;
+		if (lg[i].dragging != true) lg[i].x -= lg[i].speed;
 		ln[i].x1 = sm[i].x + sm[i].width/2;
 		ln[i].y1 = sm[i].y + sm[i].height/2
 		ln[i].x2 = lg[i].x + lg[i].width/2;
@@ -63,6 +68,15 @@ function move()
 	}
 }
 
+function onDragStart(e)
+{
+	e.target.dragging = true;
+}
+
+function onDragComplete(e)
+{
+	e.target.dragging = false;
+}
 
 // button handlers //
 
