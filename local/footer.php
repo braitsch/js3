@@ -1,4 +1,4 @@
-<div id='footer'><i>Hand-Crafted with Love by <a href='http://twitter.com/braitsch'>@braitsch</a> in San Francisco, California</i></div>
+<div id='footer'><i>Lovingly Hand-Crafted by <a href='http://twitter.com/braitsch'>@braitsch</a> in San Francisco, California</i></div>
 </div><!-- close content div -->
 <script type="text/javascript" src=<?php linkto('/vendor/jquery-1.7.1.min.js')?>></script>
 <script type="text/javascript" src=<?php linkto('/vendor/bootstrap-dropdown.js')?>></script>
