@@ -8,7 +8,7 @@ function linkto($n){ global $root; echo $root.$n;}
     <head>
         <meta charset="utf-8">
         <title>JS3 is a fast and lightweight drawing and animation library for the HTML5 JavaScript Canvas</title>
-        <meta name="description" content="A lightweight port of the AS3 TweenLite library for the JavaScript Canvas">
+        <meta name="description" content="A fast and lightweight drawing and animation library for the HTML5 JavaScript Canvas">
         <meta name="author" content="Stephen Braitsch">    
         <link href=<?php linkto('/vendor/bootstrap.min.css')?> rel="stylesheet">
         <link href="http://yandex.st/highlightjs/6.1/styles/github.min.css" rel="stylesheet" > 

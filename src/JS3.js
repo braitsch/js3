@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.3
+ * Version : 0.2.4
  * Documentation : http://js3.quietless.com/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -27,22 +27,22 @@ function JS3(cnvs)
 		var _drawClean 	= true;
 		var _background = '#ffffff';
 		var _winTitle	= 'My Canvas';
-		var _clickInt	= 0;
+		var _clickInt = 0;
 		var _downObj, _overObj, _dragObj, _stageEnter;
 	
 	// public getters & setters //
 	
-	 	this.__defineGetter__("width", 			function()		{ return _width;});
-	 	this.__defineGetter__("height", 		function()		{ return _height;});
-	 	this.__defineGetter__("numChildren", 	function()		{ return _children.length;});
-	 	this.__defineGetter__("position", 		function()		{ 
+		Object.defineProperty(this, "width", 		{get: function() {return _width;}});
+		Object.defineProperty(this, "height", 		{get: function() {return _height;}});
+		Object.defineProperty(this, "numChildren", 	{get: function() {return _children.length;}});
+		Object.defineProperty(this, "position", 	{get: function() {
 			var x = 0; var y = 0; var e = _canvas;
 			while( e != null ) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
-			return {x:x, y:y};});		
-	 	this.__defineSetter__("drawClean", 		function(b)		{ _drawClean = b;});
-	 	this.__defineSetter__("background", 	function(b)		{ _background = b; drawBackground();});
-	 	this.__defineSetter__("windowTitle", 	function(s)		{ _winTitle = s;});	
-	 	this.__defineSetter__("interactive", 	function(b)		{ b ? addMouseEvents() : remMouseEvents(); });
+			return {x:x, y:y};}});
+    	Object.defineProperty(this, "drawClean", 	{set: function(b) { _drawClean = b;}});
+    	Object.defineProperty(this, "background", 	{set: function(b) { _background = b; drawBackground();}});
+    	Object.defineProperty(this, "windowTitle", 	{set: function(s) { _winTitle = s;}});
+    	Object.defineProperty(this, "interactive", 	{set: function(b) { b ? addMouseEvents() : remMouseEvents();}});
 		JS3setStageEvents(this);
 	
 	// display list management //	
@@ -138,6 +138,19 @@ function JS3(cnvs)
 			_downObj = _overObj;
 			onMouseEvent(_overObj, 'mouseDown');
 		}
+		// var onMU = function(e)
+		// {
+		// 	if (_dragObj){
+		// 		onMouseEvent(_dragObj, 'dragComplete'); _dragObj = _downObj = undefined;
+		// 	}	else{
+		// 		if (_clickInt){
+		// 	        clearInterval(_clickInt); _clickInt = null; onDoubleClick();
+		// 		}	else{
+		// 	        _clickInt = setTimeout(function(){ _clickInt = null; onSingleClick(); }, 200);
+		// 		}
+		// 	}
+		// 	onMouseEvent(_overObj, 'mouseUp');
+		// }
 		var onMU = function(e)
 		{
 			if (_dragObj){
@@ -148,7 +161,7 @@ function JS3(cnvs)
 				_clickInt = n;
 			}
 			onMouseEvent(_overObj, 'mouseUp');
-		}
+		}		
 		var onMM = function(e)
 		{
 			getMousePosition(e); 
@@ -549,7 +562,6 @@ function JS3Text(o)
 
 function JS3Image(o)
 {
-	JS3getBaseProps(this);
 	JS3getImageProps(this);	
 	this.update = JS3.drawImage;
 	this.fill = this.stroke = false;	
@@ -558,12 +570,12 @@ function JS3Image(o)
 
 function JS3getBaseProps(o)
 {	
-	o.__defineGetter__("size", 	 		function()		{ return o._size;});
-	o.__defineSetter__("size", 	 		function(n)		{ o._size=o.width=o.height=n;});
-	o.__defineGetter__("width", 	 	function()		{ return o._width;});
-	o.__defineSetter__("width", 	 	function(n)		{ o._width=n; o.pts=[];});
-	o.__defineGetter__("height", 	 	function()		{ return o._height;});
-	o.__defineSetter__("height", 	 	function(n)		{ o._height=n; o.pts=[];});
+	Object.defineProperty(o, "size",	{	get: function() { return o._size;},
+											set: function(n) { o._size=o.width=o.height=n;}});
+	Object.defineProperty(o, "width", 	{	get: function() { return o._width;},
+											set: function(n) { o._width=n; o.pts=[];}});
+	Object.defineProperty(o, "height",	{	get: function() { return o._height;},
+											set: function(n) { o._height=n; o.pts=[];}});
 	o.x=o.y=o.rotation=0; o._size=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scaleX=o.scaleY=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 	JS3setObjEvents(o);
 }
@@ -571,28 +583,30 @@ function JS3getBaseProps(o)
 function JS3getLineProps(o)
 {
 	o.capStyle='butt'; o.x1=o.y1=o.cx=o.cy=o.x2=o.y2=0;
-	o.__defineSetter__("color", 		function(s)		{ o.strokeColor=s;});	
-	o.__defineSetter__("thickness", 	function(s)		{ o.strokeWidth=s;});
+	Object.defineProperty(o,"color", 	{	set: function(s) { o.strokeColor=s;}});
+	Object.defineProperty(o,"thickness",{	set: function(s) { o.strokeWidth=s;}});	
 }
 
 function JS3getPolyProps(o)
 {
 	o.pts = [];
-	o.__defineSetter__("x1", 			function(n)		{ o.pts[0] = n;});	
-	o.__defineSetter__("y1", 			function(n)		{ o.pts[1] = n;});
-	o.__defineSetter__("x2", 			function(n)		{ o.pts[2] = n;});	
-	o.__defineSetter__("y2", 			function(n)		{ o.pts[3] = n;});
-	o.__defineSetter__("x3", 			function(n)		{ o.pts[4] = n;});	
-	o.__defineSetter__("y3", 			function(n)		{ o.pts[5] = n;});	
+	Object.defineProperty(o, "x1", 		{	set: function(n) { o.pts[0] = n;}});
+	Object.defineProperty(o, "y1", 		{	set: function(n) { o.pts[1] = n;}});
+	Object.defineProperty(o, "x2", 		{	set: function(n) { o.pts[2] = n;}});
+	Object.defineProperty(o, "y2", 		{	set: function(n) { o.pts[3] = n;}});
+	Object.defineProperty(o, "x3", 		{	set: function(n) { o.pts[4] = n;}});
+	Object.defineProperty(o, "y3", 		{	set: function(n) { o.pts[5] = n;}});
 }
 
 function JS3getImageProps(o)
 {
 	o.image = new Image();
-	o.__defineSetter__("src", 			function(s)		{ o.image.src=s;});
-	o.__defineSetter__("ready", 		function(f)		{ o.image.onload=f;});
-	o.__defineGetter__("width", 	 	function()		{ return o.image.width;});
-	o.__defineGetter__("height", 	 	function()		{ return o.image.height;});	
+	Object.defineProperty(o, "src", 	{	set: function(s) { o.image.src=s;}});
+	Object.defineProperty(o, "ready", 	{	set: function(f) { o.image.onload=f;}});
+	Object.defineProperty(o, "width", 	{	get: function() { return o.image.width;}});
+	Object.defineProperty(o, "height", 	{	get: function() { return o.image.height;}});
+	o.x=o.y=o.rotation=0; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scaleX=o.scaleY=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
+	JS3setObjEvents(o);
 }
 
 function JS3getTextProps(o)
@@ -614,27 +628,27 @@ function JS3getTextHeight(o)
 
 function JS3setObjEvents(o)
 {
-	o.__defineSetter__("click",			function(f)		{ o._click=f; o.enabled=true;});
-	o.__defineSetter__("dclick",		function(f)		{ o._doubleClick=f; o.enabled=true;});
-	o.__defineSetter__("up",			function(f)		{ o._mouseUp=f; o.enabled=true;});	
-	o.__defineSetter__("down",			function(f)		{ o._mouseDown=f; o.enabled=true;});
-	o.__defineSetter__("over",			function(f)		{ o._mouseOver=f; o.enabled=true;});
-	o.__defineSetter__("out",			function(f)		{ o._mouseOut=f; o.enabled=true;});	
-	o.__defineGetter__("draggable", 	function()		{ return o._draggable;});
-	o.__defineSetter__("draggable",		function(b)		{ o._draggable=b; if (b==true) o.enabled=true;});	
-	o.__defineSetter__("dragStart",		function(f)		{ o._dragStart=f;o.draggable=true;});
-	o.__defineSetter__("dragChange",	function(f)		{ o._dragChange=f;o.draggable=true;});
-	o.__defineSetter__("dragComplete",	function(f)		{ o._dragComplete=f;o.draggable=true;});
+	Object.defineProperty(o, "click", 		{	set: function(f) { o._click=f; o.enabled=true;}});
+	Object.defineProperty(o, "dclick", 		{	set: function(f) { o._doubleClick=f; o.enabled=true;}});
+	Object.defineProperty(o, "up", 			{	set: function(f) { o._mouseUp=f; o.enabled=true;}});
+	Object.defineProperty(o, "down", 		{	set: function(f) { o._mouseDown=f; o.enabled=true;}});
+	Object.defineProperty(o, "over", 		{	set: function(f) { o._mouseOver=f; o.enabled=true;}});
+	Object.defineProperty(o, "out", 		{	set: function(f) { o._mouseOut=f; o.enabled=true;}});
+	Object.defineProperty(o, "draggable", 	{	get: function( ) { return o._draggable;},
+												set: function(b) { o._draggable=b; if (b==true) o.enabled=true;}});
+	Object.defineProperty(o, "dragStart", 	{	set: function(f) { o._dragStart=f;o.draggable=true;}});
+	Object.defineProperty(o, "dragChange", 	{	set: function(f) { o._dragChange=f;o.draggable=true;}});
+	Object.defineProperty(o, "dragComplete",{	set: function(f) { o._dragComplete=f;o.draggable=true;}});
 }
 function JS3setStageEvents(o)
 {
-	o.__defineSetter__("click",			function(f)		{ o._click=f;});
-	o.__defineSetter__("dclick",		function(f)		{ o._doubleClick=f;});
-	o.__defineSetter__("up",			function(f)		{ o._mouseUp=f;});
-	o.__defineSetter__("down",			function(f)		{ o._mouseDown=f;});	
-	o.__defineSetter__("move",			function(f)		{ o._mouseMove=f;});	
-	o.__defineSetter__("enter",			function(f)		{ o._stageEnter=f;});
-	o.__defineSetter__("leave",			function(f)		{ o._stageLeave=f;});	
+	Object.defineProperty(o, "click", 		{	set: function(f) { o._click=f; }});
+	Object.defineProperty(o, "dclick", 		{	set: function(f) { o._doubleClick=f; }});
+	Object.defineProperty(o, "up", 			{	set: function(f) { o._mouseUp=f; }});
+	Object.defineProperty(o, "down", 		{	set: function(f) { o._mouseDown=f; }});
+	Object.defineProperty(o, "move", 		{	set: function(f) { o._mouseMove=f; }});
+	Object.defineProperty(o, "enter", 		{	set: function(f) { o._stageEnter=f; }});
+	Object.defineProperty(o, "leave", 		{	set: function(f) { o._stageLeave=f; }});
 }
 
 function JS3Event(type, target, owner, x, y)
@@ -667,9 +681,9 @@ function JS3Runner(func, delay, repeat, onComp)
 	this.r			= repeat;
 	this.o 			= onComp;
 	this.t 			= Date.now();
-	this.__defineSetter__("delay", 			function(n)		{ this.d=n;});
-	this.__defineSetter__("onComplete", 	function(f)		{ this.o=f;});	
-	this.__defineSetter__("repeatCount", 	function(n)		{ this.r=n;});
+	Object.defineProperty(this, "delay", 		{	set: function(n) { this.d=n; }});
+	Object.defineProperty(this, "onComplete", 	{	set: function(f) { this.o=f; }});
+	Object.defineProperty(this, "repeatCount", 	{	set: function(n) { this.r=n; }});
 }
 
 function JS3Trace(m) { try{ console.log(m); } catch(e){ return; }}

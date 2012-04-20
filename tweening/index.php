@@ -5,7 +5,7 @@
             <div id="header">
                 <h1>Tweening</h1>
                 <p>Tweening in JS3 is based on the familiar syntax of the popular <a href='http://www.greensock.com/tweenlite/'>Tweenlite ActionScript library.</a><hr>
-				There are two ways to animate in JS3.<br>You can use <a class='anchor' href='#basic-tweening'>Tweens</a> to move individual objects or group objects together inside functions using <a class='anchor' href='#animating-timers'>Timers</a>.</p>
+				There are two ways to animate in JS3.<br>You can use <a class='anchor' href='#basic-tweening'>Tweens</a> to move individual objects or group objects together inside functions called <a class='anchor' href='#animating-runners'>Runners</a>.</p>
                 <hr>
             </div>
 
@@ -43,11 +43,11 @@
                 <p>For a full list of the properties and callbacks you can pass to the Tween function, visit the <a href=<?php linkto('/api#api-tweening')?>>API section.</a></p><hr>
 
         <!-- timed-frames -->                    
-                <div id="animating-timers">
-                    <h2>Animating with Timers</h2>
-                <p>You can manually control how often the canvas redraws itself by using the <strong><u>run</u></strong> method.<br>
-This method takes two arguments, a function to call and how often to call it in seconds.<br>
-The snippet below draws a circle and moves it ten pixels to the right every time 1/4 of a second.</p>
+                <div id="animating-runners">
+                    <h2>Animating with Runners</h2>
+                <p>A second and more powerful way to animate is by using Runners which are just functions that execute on a timed delay.<br>
+                    Simply pass a function to the stage <strong><u>run</u></strong> method and specify how often to call it in seconds.<br>
+                    The snippet below draws a circle and moves it ten pixels to the right every time 1/4 of a second.</p>
                 <pre><code>                        
         var c = new JS3Circle();           
     	function update()
@@ -61,7 +61,7 @@ The snippet below draws a circle and moves it ten pixels to the right every time
                 <canvas id="x5" width='898' height='100'></canvas>  
                 <button id='x5-btn' class='btn btn-primary'>Start Updating</button>
                 <div class="clearfix"><hr></div> 
-                <p>You can also specify how many times the <strong><u>run</u></strong> method should call the function you passed to it.<br>
+                <p>You can also specify how many times to call the function you passed to the <strong><u>run</u></strong> method.<br>
 The snippet below moves the circle fifty pixels to the right every time 1/2 second. It does this 5 times and then stops.</p>
                 <pre><code>                        
         var c = new JS3Circle();
@@ -77,7 +77,7 @@ The snippet below moves the circle fifty pixels to the right every time 1/2 seco
                 <button id='x6-btn' class='btn btn-primary'>Start Updating</button>
                 </div>
                 <div class="clearfix"><hr></div> 
-        <p>Note you can also pass a fourth argument to <strong><u>run</u></strong> specifying a callback to execute when all calls to run's update function have completed.<br>
+        <p>Optionally you can also pass a fourth argument to <strong><u>run</u></strong> specifying a callback to execute when all calls to run's update function have completed.<br>
 The following snippet calls the update function every 1/2 second, fives times and then executes the callback "onUpdateComplete".   
             </p>
                 <pre><code>
@@ -91,11 +91,18 @@ The following snippet calls the update function every 1/2 second, fives times an
         }
         stage.run(update, .5, 5, onUpdateComplete);        
                 </code></pre>                
-<p>Lastly, calling <strong><u>run</u></strong> with just an update function and no other arguments will execute "update" on every frame tick, similar to the AS3 <a href='http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/Event.html#ENTER_FRAME' target='blank'>OnEnterFrame.</a><br>
+<p><strong>Quick Tip :</strong> Calling <strong><u>run</u></strong> with just an update function and no other arguments will execute "update" on every frame tick, similar to the AS3 <a href='http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/Event.html#ENTER_FRAME' target='blank'>OnEnterFrame.</a><br>
 At any time if you'd like to stop calling the function you passed to <strong><u>run</u></strong> simply pass the function to <strong><u>stop</u></strong></p>
                 <pre><code>
         stage.stop(update);
                 </code></pre>
+        <p>The <strong><u>run</u></strong> method returns a JS3RunnerObject with the following properties that you can change at any time :</p>        
+                
+        <pre><code class='javascript'>
+        delay           : Number        // how often to call the runner function in seconds
+        repeatCount     : Number        // total number of times to call the runner function
+        onComplete      : Function      // callback to execute when all calls to the runner function have completed
+    </code></pre>
         <div class="clearfix"><hr></div>
         
         <!-- simple-example -->                    
