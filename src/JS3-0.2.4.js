@@ -138,19 +138,6 @@ function JS3(cnvs)
 			_downObj = _overObj;
 			onMouseEvent(_overObj, 'mouseDown');
 		}
-		// var onMU = function(e)
-		// {
-		// 	if (_dragObj){
-		// 		onMouseEvent(_dragObj, 'dragComplete'); _dragObj = _downObj = undefined;
-		// 	}	else{
-		// 		if (_clickInt){
-		// 	        clearInterval(_clickInt); _clickInt = null; onDoubleClick();
-		// 		}	else{
-		// 	        _clickInt = setTimeout(function(){ _clickInt = null; onSingleClick(); }, 200);
-		// 		}
-		// 	}
-		// 	onMouseEvent(_overObj, 'mouseUp');
-		// }
 		var onMU = function(e)
 		{
 			if (_dragObj){
