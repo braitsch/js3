@@ -150,7 +150,7 @@ function onShapeDrag(e)
 
 function onCrossDrag(e)
 {
-	guiObj.X = cross.x = e.x; guiObj.Y = cross.y = e.y; updateGui();
+	guiObj.X = e.x; guiObj.Y = e.y; updateGui();
 }
 
 function tweenShape()
