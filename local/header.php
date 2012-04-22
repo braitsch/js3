@@ -66,6 +66,8 @@ function linkto($n){ global $root; echo $root.$n;}
                         <ul class="dropdown-menu">
                             <li><a href=<?php echo 'https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js';?>>Minified</a></li>
                             <li><a href=<?php echo 'https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'.js';?>>Uncompressed</a></li>
+                            <li class="divider"></li>
+                            <li><a href=<?php echo $root . '/quick-start.zip'?>>Quick Start</a></li>                            
                         </ul>
                     </div><!-- download-group -->
                 </div><!-- container -->               
