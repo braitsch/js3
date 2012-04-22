@@ -9,8 +9,7 @@ $(document).ready(function() {
 	JS3.showFrameRate(0, 40);	
 	canvas = new JS3('cnvs');
 	canvas.background = '#ff0000';
-	getWindowWidth(); init(); $('#cnvs').show(); 
-	$("#btn-download").click(function()  { window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3.js";});
+	getWindowWidth(); init(); $('#cnvs').show();
 });
 
 function getWindowWidth()

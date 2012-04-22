@@ -58,10 +58,18 @@ function linkto($n){ global $root; echo $root.$n;}
                                 <li><a href=<?php linkto('/gallery/confetti')?>>Confetti</a></li>                            
                                 <li><a href=<?php linkto('/gallery/snowflakes')?>>SnowFlakes</a></li>                                                                                                                                                                                                               
                             </ul>
-                        </li>
-                        <li class="divider-vertical"></li>                    
-                    </ul>               
-                </div><!-- container -->
-            </div><!-- navbar-inner -->
-        <button class="btn btn-success" id='btn-download'><i class="icon-download icon-white"></i>Download <?php echo 'v'.$version;?></button>
+                        </li>                        
+                        <li class="divider-vertical"></li>               
+                    </ul><!-- download-group -->
+                    <div class="btn-group" style='float:right;right:10px;top:1px;'>
+                        <button class="btn btn-success dropdown-toggle" style='width:161px;' data-toggle="dropdown"><i class="icon-download icon-white"></i>Download <?php echo 'v'.$version;?></button>
+                        <ul class="dropdown-menu">
+                            <li><a href=<?php echo 'https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js';?>>Minified</a></li>
+                            <li><a href=<?php echo 'https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'.js';?>>Uncompressed</a></li>
+                        </ul>
+                    </div><!-- download-group -->
+                </div><!-- container -->               
+            </div><!-- navbar-inner -->          
+            
         </div><!-- navbar -->
+            

@@ -10,10 +10,7 @@ $(document).ready(function() {
 	    a = a.substr(a.indexOf('#'));
         $(window).scrollTop($(a).offset().top - 50);
 	    return false;
-	    });
-    $("#btn-download").click(function()  {
-        window.location.href = "https://raw.github.com/braitsch/js3/master/src/JS3-"+'<?php echo $version;?>'+".js";
-    });
+	});
 // move to anchor offset if coming from another page // 
     var n = window.location.href.lastIndexOf('#');
     if (n > -1){

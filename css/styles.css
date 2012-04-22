@@ -30,7 +30,5 @@ canvas{
 }
 
 button i { padding-right:5px; }
-#btn-download { position:absolute; top:1px; right:10px; }
-
 #datgui {position:absolute; top:40px; right:0; background:#333;}
 #footer {margin-top:80px; text-align:center;}
