@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.5
+ * Version : 0.2.5.1
  * Release Date : April 20 2012
  * Documentation : http://js3.quietless.com/
  *
@@ -44,6 +44,10 @@ function JS3(cnvs)
     	Object.defineProperty(this, "background", 	{set: function(b) { _background = b; drawBackground();}});
     	Object.defineProperty(this, "windowTitle", 	{set: function(s) { _winTitle = s;}});
     	Object.defineProperty(this, "interactive", 	{set: function(b) { b ? addMouseEvents() : remMouseEvents();}});
+    	Object.defineProperty(this, "focusIn", 		{set: function(f) { 
+			if (/*@cc_on!@*/false) { document.onfocusin = f; } else { window.onfocus = f;}}});
+    	Object.defineProperty(this, "focusOut", 	{set: function(f) { 
+			if (/*@cc_on!@*/false) { document.onfocusout = f; } else { window.onblur = f;}}});			
 		JS3setStageEvents(this);
 	
 	// display list management //	
