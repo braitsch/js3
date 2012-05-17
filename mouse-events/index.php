@@ -28,7 +28,7 @@ include ('../local/header.php');
     <pre><code class='javascript'>  
     var c = new JS3Circle();
         c.down       	= function(){ trace('The Mouse was pressed!'); };
-        c.up       	    = function(){ trace('The Mouse was released!'); };
+        c.up            = function(){ trace('The Mouse was released!'); };
         c.over      	= function(){ trace('I was moused over!'); };
         c.out       	= function(){ trace('I was moused out!'); };	
         c.click         = function(){ trace('I was clicked!'); };
