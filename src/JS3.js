@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.6
+ * Version : 0.2.7
  * Release Date : May 17 2012
  * Documentation : http://js3.quietless.com/
  *
@@ -36,6 +36,7 @@ function JS3(cnvs)
 		Object.defineProperty(this, "width", 		{get: function() {return _width;}});
 		Object.defineProperty(this, "height", 		{get: function() {return _height;}});
 		Object.defineProperty(this, "numChildren", 	{get: function() {return _children.length;}});
+		Object.defineProperty(this, "mousePressed", {get: function() {return _downObj!=null;}});		
 		Object.defineProperty(this, "position", 	{get: function() {
 			var x = 0; var y = 0; var e = _canvas;
 			while( e != null ) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
@@ -124,6 +125,7 @@ function JS3(cnvs)
 			_canvas.addEventListener("mousemove", onMM);
 			_canvas.addEventListener("mouseover", onOVR);
 			_canvas.addEventListener("mouseout", onOUT);
+			document.body.addEventListener("mouseup", onMU);
 		}
 		var remMouseEvents = function()
 		{
@@ -132,7 +134,9 @@ function JS3(cnvs)
 			_canvas.removeEventListener("mousemove", onMM);	
 			_canvas.removeEventListener("mouseover", onOVR);
 			_canvas.removeEventListener("mouseout", onOUT);
+			document.body.removeEventListener("mouseup", onMU);			
 		}
+
 		var onMD = function(e)
 		{
 			_context.dx = _context.mx; _context.dy = _context.my;
