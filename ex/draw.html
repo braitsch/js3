@@ -1,0 +1,27 @@
+<html>
+   <body>                
+        <canvas id="my-canvas" width="800" height="200"></canvas>                        
+        <script src="../src/JS3.js"></script>
+        <script>
+            var stage = new JS3('my-canvas');
+                stage.background = '#CCC';
+				stage.interactive = true;
+				stage.drawClean = false;
+		    var x, y;
+			stage.up = function()
+			{
+			    stage.move = null;
+			}
+			stage.down = function(e)
+			{
+			    x = e.x; y = e.y;
+			    stage.move = onMouseMove;
+			}
+			function onMouseMove(e)
+			{
+			    stage.drawLine({x1:x, y1:y, x2:e.x, y2:e.y, color:'red'});
+			    x = e.x; y = e.y;
+			}
+        </script>
+        </body>                
+</html>

@@ -1,8 +1,8 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.5.1
- * Release Date : April 20 2012
+ * Version : 0.2.6
+ * Release Date : May 17 2012
  * Documentation : http://js3.quietless.com/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -43,11 +43,7 @@ function JS3(cnvs)
     	Object.defineProperty(this, "drawClean", 	{set: function(b) { _drawClean = b;}});
     	Object.defineProperty(this, "background", 	{set: function(b) { _background = b; drawBackground();}});
     	Object.defineProperty(this, "windowTitle", 	{set: function(s) { _winTitle = s;}});
-    	Object.defineProperty(this, "interactive", 	{set: function(b) { b ? addMouseEvents() : remMouseEvents();}});
-    	Object.defineProperty(this, "focusIn", 		{set: function(f) { 
-			if (/*@cc_on!@*/false) { document.onfocusin = f; } else { window.onfocus = f;}}});
-    	Object.defineProperty(this, "focusOut", 	{set: function(f) { 
-			if (/*@cc_on!@*/false) { document.onfocusout = f; } else { window.onblur = f;}}});			
+    	Object.defineProperty(this, "interactive", 	{set: function(b) { b ? addMouseEvents() : remMouseEvents();}});		
 		JS3setStageEvents(this);
 	
 	// display list management //	
@@ -227,6 +223,21 @@ function JS3(cnvs)
 			_context.mx = e.pageX - oX; _context.my = e.pageY - oY;
 		}
 		
+	// window focus events //
+	
+		var onWFI = function()
+		{
+			if (_root._windowFocusIn) _root._windowFocusIn(new JS3Event('focusIn', _root, _root));
+		}
+		
+		var onWFO = function()
+		{
+			if (_root._windowFocusOut) _root._windowFocusOut(new JS3Event('focusOut', _root, _root));
+		}		
+		
+		if (/*@cc_on!@*/false) { document.onfocusin = onWFI; } else { window.onfocus = onWFI;};
+		if (/*@cc_on!@*/false) { document.onfocusout = onWFO; } else { window.onblur = onWFO;};
+				
 	// private instance methods //
 		
 		var drawBackground = function(){
@@ -620,12 +631,12 @@ function JS3getTextHeight(o)
 
 function JS3setObjEvents(o)
 {
-	Object.defineProperty(o, "click", 		{	set: function(f) { o._click=f; o.enabled=true;}});
-	Object.defineProperty(o, "dclick", 		{	set: function(f) { o._doubleClick=f; o.enabled=true;}});
+	Object.defineProperty(o, "down", 		{	set: function(f) { o._mouseDown=f; o.enabled=true;}});	
 	Object.defineProperty(o, "up", 			{	set: function(f) { o._mouseUp=f; o.enabled=true;}});
-	Object.defineProperty(o, "down", 		{	set: function(f) { o._mouseDown=f; o.enabled=true;}});
 	Object.defineProperty(o, "over", 		{	set: function(f) { o._mouseOver=f; o.enabled=true;}});
 	Object.defineProperty(o, "out", 		{	set: function(f) { o._mouseOut=f; o.enabled=true;}});
+	Object.defineProperty(o, "click", 		{	set: function(f) { o._click=f; o.enabled=true;}});
+	Object.defineProperty(o, "dclick", 		{	set: function(f) { o._doubleClick=f; o.enabled=true;}});	
 	Object.defineProperty(o, "draggable", 	{	get: function( ) { return o._draggable;},
 												set: function(b) { o._draggable=b; if (b==true) o.enabled=true;}});
 	Object.defineProperty(o, "dragStart", 	{	set: function(f) { o._dragStart=f;o.draggable=true;}});
@@ -633,14 +644,16 @@ function JS3setObjEvents(o)
 	Object.defineProperty(o, "dragComplete",{	set: function(f) { o._dragComplete=f;o.draggable=true;}});
 }
 function JS3setStageEvents(o)
-{
-	Object.defineProperty(o, "click", 		{	set: function(f) { o._click=f; }});
-	Object.defineProperty(o, "dclick", 		{	set: function(f) { o._doubleClick=f; }});
+{	
+	Object.defineProperty(o, "down", 		{	set: function(f) { o._mouseDown=f; }});	
 	Object.defineProperty(o, "up", 			{	set: function(f) { o._mouseUp=f; }});
-	Object.defineProperty(o, "down", 		{	set: function(f) { o._mouseDown=f; }});
-	Object.defineProperty(o, "move", 		{	set: function(f) { o._mouseMove=f; }});
+	Object.defineProperty(o, "move", 		{	set: function(f) { o._mouseMove=f; }});	
+	Object.defineProperty(o, "click", 		{	set: function(f) { o._click=f; }});
+	Object.defineProperty(o, "dclick", 		{	set: function(f) { o._doubleClick=f; }});	
 	Object.defineProperty(o, "enter", 		{	set: function(f) { o._stageEnter=f; }});
-	Object.defineProperty(o, "leave", 		{	set: function(f) { o._stageLeave=f; }});
+	Object.defineProperty(o, "leave", 		{	set: function(f) { o._stageLeave=f; }});		
+    Object.defineProperty(o, "focusIn", 	{	set: function(f) { o._windowFocusIn=f; }});
+    Object.defineProperty(o, "focusOut", 	{	set: function(f) { o._windowFocusOut=f; }});
 }
 
 function JS3Event(type, target, owner, x, y)

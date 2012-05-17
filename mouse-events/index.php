@@ -27,10 +27,12 @@ include ('../local/header.php');
     Each handler can be set to a callback function which will be executed whenever that interaction takes place.</p>
     <pre><code class='javascript'>  
     var c = new JS3Circle();
+        c.down       	= function(){ trace('The Mouse was pressed!'); };
+        c.up       	    = function(){ trace('The Mouse was released!'); };
         c.over      	= function(){ trace('I was moused over!'); };
-        c.out       	= function(){ trace('I was moused out!'); };
+        c.out       	= function(){ trace('I was moused out!'); };	
         c.click         = function(){ trace('I was clicked!'); };
-        c.dclick        = function(){ trace('I was doubled clicked!'); };					
+        c.dclick        = function(){ trace('I was doubled clicked!'); };	        			
         c.dragStart     = function(){ trace('I am starting to be dragged!'); };
         c.dragChange    = function(){ trace('I am being dragged!'); };
         c.dragComplete  = function(){ trace('I am done being dragged!'); };        
@@ -49,14 +51,18 @@ include ('../local/header.php');
     <hr>
 
     <h2>Stage Events</h2>
-    <p>You can also bind a few callbacks directly to the Stage.</p>
+    <p>You can also bind the following callbacks directly to the Stage.</p>
     <pre><code class='javascript'>
-    var stage = new JS3('my-canvas');
-        stage.enter    = function(){ trace('The Mouse entered the Stage'); };
+    var stage = new JS3('my-canvas');      
+        stage.down     = function(){ trace('The Mouse was pressed'); };
+        stage.up       = function(){ trace('The Mouse was released'); };        
         stage.move     = function(){ trace('The Mouse moved'); };
-        stage.leave    = function(){ trace('The Mouse left the Stage'); };
         stage.click    = function(){ trace('The Stage was clicked'); };
         stage.dclick   = function(){ trace('The Stage was doubled clicked'); };
+        stage.enter    = function(){ trace('The Mouse entered the Stage'); };
+        stage.leave    = function(){ trace('The Mouse left the Stage'); };    
+        stage.focusIn  = function(){ trace('The Window gained focus'); };
+        stage.focusOut = function(){ trace('The Window lost focus'); };                  
     </code></pre>
     <p>The following example shows how to listen for Mouse clicks on the Stage.<br>
     If we set the <u>enabled</u> property of the Circle to <u>true</u>, we can capture that target even though the callback is bound to the Stage.</p>
