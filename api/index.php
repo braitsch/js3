@@ -22,17 +22,18 @@
                 <p>The following properties of the Stage are <b>read-only</b>.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
-        stage.width;
-        stage.height;
-        stage.numChildren;
+        stage.width         :Number;
+        stage.height        :Number;
+        stage.numChildren   :Number;
+        stage.mousePressed  :Boolean;
                 </code></pre>
                 <p>The following properties of the Stage can be read as well as written, default values are shown.</p>
         <pre><code class='javascript'>
         stage = new JS3('my-canvas');            
-        stage.interactive = false;          // tells the Stage to listen for mouse events
-        stage.drawClean = true;             // tells the Stage to clear itself before drawing the next frame 
-        stage.background = '#ffffff';       // the background color of the Stage
-        stage.windowTitle = 'My Canvas';    // the title of pop-up windows used when saving the Stage to a .png
+        stage.interactive   = false;        // tells the Stage to listen for mouse events
+        stage.drawClean     = true;         // tells the Stage to clear itself before drawing the next frame 
+        stage.background    = '#ffffff';    // the background color of the Stage
+        stage.windowTitle   = 'My Canvas';  // the title of pop-up windows used when saving the Stage to a .png
                 </code></pre>
                 
                 <p>And the following are general utility methods for controlling the Stage.</p>
