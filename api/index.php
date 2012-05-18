@@ -24,7 +24,7 @@
         stage = new JS3('my-canvas');
         stage.width         :Number;        // the width of the Stage
         stage.height        :Number;        // the height of the Stage
-        stage.numChildren   :Number;        // the number of the Sprites currently on the display list
+        stage.numChildren   :Number;        // the number of Sprites currently on the display list
         stage.mousePressed  :Boolean;       // whether or not the Mouse is currently pressed down
         stage.position      :Object;        // returns the global {x, y} position of the stage in the html page         
                 </code></pre>
