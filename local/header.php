@@ -1,5 +1,5 @@
 <?php 
-$version='0.2.8'; $dl='https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js';
+$version='0.2.9'; $dl='https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js';
 $root = $_SERVER["REMOTE_ADDR"] == '127.0.0.1' || $_SERVER["REMOTE_ADDR"] == '::1' ? 'http://localhost:8888' :  'http://js3.quietless.com';
 function linkto($n){ global $root; echo $root.$n;}
 ?>

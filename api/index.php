@@ -22,10 +22,11 @@
                 <p>The following properties of the Stage are <b>read-only</b>.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
-        stage.width         :Number;
-        stage.height        :Number;
-        stage.numChildren   :Number;
-        stage.mousePressed  :Boolean;
+        stage.width         :Number;        // the width of the Stage
+        stage.height        :Number;        // the height of the Stage
+        stage.numChildren   :Number;        // the number of the Sprites currently on the display list
+        stage.mousePressed  :Boolean;       // whether or not the Mouse is currently pressed down
+        stage.position      :Object;        // returns the global {x, y} position of the stage in the html page         
                 </code></pre>
                 <p>The following properties of the Stage can be read as well as written, default values are shown.</p>
         <pre><code class='javascript'>
