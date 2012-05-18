@@ -30,6 +30,7 @@
                 <p>The following properties of the Stage can be read as well as written, default values are shown.</p>
         <pre><code class='javascript'>
         stage = new JS3('my-canvas');            
+        stage.autoSize      = true;         // sizes the Stage to its parent's dimensions on window resize 
         stage.interactive   = false;        // tells the Stage to listen for mouse events
         stage.drawClean     = true;         // tells the Stage to clear itself before drawing the next frame 
         stage.background    = '#ffffff';    // the background color of the Stage

@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.7
+ * Version : 0.2.8
  * Release Date : May 17 2012
  * Documentation : http://js3.quietless.com/
  *
@@ -24,12 +24,14 @@ function JS3(cnvs)
 		var _children 	= [];
 		var _graphics	= [];
 		var _runners	= [];
-		var _tweens		= [];		
-		var _drawClean 	= true;
+		var _tweens		= [];
+		var _autoSize	= true;				
+		var _drawClean 	= true;		
 		var _background = '#ffffff';
 		var _winTitle	= 'My Canvas';
-		var _clickInt = 0;
-		var _downObj, _overObj, _dragObj, _stageEnter;
+		var _clickInt 	= 0;
+		var _stageEnter = false;
+		var _downObj, _overObj, _dragObj;
 	
 	// public getters & setters //
 	
@@ -42,9 +44,10 @@ function JS3(cnvs)
 			while( e != null ) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
 			return {x:x, y:y};}});
     	Object.defineProperty(this, "drawClean", 	{set: function(b) { _drawClean = b;}});
+		Object.defineProperty(this, "autoSize", 	{set: function(b) { _autoSize = b; onWRS();}});
     	Object.defineProperty(this, "background", 	{set: function(b) { _background = b; drawBackground();}});
     	Object.defineProperty(this, "windowTitle", 	{set: function(s) { _winTitle = s;}});
-    	Object.defineProperty(this, "interactive", 	{set: function(b) { b ? addMouseEvents() : remMouseEvents();}});		
+		Object.defineProperty(this, "interactive", 	{set: function(b) { b ? addMouseEvents() : remMouseEvents();}});
 		JS3setStageEvents(this);
 	
 	// display list management //	
@@ -94,7 +97,8 @@ function JS3(cnvs)
 			_tweens = []; _runners = []; this.clear();
 		}
 		this.setSize = function(w, h){
-			_canvas.width = _width = w; _canvas.height = _height = h;
+			console.log(w, h)
+			_canvas.style.width = _width = w; _canvas.style.height = _height = h;
 		}			
 		this.save = function(){
 	// save canvas as a png //		
@@ -227,7 +231,7 @@ function JS3(cnvs)
 			_context.mx = e.pageX - oX; _context.my = e.pageY - oY;
 		}
 		
-	// window focus events //
+	// window focus & resize events //
 	
 		var onWFI = function()
 		{
@@ -238,9 +242,12 @@ function JS3(cnvs)
 		{
 			if (_root._windowFocusOut) _root._windowFocusOut(new JS3Event('focusOut', _root, _root));
 		}		
-		
-		if (/*@cc_on!@*/false) { document.onfocusin = onWFI; } else { window.onfocus = onWFI;};
-		if (/*@cc_on!@*/false) { document.onfocusout = onWFO; } else { window.onblur = onWFO;};
+						
+		var onWRS = function()
+		{
+			if (_autoSize) _root.setSize(_canvas.parentNode.style.width || window.innerWidth, _canvas.parentNode.style.height || window.innerHeight);
+		}
+		window.onfocus = onWFI; window.onblur = onWFO; window.onresize = onWRS;		
 				
 	// private instance methods //
 		
