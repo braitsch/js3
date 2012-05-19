@@ -1,7 +1,7 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.2.9
+ * Version : 0.3.0
  * Release Date : May 18 2012
  * Documentation : http://js3.quietless.com/
  *
@@ -30,26 +30,28 @@ function JS3(cnvs)
 		var _clickInt		= 0;
 		var _stageEnter		= false;
 		var _interactive	= false;
+		var _autoSizeOffset = {};
 		var _downObj, _overObj, _dragObj;
 	
 	// public getters & setters //
 	
-		Object.defineProperty(this, "width", 		{get: function() {return _canvas.width;}});
-		Object.defineProperty(this, "height", 		{get: function() {return _canvas.height;}});
-		Object.defineProperty(this, "numChildren", 	{get: function() {return _children.length;}});
-		Object.defineProperty(this, "mousePressed", {get: function() {return _downObj!=null;}});
-		Object.defineProperty(this, "interactive", 	{
+		Object.defineProperty(this, "width",			{get: function() {return _canvas.width;}});
+		Object.defineProperty(this, "height",			{get: function() {return _canvas.height;}});
+		Object.defineProperty(this, "numChildren",		{get: function() {return _children.length;}});
+		Object.defineProperty(this, "mousePressed",		{get: function() {return _downObj!=null;}});
+		Object.defineProperty(this, "interactive",		{
 			get: function() {return _interactive;},
 			set: function(b) { _interactive = b; b ? addMouseEvents() : remMouseEvents();}
 		});		
-		Object.defineProperty(this, "position", 	{get: function() {
+		Object.defineProperty(this, "position",			{get: function() {
 			var x = 0; var y = 0; var e = _canvas;
 			while( e != null ) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
 			return {x:x, y:y};}});
-    	Object.defineProperty(this, "drawClean", 	{set: function(b) { _drawClean = b;}});
-		Object.defineProperty(this, "autoSize", 	{set: function(b) { _autoSize = b; onWRS();}});
-    	Object.defineProperty(this, "background", 	{set: function(b) { _background = b; drawBackground();}});
-    	Object.defineProperty(this, "windowTitle", 	{set: function(s) { _winTitle = s;}});
+    	Object.defineProperty(this, "drawClean",		{set: function(b) { _drawClean = b;}});
+    	Object.defineProperty(this, "background",		{set: function(b) { _background = b; drawBackground();}});
+    	Object.defineProperty(this, "windowTitle",		{set: function(s) { _winTitle = s;}});
+		Object.defineProperty(this, "autoSize",			{set: function(b) { _autoSize = b; onWRS();}});
+		Object.defineProperty(this, "autoSizeOffset", 	{set: function(o) { _autoSizeOffset = o; onWRS();}});
 		JS3setStageEvents(this);
 	
 	// display list management //	
@@ -106,13 +108,8 @@ function JS3(cnvs)
 			cntx.fillStyle = _background;
 			cntx.fillRect(0, 0, w, h);
     		cntx.drawImage(_canvas, 0, 0);
-	// copy old canvas properties over to the new canvas //
-			cnvs.id = _canvas.id; cnvs.style = _canvas.style; cnvs.className = _canvas.className || '*';
-	// and swap the new canvas element in for the old one //
-			remMouseEvents();		
-			_canvas.parentNode.insertBefore(cnvs, _canvas); _canvas.parentNode.removeChild(_canvas);
-			_canvas = cnvs; _context = _canvas.getContext("2d");
-			if (_interactive) addMouseEvents();
+			_canvas.width = w; _canvas.height = h;
+			_context.drawImage(cnvs, 0, 0);
 		}			
 		this.save = function(){
 	// save canvas as a png //		
@@ -264,7 +261,7 @@ function JS3(cnvs)
 				var h = _canvas.parentNode.style.height || window.innerHeight;
 				if (typeof w === 'string' && w.indexOf('px') != -1) w = w.substr(0, w.indexOf('px'));
 				if (typeof h === 'string' && h.indexOf('px') != -1) h = h.substr(0, h.indexOf('px'));
-				_root.setSize(w, h);
+				_root.setSize(w + (_autoSizeOffset.width || 0) , h + (_autoSizeOffset.height || 0));
 			}
 		}
 		window.onfocus = onWFI; window.onblur = onWFO; window.onresize = onWRS;		
