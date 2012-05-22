@@ -18,7 +18,7 @@ function init()
 	canvas.interactive = true;
 	canvas.windowTitle = 'Quarks &#187; Right Click & Select Save Image As';
 	canvas.click = onCanvasClick;
-	canvas.run(onCanvasTimer, 5); canvas.run(move);
+	canvas.run(onCanvasTimer, .5); canvas.run(move);
 }
 
 function onCanvasClick(e)
