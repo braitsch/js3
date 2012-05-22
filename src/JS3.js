@@ -1,8 +1,8 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.3.0
- * Release Date : May 18 2012
+ * Version : 0.3.1
+ * Release Date : May 22 2012
  * Documentation : http://js3.quietless.com/
  *
  * Copyright 2012 Stephen Braitsch :: @braitsch
@@ -280,7 +280,7 @@ function JS3(cnvs)
 		}
 		var render = function(){
 		// render display list objects //				
-			i = 0; while ( i < _children.length ) { var k = _children[i]; k.update(k); i++;}			
+			i = 0; while ( i < _children.length ) { var k = _children[i]; k.update(k); i++;}
 		// render non-persistent graphics //
 			while ( _graphics.length ) { var k = _graphics[0]; k.update(k); _graphics.splice(0, 1); k = null;}
 		}
@@ -366,7 +366,7 @@ JS3.drawCirc = function(o){
 	o.stage.bezierCurveTo(-o.cx, -a2, -a1, -o.cy, 0, -o.cy);
 	o.stage.bezierCurveTo(a1, -o.cy, o.cx, -a2, o.cx, 0);
 	o.stage.bezierCurveTo(o.cx, a2, a1, o.cy, 0, o.cy);
-	o.stage.bezierCurveTo(-a1, o.cy, -o.cx, a2, -o.cx, 0);
+	o.stage.bezierCurveTo(-a1, o.cy, -o.cx, a2, -o.cx, 0);	
 	JS3.drawShape(o);	
 }
 JS3.drawTri = function(o){
@@ -441,6 +441,7 @@ JS3.drawText = function(o){
 	JS3.drawShape(o);	
 }		
 JS3.fill = function(o){
+	if (o._gradient) o.drawGradient(o)
 	o.stage.globalAlpha = o.alpha * o.fillAlpha;			
     o.stage.fillStyle = o.color || o.fillColor;
 	o instanceof JS3Text ? o.stage.fillText(o.text, -o.cx, -o.cy) : o.stage.fill();
@@ -473,8 +474,59 @@ JS3.drawShape = function(o){
 	if (o.stroke) JS3.stroke(o);
 	o.stage.restore();	
 }
+JS3.drawRadial = function(o)
+{
+	var g = o.stage.createRadialGradient(0, 0, 0, 0, 0, o.size/2);
+	JS3.drawGradient(o, g);
+}
+JS3.drawLinear = function(o)
+{
+	var g = o.stage.createLinearGradient(-o.width/2, 0, o.width/2, 0);
+	JS3.drawGradient(o, g);	
+}
+JS3.drawGradient = function(o, g)
+{
+	var n = o._gradient.length;
+	if (n == 1){ o.color = o._gradient[0]; return; }
+	for (var i=0; i < n; i++) {
+		var c = o._gradient[i]; g.addColorStop((1/(n-1))*i, JS3.ToRGB(c));
+	};
+	o.color = g;
+}
 JS3.copyProps = function(o1, o2){ 
 	for (var k in o1) o2[k] = o1[k]; o1 = null;
+}
+JS3.ToRGB = function(h)
+{
+	h = JS3.getHexFromName(h);
+	if (h.charAt(0)=="#") h = h.substring(1,7);
+	var r = parseInt(h.substring(0,2),16);
+	var g = parseInt(h.substring(2,4),16);
+	var b = parseInt(h.substring(4,6),16);
+	return 'rgba('+r+','+g+','+b+', 1)';
+}
+JS3.getHexFromName = function(h)
+{
+	switch(h){
+		case 'aqua' : return '#00FFFF';
+		case 'black' : return '#000000';
+		case 'blue' : return '#0000FF';
+		case 'fuchsia' : return '#FF00FF';
+		case 'gray' : return '#000000';
+		case 'grey' : return '#808080';
+		case 'green' : return '#808080';
+		case 'lime' : return '#00FF00';
+		case 'maroon' : return '#800000';
+		case 'navy' : return '#000080';
+		case 'olive' : return '#808000';
+		case 'purple' : return '#800080';
+		case 'red' : return '#ff0000';
+		case 'silver' : return '#C0C0C0';
+		case 'teal' : return '#008080';
+		case 'white' : return '#ffffff';
+		case 'yellow' : return '#FFFF00';
+	}
+	return h;
 }
 
 // --- rob penners's easing equations from http://www.robertpenner.com/easing --- //
@@ -607,6 +659,8 @@ function JS3getBaseProps(o)
 											set: function(n) { o._width=n; o.pts=[];}});
 	Object.defineProperty(o, "height",	{	get: function() { return o._height;},
 											set: function(n) { o._height=n; o.pts=[];}});
+	Object.defineProperty(o, "linear",	{	set: function(a) { o._gradient=a; o.drawGradient = JS3.drawLinear}});											
+	Object.defineProperty(o, "radial",	{	set: function(a) { o._gradient=a; o.drawGradient = JS3.drawRadial}});										
 	o.x=o.y=o.rotation=0; o._size=25; o.fillColor='#ddd'; o.strokeColor='#ccc'; o.fill=o.stroke=true;o.alpha=o.scaleX=o.scaleY=o.fillAlpha=o.strokeAlpha=1; o.strokeWidth=2;
 	JS3setObjEvents(o);
 }

@@ -70,8 +70,33 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
         strokeAlpha :Number = 1;
         strokeWidth :Number = 4;
                     </code></pre><hr>
+
+                <h2>Colors & Gradients</h2>
+                <p>You can fill any shape with a single color or a gradient made up of several colors.<br>
+                Simply set an array of colors to either of the two gradient options, <u>radial</u> or <u>linear</u> as shown below.</p>
+                <pre><code class='javascript'>
+        var stage = new JS3('my-canvas');	
+    	var r1 = new JS3Rect({size:50, x:25, y:25}); 
+    	r1.color = 'green';
+    	stage.addChild( r1 );
+    	    	
+    	var c1 = new JS3Circle({size:50, x:125, y:25}); 
+    	c1.radial = ['#ff0000', '#000000'];
+    	stage.addChild( c1 );
+    	    	
+    	var r2 = new JS3Rect({size:50, x:225, y:25});
+    	r2.linear = ['red', 'black'];
+    	stage.addChild( r2 );
+    	    	
+    	var c2 = new JS3Circle({size:50, x:325, y:25}); 
+    	c2.radial = ['#00C9FF', '#000000', '00C9FF', '#000000'];
+    	stage.addChild( c2 );	
+                </code></pre>
+            <canvas id="draw-5" width='898' height='100'></canvas>
+            <p><strong>Quick Tip : </strong>You can set colors by either using their hex values or with any of the <a href='http://www.w3schools.com/cssref/css_colornames.asp', target='_blank'>17 standard color names.</a></p><hr>
+                
                     
-                <h2>Positioning, Scaling & Rotation</h2>                    
+                <h2>Positioning, Scaling & Rotation</h2>
                 <p>It is very important to note that all Shapes and Sprites are positioned on the Stage relative to their top left coordinate.<br>
             This is exactly the same as the default positioning you are probably used to working with in the Flash authoring environment.<br>
             Objects are scaled and rotated however from their center, which is automatically calculated from the Object's width, height and size.<br><br>

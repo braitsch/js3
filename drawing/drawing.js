@@ -30,7 +30,20 @@ function drawShapes()
 	c.scaleX = 1.5;
 	c.scaleY = 1.5;	
 	c.rotation = 45;
-	stage.addChild( c );		
+	stage.addChild( c );	
+	stage = new JS3('draw-5');
+	var r1 = new JS3Rect({size:50, x:25, y:25}); 
+		r1.color = 'green';
+	var c1 = new JS3Circle({size:50, x:125, y:25}); 
+		c1.radial = ['#ff0000', '#000000'];
+	var r2 = new JS3Rect({size:50, x:225, y:25});
+		r2.linear = ['red', 'black'];
+	var c2 = new JS3Circle({size:50, x:325, y:25}); 
+		c2.radial = ['#00C9FF', '#000000', '00C9FF', '#000000'];
+	stage.addChild( r1 );
+	stage.addChild( c1 );
+	stage.addChild( r2 );
+	stage.addChild( c2 );		
 }
 
 function drawLines()
