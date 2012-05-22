@@ -6,7 +6,7 @@ var winW, winH;
 var autoSize = false;
 
 $(document).ready(function() {
-	JS3.showFrameRate(0, 40);	
+//	JS3.showFrameRate(0, 40);	
 	canvas = new JS3('cnvs');
 	canvas.background = '#ff0000';
 	getWindowWidth(); init(); $('#cnvs').show();

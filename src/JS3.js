@@ -24,14 +24,14 @@ function JS3(cnvs)
 		var _runners		= [];
 		var _tweens			= [];
 		var _autoSize		= true;				
-		var _drawClean		= true;		
+		var _drawClean		= true;				
 		var _background		= '#ffffff';
 		var _winTitle		= 'My Canvas';
 		var _clickInt		= 0;
 		var _stageEnter		= false;
 		var _interactive	= false;
 		var _autoSizeOffset = {};
-		var _downObj, _overObj, _dragObj;
+		var _downObj, _overObj, _dragObj, _radial, _linear;
 	
 	// public getters & setters //
 	
@@ -48,7 +48,9 @@ function JS3(cnvs)
 			while( e != null ) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
 			return {x:x, y:y};}});
     	Object.defineProperty(this, "drawClean",		{set: function(b) { _drawClean = b;}});
-    	Object.defineProperty(this, "background",		{set: function(b) { _background = b; drawBackground();}});
+    	Object.defineProperty(this, "radial",			{set: function(a) { _radial = a; _linear = _background = undefined; drawBackground();}});
+    	Object.defineProperty(this, "linear",			{set: function(a) { _linear = a; _radial = _background = undefined; drawBackground();}});
+    	Object.defineProperty(this, "background",		{set: function(n) { _background = n; _linear = _radial = undefined; drawBackground();}});
     	Object.defineProperty(this, "windowTitle",		{set: function(s) { _winTitle = s;}});
 		Object.defineProperty(this, "autoSize",			{set: function(b) { _autoSize = b; onWRS();}});
 		Object.defineProperty(this, "autoSizeOffset", 	{set: function(o) { _autoSizeOffset = o; onWRS();}});
@@ -269,8 +271,25 @@ function JS3(cnvs)
 	// private instance methods //
 		
 		var drawBackground = function(){
-			_context.fillStyle = _background;
+			if (_radial){
+				radialBkgd();
+			}	else if (_linear){
+				linearBkgd();
+			}	else{
+				solidBkgd();
+			}
 			_context.fillRect(0, 0, _canvas.width, _canvas.height);			
+		}
+		var solidBkgd = function(){
+			_context.fillStyle = _background || '#ffffff';
+		}
+		var radialBkgd = function(){
+			var g = _context.createRadialGradient(_canvas.width/2, _canvas.height/2, 0, _canvas.width/2, _canvas.height/2, _canvas.width/2);
+			_context.fillStyle = JS3.drawGradient(_radial, g);
+		}
+		var linearBkgd = function(){
+			var g = _context.createLinearGradient(0, 0, _canvas.width, 0);
+			_context.fillStyle = JS3.drawGradient(_linear, g);
 		}
 		var initTween = function(t){
 			t.start = Date.now(); _tweens.push(t)	
@@ -477,21 +496,21 @@ JS3.drawShape = function(o){
 JS3.drawRadial = function(o)
 {
 	var g = o.stage.createRadialGradient(0, 0, 0, 0, 0, o.size/2);
-	JS3.drawGradient(o, g);
+	o.color = JS3.drawGradient(o._gradient, g);
 }
 JS3.drawLinear = function(o)
 {
 	var g = o.stage.createLinearGradient(-o.width/2, 0, o.width/2, 0);
-	JS3.drawGradient(o, g);	
+	o.color = JS3.drawGradient(o._gradient, g);	
 }
-JS3.drawGradient = function(o, g)
+JS3.drawGradient = function(colors, g)
 {
-	var n = o._gradient.length;
-	if (n == 1){ o.color = o._gradient[0]; return; }
+	var n = colors.length;
+	if (n == 1){ return colors[0] }
 	for (var i=0; i < n; i++) {
-		var c = o._gradient[i]; g.addColorStop((1/(n-1))*i, JS3.ToRGB(c));
+		var c = colors[i]; g.addColorStop((1/(n-1))*i, JS3.ToRGB(c));
 	};
-	o.color = g;
+	return g;
 }
 JS3.copyProps = function(o1, o2){ 
 	for (var k in o1) o2[k] = o1[k]; o1 = null;

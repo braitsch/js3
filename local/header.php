@@ -11,8 +11,8 @@ function linkto($n){ global $root; echo $root.$n;}
         <meta name="description" content="A fast and lightweight drawing and animation library for the HTML5 JavaScript Canvas">
         <meta name="author" content="Stephen Braitsch">    
         <link href=<?php linkto('/vendor/bootstrap.min.css')?> rel="stylesheet">
-        <link href="http://yandex.st/highlightjs/6.1/styles/github.min.css" rel="stylesheet" > 
-        <link href=<?php linkto('/css/styles.css')?> rel="stylesheet">        
+        <link href=<?php linkto('/vendor/highlightjs-6.1-min.css')?> rel="stylesheet">
+        <link href=<?php linkto('/css/styles.css')?> rel="stylesheet">
         <link rel="shortcut icon" href="images/favicon.ico">
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -48,6 +48,7 @@ function linkto($n){ global $root; echo $root.$n;}
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gallery<b class="caret"></b></a>
                             <ul class="dropdown-menu">
+                                <li><a href=<?php linkto('/gallery/quarks')?>>Quarks</a></li>                                
                                 <li><a href=<?php linkto('/gallery/honeycomb')?>>HoneyComb</a></li>
                                 <li><a href=<?php linkto('/gallery/rings')?>>Rings</a></li>
                                 <li><a href=<?php linkto('/gallery/lite-brite')?>>LiteBrite</a></li>

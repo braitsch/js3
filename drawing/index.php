@@ -72,10 +72,12 @@ The main difference is that Shapes are drawn to the canvas and then immediately 
                     </code></pre><hr>
 
                 <h2>Colors & Gradients</h2>
-                <p>You can fill any shape with a single color or a gradient made up of several colors.<br>
+                <p>You can fill any shape, <b>including the background</b> with a single color or a gradient made up of several colors.<br>
                 Simply set an array of colors to either of the two gradient options, <u>radial</u> or <u>linear</u> as shown below.</p>
                 <pre><code class='javascript'>
-        var stage = new JS3('my-canvas');	
+        var stage = new JS3('my-canvas');
+        stage.linear = ['#EEEEEE', '#CCCCCC'];
+	        
     	var r1 = new JS3Rect({size:50, x:25, y:25}); 
     	r1.color = 'green';
     	stage.addChild( r1 );

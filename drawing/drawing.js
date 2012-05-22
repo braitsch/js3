@@ -32,6 +32,7 @@ function drawShapes()
 	c.rotation = 45;
 	stage.addChild( c );	
 	stage = new JS3('draw-5');
+	stage.linear = ['#eeeeee', '#cccccc'];	
 	var r1 = new JS3Rect({size:50, x:25, y:25}); 
 		r1.color = 'green';
 	var c1 = new JS3Circle({size:50, x:125, y:25}); 
