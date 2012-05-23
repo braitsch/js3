@@ -30,8 +30,7 @@
                 </code></pre>
                 <p>The following properties of the Stage can be read as well as written, default values are shown.</p>
         <pre><code class='javascript'>
-        stage = new JS3('my-canvas');            
-        stage.autoSize      = true;         // sizes the Stage to its parent's dimensions on window resize 
+        stage = new JS3('my-canvas');             
         stage.interactive   = false;        // tells the Stage to listen for mouse events
         stage.drawClean     = true;         // tells the Stage to clear itself before drawing the next frame 
         stage.background    = '#ffffff';    // the background color of the Stage
@@ -44,18 +43,6 @@
         stage.save(); 	// opens a popup window allowing the user to save the current state of the canvas as a .png
         stage.clear();  // removes all graphics and children from the Stage 
         stage.reset();  // calls clear() and also stops all tweens and functions passed to stage.run()
-        stage.setSize( width:Number, height:Number ); // sets the size of the canvas, useful when the browser is resized.
-                </code></pre><hr>
-
-                <h2 id='window-resizing'>Handling Window Resizing</h2>
-                <p>JS3 can also automatically cache its pixel data so it doesn't get wiped out when the browser is resized.<br>
-                <u>autoSize</u> will size the Stage to the dimensions of its parent container or the innerWidth and innerHeight of the window if its parent dimensions are not set.<br>
-                Optionally, an autoSizeOffset Object can also be set with an offset width and height value.</p>
-
-                <pre><code class='javascript'>
-        stage = new JS3('my-canvas');
-        stage.autoSize          :Boolean = true;
-        stage.autoSizeOffset    :Object  = {width : 0, height : 0};
                 </code></pre><hr>
 
                 <h2 id='api-display-list'>The Display List</h2>

@@ -22,15 +22,13 @@ function JS3(cnvs)
 		var _children		= [];
 		var _graphics		= [];
 		var _runners		= [];
-		var _tweens			= [];
-		var _autoSize		= true;				
+		var _tweens			= [];			
 		var _drawClean		= true;				
 		var _background		= '#ffffff';
 		var _winTitle		= 'My Canvas';
 		var _clickInt		= 0;
 		var _stageEnter		= false;
 		var _interactive	= false;
-		var _autoSizeOffset = {};
 		var _downObj, _overObj, _dragObj, _radial, _linear;
 	
 	// public getters & setters //
@@ -52,8 +50,6 @@ function JS3(cnvs)
     	Object.defineProperty(this, "linear",			{set: function(a) { _linear = a; _radial = _background = undefined; drawBackground();}});
     	Object.defineProperty(this, "background",		{set: function(n) { _background = n; _linear = _radial = undefined; drawBackground();}});
     	Object.defineProperty(this, "windowTitle",		{set: function(s) { _winTitle = s;}});
-		Object.defineProperty(this, "autoSize",			{set: function(b) { _autoSize = b; onWRS();}});
-		Object.defineProperty(this, "autoSizeOffset", 	{set: function(o) { _autoSizeOffset = o; onWRS();}});
 		JS3setStageEvents(this);
 	
 	// display list management //	
@@ -101,18 +97,7 @@ function JS3(cnvs)
 			while(_tweens.length) {_tweens[0] = null; _tweens.splice(0, 1);}
 			while(_runners.length) {_runners[0] = null; _runners.splice(0, 1);}
 			_tweens = []; _runners = []; this.clear();
-		}
-		this.setSize = function(w, h){
-	// setting _canvas width & height force clears the canvas, so let's cache the canvas //
-  			var cnvs = document.createElement('canvas');
-    		var cntx = cnvs.getContext('2d');
-			cnvs.width = w; cnvs.height = h;
-			cntx.fillStyle = _background;
-			cntx.fillRect(0, 0, w, h);
-    		cntx.drawImage(_canvas, 0, 0);
-			_canvas.width = w; _canvas.height = h;
-			_context.drawImage(cnvs, 0, 0);
-		}			
+		}		
 		this.save = function(){
 	// save canvas as a png //		
 			var img = _canvas.toDataURL('image/png');
@@ -244,7 +229,7 @@ function JS3(cnvs)
 			_context.mx = e.pageX - oX; _context.my = e.pageY - oY;
 		}
 		
-	// window focus & resize events //
+	// window focus events //
 	
 		var onWFI = function()
 		{
@@ -255,18 +240,8 @@ function JS3(cnvs)
 		{
 			if (_root._windowFocusOut) _root._windowFocusOut(new JS3Event('focusOut', _root, _root));
 		}		
-						
-		var onWRS = function()
-		{
-			if (_autoSize) {
-				var w = _canvas.parentNode.style.width || window.innerWidth;
-				var h = _canvas.parentNode.style.height || window.innerHeight;
-				if (typeof w === 'string' && w.indexOf('px') != -1) w = w.substr(0, w.indexOf('px'));
-				if (typeof h === 'string' && h.indexOf('px') != -1) h = h.substr(0, h.indexOf('px'));
-				_root.setSize(w + (_autoSizeOffset.width || 0) , h + (_autoSizeOffset.height || 0));
-			}
-		}
-		window.onfocus = onWFI; window.onblur = onWFO; window.onresize = onWRS;		
+
+		window.onfocus = onWFI; window.onblur = onWFO;
 				
 	// private instance methods //
 		
