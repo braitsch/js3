@@ -8,7 +8,6 @@ var line = ['#D9CEB2', '#99B2B7'];
 
 function init()
 {
-	autoSize = false; canvas.setSize(winW, 250);	
 	canvas.drawClean = true;
 	canvas.interactive = true;
 	canvas.background = '#D5DED9';

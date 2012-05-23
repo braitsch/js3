@@ -11,8 +11,7 @@ var rndmColor = false;
 
 function init()
 {
-	addGui(); 
-	autoSize = true; canvas.setSize(winW, winH); 
+	addGui();  
 	canvas.drawClean = false;
 	canvas.background = bkgdColor;
 	canvas.click = onCanvasClick;

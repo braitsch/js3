@@ -5,8 +5,7 @@ var palettes = ['#E0E4CC', '#53777A', '#542437', '#ECD078'];
 
 function init()
 {
-	addGui();
-	autoSize = true; canvas.setSize(winW, winH); 	
+	addGui(); 	
 	canvas.drawClean = false;
 	canvas.background = '#fff';
 	canvas.windowTitle = 'HoneyComb &#187; Right Click & Select Save Image As';

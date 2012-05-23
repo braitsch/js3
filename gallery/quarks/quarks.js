@@ -12,7 +12,6 @@ var mouseX, mouseY;
 function init()
 {
 	addGui(); 
-	autoSize = true; canvas.setSize(winW, winH); 
 	canvas.drawClean = true;
 	canvas.radial = ['#506485', '#212838'];
 	canvas.interactive = true;

@@ -4,8 +4,7 @@ var circs = [];
 var padding = 4;
 
 function init()
-{
-	autoSize = true; canvas.setSize(winW, winH); 	
+{ 	
 	canvas.drawClean = false;
 	canvas.background = '#777';
 	size = (canvas.width - 20) / 75; draw();

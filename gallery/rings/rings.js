@@ -14,7 +14,7 @@ var runner;
 
 function init()
 {
-	autoSize = true; canvas.setSize(winW, winH); addGui();
+	addGui();
 	canvas.windowTitle = 'Rings &#187; Right Click & Select Save Image As';
 	canvas.background = bkgdColor;
 	canvas.interactive = true;	

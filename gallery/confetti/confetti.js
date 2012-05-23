@@ -4,9 +4,8 @@ var palettes = ['#E0E4CC', '#FA6900', '#C02942', '#69D2E7'];
 
 function init()
 {
-	autoSize = false;
-	canvas.setSize(winW, 250);
 	canvas.drawClean = false;
+	canvas.background = 'eee';
 	canvas.run(addBalls);
 }
 

@@ -8,10 +8,7 @@ var colors = palettes[Math.floor(JS3.getRandomValue(palettes.length))];
 
 function init()
 {
-	autoSize = false; canvas.setSize(winW, 250);
 	canvas.drawClean = true;
-	canvas.setSize = (winW, 200);
-	$('cnvs').width(winW);
 	canvas.background = colors[0];
 	onStart();
 }
