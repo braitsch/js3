@@ -1,8 +1,8 @@
-var maxQuarks = 20;
-var strkWidth = 2;
-var energy = 4;
-var minSize = 10;
-var maxSize = 50;
+var maxQuarks = 75;
+var strkWidth = 0;
+var energy = 10;
+var minSize = 5;
+var maxSize = 35;
 var strkColor = '#ffffff';
 var bkgdColor = '#333';
 var gradient1 = '#5cd1ff';
@@ -18,7 +18,7 @@ function init()
 	canvas.interactive = true;
 	canvas.windowTitle = 'Quarks &#187; Right Click & Select Save Image As';
 	canvas.click = onCanvasClick;
-	canvas.run(onCanvasTimer, .5); canvas.run(move);
+	canvas.run(onCanvasTimer, .3); canvas.run(move);
 }
 
 function onCanvasClick(e)
@@ -76,10 +76,10 @@ function addGui()
 {
 	var o = {
 		'Total Quarks'		: maxQuarks,
-		'Outer Width'		: strkWidth,		
-		'Inner Color 1'	 	: gradient1,
-		'Inner Color 2'	 	: gradient2,		
-		'Outer Color'	 	: strkColor,
+		'Inner Color'	 	: gradient1,
+		'Outer Color'	 	: gradient2,
+		'Halo Size'			: strkWidth,
+		'Halo Color'	 	: strkColor,
 		'Energy'	 		: energy,		
 		'Min Size'	 		: minSize,
 		'Max Size'	 		: maxSize,		
@@ -88,24 +88,24 @@ function addGui()
 		'Save as PNG'		: function() { canvas.save(); }
 	}
 	var gui = new dat.GUI({ autoPlace: false });
-	var s0 = gui.add(o, 'Total Quarks', 1, 75);
+	var s0 = gui.add(o, 'Total Quarks', 1, 125);
 		s0.onChange(function(val){maxQuarks=val; canvas.run(addQuark, .5); });		
-	var c1 = gui.addColor(o, 'Inner Color 1');
+	var c1 = gui.addColor(o, 'Inner Color');
 		c1.onChange(function(val){gradient1=val});
-	var c1 = gui.addColor(o, 'Inner Color 2');
+	var c1 = gui.addColor(o, 'Outer Color');
 		c1.onChange(function(val){gradient2=val});		
-	var c2 = gui.addColor(o, 'Outer Color');
+	var c2 = gui.addColor(o, 'Halo Color');
 		c2.onChange(function(val){strkColor=val});
 	var c3 = gui.addColor(o, 'BackGround Color');
 		c3.onChange(function(val){canvas.background = val;});
-	var s1 = gui.add(o, 'Energy', 1, 10);
+	var s1 = gui.add(o, 'Energy', 1, 100);
 		s1.onChange(function(val){energy=val});			
-	var s2 = gui.add(o, 'Outer Width', 1, 10);
-		s2.onChange(function(val){strkWidth=val});	
 	var s3 = gui.add(o, 'Min Size', 1, 30);
 		s3.onChange(function(val){minSize=val});	
 	var s4 = gui.add(o, 'Max Size', 30, 75);
 		s4.onChange(function(val){maxSize=val});
+	var s2 = gui.add(o, 'Halo Size', 0, 10);
+		s2.onChange(function(val){strkWidth=val});			
 	var cl = gui.add(o, 'Clear Canvas');
 	var sv = gui.add(o, 'Save as PNG');	
 	var div = document.getElementById('datgui');
