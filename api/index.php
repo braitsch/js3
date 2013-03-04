@@ -7,13 +7,13 @@
                 <p>This page contains a detailed look at the JS3 API</a>
                 <div class="subnav" style='background-color:#F5F5F5'>
                 <ul class="nav nav-pills">
-                    <li style='margin-left:50px'><a class='anchor' href="#api-stage">Stage API</a></li>      
-                    <li><a class='anchor' href="#api-display-list">The Display List</a></li>      
+                    <li style='margin-left:50px'><a class='anchor' href="#api-stage">Stage API</a></li>
+                    <li><a class='anchor' href="#api-display-list">The Display List</a></li>
                     <li><a class='anchor' href="#api-drawing">Drawing API</a></li>
                     <li><a class='anchor' href="#api-tweening">The Tween Method</a></li>
                     <li><a class='anchor' href="#api-timers">Timed Animations</a></li>
                     <li><a class='anchor' href="#api-framerate">Framerate Monitor</a></li>
-                    <li><a class='anchor' href="#api-utilities">Utility Methods</a></li>                    
+                    <li><a class='anchor' href="#api-utilities">Utility Methods</a></li>
                 </ul>
                 </div>
             </div>
@@ -26,13 +26,13 @@
         stage.height        :Number;        // the height of the Stage
         stage.numChildren   :Number;        // the number of Sprites currently on the display list
         stage.mousePressed  :Boolean;       // whether or not the Mouse is currently pressed down
-        stage.position      :Object;        // returns the global {x, y} position of the stage in the html page         
+        stage.position      :Object;        // returns the global {x, y} position of the stage in the html page
                 </code></pre>
                 <p>The following properties of the Stage can be read as well as written, default values are shown.</p>
         <pre><code class='javascript'>
-        stage = new JS3('my-canvas');             
+        stage = new JS3('my-canvas');
         stage.interactive   = false;        // tells the Stage to listen for mouse events
-        stage.drawClean     = true;         // tells the Stage to clear itself before drawing the next frame 
+        stage.drawClean     = true;         // tells the Stage to clear itself before drawing the next frame
         stage.background    = '#ffffff';    // the background color of the Stage
         stage.windowTitle   = 'My Canvas';  // the title of pop-up windows used when saving the Stage to a .png
                 </code></pre>
@@ -40,6 +40,7 @@
                 <p>And the following are general utility methods for controlling the Stage.</p>
                 <pre><code class='javascript'>
         stage = new JS3('my-canvas');
+        stage.setSize( width:Number, height:Number ); // defaults to the dimensions of your canvas element
         stage.save(); 	// opens a popup window allowing the user to save the current state of the canvas as a .png
         stage.clear();  // removes all graphics and children from the Stage 
         stage.reset();  // calls clear() and also stops all tweens and functions passed to stage.run()

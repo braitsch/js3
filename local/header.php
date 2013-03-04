@@ -1,5 +1,5 @@
 <?php 
-$version='0.3.1'; $dl='https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js';
+$version='0.3.2'; $dl='https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js';
 $root = $_SERVER["REMOTE_ADDR"] == '127.0.0.1' || $_SERVER["REMOTE_ADDR"] == '::1' ? 'http://localhost:8888' :  'http://js3.quietless.com';
 function linkto($n){ global $root; echo $root.$n;}
 ?>
@@ -28,12 +28,12 @@ function linkto($n){ global $root; echo $root.$n;}
     <body>
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
-                <div class="container" style="width: auto;">               
+                <div class="container" style="width: auto;">
                     <ul id='global-nav' class="nav pull-left">
                         <li class="divider-vertical"></li>
                         <li><a href=<?php linkto('/')?>>JS3</a></li>
                         <li class="divider-vertical"></li>
-                        <li><a href=<?php linkto('/getting-started')?>>Getting Started</a></li>                        
+                        <li><a href=<?php linkto('/getting-started')?>>Getting Started</a></li>
                         <li class="divider-vertical"></li>
                         <li><a href=<?php linkto('/drawing')?>>Drawing Shapes</a></li>
                         <li class="divider-vertical"></li>
@@ -48,19 +48,19 @@ function linkto($n){ global $root; echo $root.$n;}
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gallery<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href=<?php linkto('/gallery/quarks')?>>Quarks</a></li>                                
+                                <li><a href=<?php linkto('/gallery/quarks')?>>Quarks</a></li>
                                 <li><a href=<?php linkto('/gallery/honeycomb')?>>HoneyComb</a></li>
                                 <li><a href=<?php linkto('/gallery/rings')?>>Rings</a></li>
                                 <li><a href=<?php linkto('/gallery/lite-brite')?>>LiteBrite</a></li>
-                                <li><a href=<?php linkto('/gallery/tube-worms')?>>TubeWorms</a></li>                            
-                                <li class="divider"></li>                               
+                                <li><a href=<?php linkto('/gallery/tube-worms')?>>TubeWorms</a></li>
+                                <li class="divider"></li>
                                 <li><a href=<?php linkto('/gallery/joints')?>>Joints</a></li>
                                 <li><a href=<?php linkto('/gallery/spiders')?>>Spiders</a></li>
-                                <li><a href=<?php linkto('/gallery/confetti')?>>Confetti</a></li>                            
+                                <li><a href=<?php linkto('/gallery/confetti')?>>Confetti</a></li>
                                 <li><a href=<?php linkto('/gallery/snowflakes')?>>SnowFlakes</a></li>                                                                                                                                                                                                               
                             </ul>
-                        </li>                        
-                        <li class="divider-vertical"></li>               
+                        </li>
+                        <li class="divider-vertical"></li>
                     </ul><!-- download-group -->
                     <div class="btn-group" style='float:right;right:10px;top:1px;'>
                         <button class="btn btn-success dropdown-toggle" style='width:161px;' data-toggle="dropdown"><i class="icon-download icon-white"></i>Download <?php echo 'v'.$version;?></button>
@@ -68,12 +68,12 @@ function linkto($n){ global $root; echo $root.$n;}
                             <li><a href=<?php echo 'https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'-min.js';?>>Minified</a></li>
                             <li><a href=<?php echo 'https://raw.github.com/braitsch/js3/master/src/JS3-'.$version.'.js';?>>Uncompressed</a></li>
                             <li class="divider"></li>
-                            <li><a href=<?php echo $root . '/quick-start.zip'?>>Quick Start</a></li>                            
+                            <li><a href=<?php echo $root . '/quick-start.zip'?>>Quick Start</a></li>
                         </ul>
                     </div><!-- download-group -->
-                </div><!-- container -->               
-            </div><!-- navbar-inner -->          
-            
+                </div><!-- container -->
+            </div><!-- navbar-inner -->
+
         </div><!-- navbar -->
 <a href="http://github.com/braitsch/js3"><img style="position:absolute;top:41px;right:0;border:0;" src="https://a248.e.akamai.net/camo.github.com/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
             
