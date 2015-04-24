@@ -1,4 +1,4 @@
-###JS3 is a fast and lightweight drawing and animation library for the JavaScript Canvas 
+###JS3 is a fast & lightweight JavaScript drawing & animation library designed to mirror the Flash API. 
 =============
 
-This is a work in progress, however you can view the evolving documentation [here](http://js3.quietless.com/) and a gallery of some examples [here](http://js3.quietless.com/gallery/honeycomb "gallery").
+[More info]('http://www.quietless.com/kitchen/introducing-js3/), [documentation](http://js3.quietless.com/) and some [examples](http://js3.quietless.com/gallery/honeycomb "gallery") of what you can do with it.

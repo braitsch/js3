@@ -1,0 +1,189 @@
+
+extends layout
+
+block content
+	#content
+		#header
+			h1 JS3 API
+			p This page contains a detailed look at the JS3 API
+			.subnav(style='background-color:#F5F5F5')
+				ul.nav.nav-pills
+					li(style='margin-left:50px')
+						a.anchor(href="#api-stage") Stage API
+					li
+						a.anchor(href="#api-display-list") The Display List
+					li
+						a.anchor(href="#api-drawing") Drawing API
+					li
+						a.anchor(href="#api-tweening") The Tween Method
+					li
+						a.anchor(href="#api-timers") Timed Animations
+					li
+						a.anchor(href="#api-framerate") Framerate Monitor
+					li
+						a.anchor(href="#api-utilities") Utility Methods
+		h2#api-stage Stage API
+		p The following properties of the Stage are <b>read-only</b>.
+		pre
+			code.javascript
+				| &#14
+				| &#9stage = new JS3('my-canvas');
+				| &#9stage.width         :Number;        // the width of the Stage
+				| &#9stage.height        :Number;        // the height of the Stage
+				| &#9stage.numChildren   :Number;        // the number of Sprites currently on the display list
+				| &#9stage.mousePressed  :Boolean;       // whether or not the Mouse is currently pressed down
+				| &#9stage.position      :Object;        // returns the global {x, y} position of the stage in the html page
+				| &#14
+		p The following properties of the Stage can be read as well as written, default values are shown.
+		pre
+			code.javascript
+				| &#14
+				| &#9stage = new JS3('my-canvas');
+				| &#9stage.interactive   = false;        // tells the Stage to listen for mouse events
+				| &#9stage.drawClean     = true;         // tells the Stage to clear itself before drawing the next frame
+				| &#9stage.background    = '#ffffff';    // the background color of the Stage
+				| &#9stage.windowTitle   = 'My Canvas';  // the title of pop-up windows used when saving the Stage to a .png
+				| &#14
+		p And the following are general utility methods for controlling the Stage.
+		pre
+			code.javascript
+				| &#14
+				| &#9stage = new JS3('my-canvas');
+				| &#9stage.setSize( width:Number, height:Number ); // defaults to the dimensions of your canvas element
+				| &#9stage.save(); 	// opens a popup window allowing the user to save the current state of the canvas as a .png
+				| &#9stage.clear();  // removes all graphics and children from the Stage 
+				| &#9stage.reset();  // calls clear() and also stops all tweens and functions passed to stage.run()
+				| &#14
+		h2#api-display-list The Display List
+		p The following methods allow you to modify the internal display list.
+		pre
+			code.javascript
+				| &#14
+				| &#9stage = new JS3('my-canvas');
+				| &#9stage.addChild( obj:JS3Object ) : void
+				| &#9stage.addChildAt( obj:JS3Object, index:Number ) : void
+				| &#14
+				| &#9stage.getChildAt( index:Number ) : JS3Object
+				| &#9stage.getChildAtRandom( ) : JS3Object
+				| &#14
+				| &#9stage.removeChild( obj:JS3Object ) : void
+				| &#9stage.removeChildAt( index:Number ) : void
+				| &#14
+		hr
+		h2#api-drawing Drawing Methods
+		p Use the following methods to draw non-persistent Shapes on the Stage.<br>Each method requires an Object that describes how the Shape should be positioned and drawn.<br>For more information about these methods and what you should pass into them, check the section on <a href='/drawing'>drawing.</a>
+		pre
+			code.javascript
+				| &#14
+				| &#9stage = new JS3('my-canvas');
+				| &#9stage.drawLine( {} );
+				| &#9stage.drawArc( {} );
+				| &#9stage.drawRect( {} );
+				| &#9stage.drawCircle( {} );
+				| &#9stage.drawTri( {} );
+				| &#9stage.drawText( {} ); 
+				| &#14
+		h2#api-tweening The Tween Method
+		p The JS3 Tween method takes the following form :
+		pre
+			code.javascript
+				| &#14
+				| &#9target      : JS3Object     // any JS3Object
+				| &#9duration    : Number        // time in seconds
+				| &#9details     : Object        // an Object that describes the properties to tween and callbacks to execute.
+				|   // put together, the syntax for a tween is as follows:
+				| &#9stage.tween(target, duration, details);
+				| &#14
+		p The following properties can be tweened on any JS3Object.
+		pre
+			code.javascript
+				| &#14
+				| &#9x           : Number        // position on the x axis
+				| &#9y           : Number        // position on the y axis
+				| &#9alpha       : Number        // opacity / transparency of the object
+				| &#9scaleX      : Number        // horizontal scale
+				| &#9scaleY      : Number        // vertical scale
+				| &#9rotation    : Number        // rotation in degrees, negative values rotate counter-clockwise
+				|   // put together, a typical tween could look like the following:
+				| &#9stage.tween(target, duration, <span style='color:blue'>{x:100, y:100, alpha:.5, scaleX:3, scaleY:3, rotation:90}</span> );
+				| &#14
+		p The following callbacks can also be executed whenever a tween begins or ends.
+		pre
+			code.javascript
+				| &#14
+				| &#9onStart     : Function      // called when the tween begins
+				| &#9onComplete  : Function      // called when the tween completes
+				| &#14
+		p You can also specify an amount of time to delay before starting the tween.
+		pre
+			code.javascript
+				| &#14
+				| &#9delay       : Number        // amount of time to delay the start of the tween in seconds
+				| &#14
+		p All together, a tween with multiple properties and callbacks could look like the following :
+		pre
+			code.javascript
+				| &#14
+				| &#9stage.tween(my-circle, 1, <span style='color:blue'>{x:100, alpha:.5, rotation:90, onStart:onStartFunc, onComplete:onCompleteFunc, delay:1}</span>);
+				| &#14
+		hr
+		h2#api-timers Timed Animation Methods
+		p Timed animations are controlled using the <u>run</u> & <u>stop</u> methods.<br>Both methods simply take the function to start and stop executing.
+		pre
+			code.javascript
+				| &#14
+				| &#9stage.run( function ) : void
+				| &#9stage.stop( function ) : void
+				| &#14
+		p The run method also accepts three additional parameters :
+		pre
+			code.javascript
+				| &#14
+				| &#9delay       : Number        // the number of seconds in between calls
+				| &#9repeatCount : Number        // number of times to call the function before stopping, default is infinite
+				| &#9onComplete  : Function      // a callback to execute when the repeatCount is reached
+				| &#14
+		p With the additional parameters specified, a call to <u>run</u> could look like the following :
+		pre
+			code.javascript
+				| &#14
+				|   // call the update function once a second, limit to ten times and then execute the onUpdateComplete function.
+				| &#9stage.run(update, 1, 10, onUpdateComplete);
+				| &#14
+		hr
+		h2#api-framerate Framerate Monitor
+		p JS3 includes a simple FPS monitor that automatically updates once per second.<br>Note by default the monitor is absolutely positioned within the HTML document and is never a child of the Stage.<br>
+		pre
+			code.javascript
+				| &#14
+				| &#9JS3.showFrameRate( xPosition:Number, yPosition:Number );
+				| &#14
+		p If you'd like to position it relative to your Stage just pass your Stage instance in as the third argument.
+		pre
+			code.javascript
+				| &#14
+				| &#9stage = new JS3('my-canvas');
+				| &#9JS3.showFrameRate(5, 5, stage);
+				| &#14
+		canvas#api-1(width='898' height='100')
+		hr
+		h2#api-utilities Utility Methods
+		p JS3 also includes a couple convenient utility methods to help with common tasks.
+		pre
+			code.javascript
+				| &#14
+				| &#9JS3.getRandomColor() : Number
+				| &#9JS3.getRandomValue() : Number
+				| &#14
+		p JS3.getRandomValue supports <a href='http://en.wikipedia.org/wiki/Function_overloading'>function overloading</a> meaning that you can call it three different ways.
+		pre
+			code.javascript
+				| &#14
+				| &#9JS3.getRandomValue() // returns a number between 0 and 1
+				| &#9JS3.getRandomValue(n1) // returns a number between 0 and n1
+				| &#9JS3.getRandomValue(n1, n2) // returns a number between n1 and n2
+				| &#14
+		hr
+
+block scripts
+	script(type='text/javascript', src='./javascripts/api.js')
