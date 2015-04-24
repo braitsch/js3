@@ -4,6 +4,151 @@ extends layout
 block content
 	#content
 		#header
+			h1 Tweening
+			p Tweening in JS3 is based on the familiar syntax of the popular <a href='http://www.greensock.com/tweenlite/'>Tweenlite ActionScript library.</a>
+			hr
+			p There are two ways to animate in JS3.<br>You can use <a class='anchor' href='#basic-tweening'>Tweens</a> to move individual objects or group objects together inside functions called <a class='anchor' href='#animating-runners'>Runners</a>.
+			hr
+		#basic-tweening
+			h2 Basic Tweening
+			p The simplest way to Tween an Object is by using the built in Tween method. The <a href='/api/#api-tweening'>syntax</a> is exactly the same as Tweenlite.
+			pre
+				code.javascript
+					| &#14
+					| &#9var c = new JS3Circle();
+					| &#9c.x = 75;
+					| &#9c.y = 25;
+					| &#9stage.tween(c, 3, {x:800, alpha:0});
+					| &#14
+			canvas#x3(width='898' height='100')
+			button#x3-btn.btn.btn-primary Tween Me
+		.clearfix
+		hr
+		h2 Chaining Tweens
+		p You can also chain tweens together by specifying a callback to fire when the animation completes.
+		pre
+			code.javascript
+				| &#14
+				| &#9var c = new JS3Circle();
+				| &#9stage.tween(c, 3, {x:800, onComplete:function(){
+				| &#9    stage.tween(c, 1, {alpha:0});
+				| &#9}});
+				| &#14
+		canvas#x4(width='898' height='100')
+		button#x4-btn.btn.btn-primary Tween Me
+		.clearfix
+		hr
+		h2 Tween Syntax
+		p For a full list of the properties and callbacks you can pass to the Tween function, visit the <a href='/api#api-tweening'>API section.</a>
+		hr
+		#animating-runners
+			h2 Animating with Runners
+			p A second and more powerful way to animate is by using Runners which are just functions that execute on a timed delay.<br>Simply pass a function to the stage <strong><u>run</u></strong> method and specify how often to call it in seconds.<br>The snippet below draws a circle and moves it ten pixels to the right every time 1/4 of a second.
+		pre
+			code.javascript
+				| &#14
+				| &#9var c = new JS3Circle();
+				| &#9function update()
+				| &#9{
+				| &#9    c.x += 10;
+				| &#9    if (c.x >= 800) c.x = 75;
+				| &#9}
+				| &#9stage.addChild( c );
+				| &#9stage.run(update, .25);
+				| &#14
+		canvas#x5(width='898' height='100')
+		button#x5-btn.btn.btn-primary Start Updating
+		.clearfix
+		hr
+		p You can also specify how many times to call the function you passed to the <strong><u>run</u></strong> method.<br>The snippet below moves the circle fifty pixels to the right every time 1/2 second. It does this 5 times and then stops.
+		pre
+			code.javascript
+				| &#14
+				| &#9var c = new JS3Circle();
+				| &#9    c.size = 75; c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2;
+				| &#9stage.addChild( c );
+				| &#9function update()
+				| &#9{
+				| &#9    c.x +=50;
+				| &#9}
+				| &#9stage.run(update, .5, 5);
+				| &#14
+		canvas#x6(width='898' height='100')
+		button#x6-btn.btn.btn-primary Start Updating
+		.clearfix
+		hr
+		p Optionally you can also pass a fourth argument to <strong><u>run</u></strong> specifying a callback to execute when all calls to run's update function have completed.<br>The following snippet calls the update function every 1/2 second, fives times and then executes the callback "onUpdateComplete".
+		pre
+			code.javascript
+				| &#14
+				| &#9function update()
+				| &#9{
+				| &#9    c.x +=50;
+				| &#9}
+				| &#9function onUpdateComplete()
+				| &#9{
+				| &#9    console.log('done!');
+				| &#9}
+				| &#9stage.run(update, .5, 5, onUpdateComplete);
+				| &#14
+		p <strong>Quick Tip :</strong> Calling <strong><u>run</u></strong> with just an update function and no other arguments will execute "update" on every frame tick, similar to the AS3 <a href='http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/Event.html#ENTER_FRAME' target='blank'>OnEnterFrame.</a><br>At any time if you'd like to stop calling the function you passed to <strong><u>run</u></strong> simply pass the function to <strong><u>stop</u></strong>
+		pre
+			code.javascript
+				| &#14
+				| &#9stage.stop(update);
+				| &#14
+		p The <strong><u>run</u></strong> method returns a JS3RunnerObject with the following properties that you can change at any time :
+		pre
+			code.javascript
+				| &#14
+				| &#9delay           : Number        // how often to call the runner function in seconds
+				| &#9repeatCount     : Number        // total number of times to call the runner function
+				| &#9onComplete      : Function      // callback to execute when all calls to the runner function have completed
+				| &#14
+		hr
+		#multiple-sprites
+			h2 Animating Multiple Sprites
+			p The following snippet creates two circles and slowly bounces them around the Stage.<br>The "drawCircle" function just returns a basic circle and the "update" function called on every frame moves each circle along in its current direction.<br>If the circle hits the boundaries of the Stage, its direction is reversed.
+		pre
+			code.javascript
+				| &#14
+				|   // draw a circle and set a unique directionX & directionY value on it //
+				| &#9function drawCircle()
+				| &#9{
+				| &#9    var c = {};
+				| &#9    c.size = 15; c.x = Math.random()*stage.width; c.y = Math.random()*stage.height;
+				| &#9    c.fillColor = "#ddd"; c.strokeColor = "#ccc"; c.strokeWidth = 2;
+				| &#9    c.dirX = Math.round(Math.random()) == 0 ? -1 : 1;
+				| &#9    c.dirY = Math.round(Math.random()) == 0 ? -1 : 1;
+				| &#9    return c;
+				| &#9}
+				|   // update function to bounce the circles around the canvas //
+				| &#9function update()
+				| &#9{
+				| &#9    var i = stage.numChildren;
+				| &#9    while ( i-- ){
+				| &#9        var c = stage.getChildAt(i);
+				| &#9        if (c.x >= stage.width || c.x <= 0) c.dirX *=-1;
+				| &#9        if (c.y >= stage.height || c.y <= 0) c.dirY *=-1;
+				| &#9        c.x += c.dirX;
+				| &#9        c.y += c.dirY;
+				| &#9    }
+				| &#9}
+				|   // attach two circles to the stage //
+				| &#9var c1 = new JS3Circle(drawCircle());
+				| &#9stage.addChild( c1 );
+				| &#9var c2 = new JS3Circle(drawCircle());
+				| &#9stage.addChild( c2 );
+				|   // finally call the update function on every frame //
+				| &#9stage.run(update);
+				| &#14
+		canvas#x7(width='898' height='100')
+		button#x7-btn.btn.btn-primary Stop Updating
+		.clearfix
+		hr
+		p.next-page
+			b Awesome, you're ready for the next section. Click here to learn about setting up for <a href='/mouse-events'>Interactivity & Mouse Events.</a>
+		hr
 
 block scripts
 	script(type='text/javascript', src='./javascripts/tweening.js')

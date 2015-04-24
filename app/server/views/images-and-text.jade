@@ -4,6 +4,83 @@ extends layout
 block content
 	#content
 		#header
-
+			h1 Images & Text
+			p JS3 has built in support to easily display Images and render Text.
+		hr
+		h2 Displaying Images
+		p To display an Image on the canvas, simply create a JS3Image Object and pass in the path of the file to be loaded.<br>JS3Image Objects support <span style='color:blue'>pngs, jpgs, </span>and <span style='color:blue'>gifs.</span>
+		pre
+			code.javascript
+				| &#14
+				| &#9var stage = new JS3('my-canvas');
+				| &#9var img = new JS3Image( {src:'nyancat.png'} );
+				| &#9    img.x = 25;
+				| &#9    img.y = 25;
+				| &#9stage.addChild(img);
+				| &#14
+		canvas#img-1(width='898' height='100')
+		p Or of course you can specify the <u><b>src</b></u> on the JS3Image itself instead of passing it into the constructor.
+		pre
+			code.javascript
+				| &#14
+				| &#9var stage = new JS3('my-canvas');
+				| &#9var img = new JS3Image( {x:25, y:25} );
+				| &#9img.src = 'nyancat.png';
+				| &#9img.rotation = 90;
+				| &#9stage.addChild(img);
+				| &#14
+		canvas#img-2(width='898' height='100')
+		p Each JS3Image Object also has a <u><b>ready</b></u> callback that executes when the Image has finished loading.
+		pre
+			code.javascript
+				| &#14
+				| &#9var stage = new JS3('my-canvas');
+				| &#9var img = new JS3Image( {x:25, y:25, src:'nyancat.png'} );
+				| &#9    img.ready = function(){ alert('Image Loaded')};
+				| &#9stage.addChild(img);
+				| &#14
+		p <strong>Quick Tip : </strong>You don't have to wait for the Image to finish loading before adding it to the DisplayList.
+		hr
+		h2 Rendering Text
+		p Rendering Text on the canvas is as simple as creating a JS3Text Object and adding it to the Stage.
+		pre
+			code.javascript
+				| &#14
+				| &#9var stage = new JS3('my-canvas');
+				| &#9var text = new JS3Text( {text:'Hello World!', bold:true, color:'green', size:20} );
+				| &#9    text.x = 50;
+				| &#9    text.y = 35;
+				| &#9stage.addChild(text);
+				| &#14
+		canvas#img-3(width='898' height='100')
+		p And of course you can scale and rotate JS3Objects just as you would any other Sprite.
+		pre
+			code.javascript
+				| &#14
+				| &#9var text = new JS3Text( {text:'Hello World!', bold:true, color:'green', size:20} );
+				| &#9    text.x = 50;
+				| &#9    text.y = 35;
+				| &#9stage.run(function(){
+				| &#9    text.rotation += 1;
+				| &#9});
+				| &#9stage.addChild(text);
+				| &#14
+		canvas#img-4(width='898' height='100')
+		p In addition to the properties inherited from the <a href='/drawing/#drawing-basics'>base JS3Object</a>, JS3Text objects also define the following :
+		pre
+			code.javascript
+				| &#14
+				| &#9font        :String = 'Arial';
+				| &#9size        :Number = 12;
+				| &#9bold        :Boolean = false;
+				| &#9italic      :Boolean = false;
+				| &#9color       :String = '#333';
+				| &#9strokeColor :String = '#CCC';
+				| &#14
+		p Support for rendering text on an HTML5 canvas is still somewhat in its infancy.<br>Many more features will be added here as the spec and browser support evolves...
+		hr
+		p.next-page
+			b Awesome, you're ready for the next section. Click here to learn about <a href='/tweening'>Tweening & Animating with Timers.</a></b>
+		hr
 block scripts
 	script(type='text/javascript', src='./javascripts/images-and-text.js')

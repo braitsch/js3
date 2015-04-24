@@ -4,6 +4,123 @@ extends layout
 block content
 	#content
 		#header
+			h1 Mouse Events
+			p All JS3Objects can easily be told to listen for Mouse Events
+			hr
+		h2 Enabling Mouse Events
+		p To optimize performance, Mouse Events are ignored by default. To tell the Stage to listen for Mouse Events set the Stage's <u>interactive</u> property to <u>true</u>.
+		pre
+			code.javascript
+				| &#14
+				| &#9var stage = new JS3('my-canvas');
+				| &#9stage.interactive = true;
+				| &#14
+		p All JS3Objects have two basic properties that control their interactivity.
+		pre
+			code.javascript
+				| &#14
+				| &#9var c = new JS3Circle();
+				| &#9    c.enabled   = false;    // default
+				| &#9    c.draggable = false;    // default
+				| &#14
+		p To make any Object draggable, set its <u>draggable</u> property to <u>true</u>, likewise to tell any Object to ignore Mouse Events, set its <u>enabled</u> property to <u>false</u>.
+		hr
+		h2 Listening For Events
+		p All JS3Objects have the following handlers that listen for Mouse Interactions.<br>Each handler can be set to a callback function which will be executed whenever that interaction takes place.
+		pre
+			code.javascript
+				| &#14
+				| &#9var c = new JS3Circle();
+				| &#9    c.down          = function(){ trace('The Mouse was pressed!'); };
+				| &#9    c.up            = function(){ trace('The Mouse was released!'); };
+				| &#9    c.over          = function(){ trace('I was moused over!'); };
+				| &#9    c.out           = function(){ trace('I was moused out!'); };
+				| &#9    c.click         = function(){ trace('I was clicked!'); };
+				| &#9    c.dclick        = function(){ trace('I was doubled clicked!'); };
+				| &#9    c.dragStart     = function(){ trace('I am starting to be dragged!'); };
+				| &#9    c.dragChange    = function(){ trace('I am being dragged!'); };
+				| &#9    c.dragComplete  = function(){ trace('I am done being dragged!'); };
+				| &#14
+		p The callbacks receive a <a class='anchor' href='#event-object'>JS3EventObject</a> that describes the type of event and to whom and where it took place.
+		pre
+			code.javascript
+				| &#14
+				| &#9var c = new JS3Circle();
+				| &#9    c.name = 'my-circle';
+				| &#9    c.click = onCircleClick;
+				| &#9function onCircleClick(e)
+				| &#9{
+				| &#9    trace(e.target.name); // traces 'my-circle';
+				| &#9}
+				| &#14
+		p <strong>Quick Tip :</strong> Assigning a callback to any drag handler automatically sets that Object's <u>draggable</u> property to <u>true</u>.<br>However you can always disable dragging by setting <u>draggable</u> or <u>enabled</u> to <u>false</u> without the need to remove the callback.
+		hr
+		h2 Stage Events
+		p You can also bind the following callbacks directly to the Stage.
+		pre
+			code.javascript
+				| &#14
+				| &#9var stage = new JS3('my-canvas');
+				| &#9    stage.down     = function(){ trace('The Mouse was pressed'); };
+				| &#9    stage.up       = function(){ trace('The Mouse was released'); };
+				| &#9    stage.move     = function(){ trace('The Mouse moved'); };
+				| &#9    stage.click    = function(){ trace('The Stage was clicked'); };
+				| &#9    stage.dclick   = function(){ trace('The Stage was doubled clicked'); };
+				| &#9    stage.enter    = function(){ trace('The Mouse entered the Stage'); };
+				| &#9    stage.leave    = function(){ trace('The Mouse left the Stage'); };
+				| &#9    stage.focusIn  = function(){ trace('The Window gained focus'); };
+				| &#9    stage.focusOut = function(){ trace('The Window lost focus'); };
+				| &#14
+		p The following example shows how to listen for Mouse clicks on the Stage.<br>If we set the <u>enabled</u> property of the Circle to <u>true</u>, we can capture that target even though the callback is bound to the Stage.
+		pre
+			code.javascript
+				| &#14
+				| &#9var stage = new JS3('my-canvas');
+				| &#9var c = new JS3Circle( { x:25, y:25, size:50 });
+				| &#9    c.name = 'my-circle';
+				| &#9    c.enabled = true;
+				| &#9stage.addChild(c);
+				| &#9stage.click = function(e)
+				| &#9{
+				| &#9    alert(e.target.name + 'was clicked');
+				| &#9}
+				| &#14
+		p Click around in the Canvas below.
+		canvas#mouse-1(width='898' height='100')
+		hr
+		h2#event-object The JS3 Event Object
+		p Callbacks bound to handlers receive a <u>JS3EventObject</u> with the following properties
+		pre
+			code.javascript
+				| &#14
+				| &#9event.x         : Number        // global mouse X position where the event occurred
+				| &#9event.y         : Number        // global mouse Y position where the event occurred
+				| &#9event.type      : String        // the type of event that occurred
+				| &#9event.owner     : JS3Object     // the JS3Object to which the callback was bound
+				| &#9event.target    : JS3Object     // the JS3Object that actually received the event
+				| &#14
+		hr
+		h2 Disabling Mouse Events
+		p You can easily enable / disable MouseEvent listeners by toggling the following properties on any JS3Object :
+		pre
+			code.javascript
+				| &#14
+				| &#9var c = new JS3Circle();
+				| &#9c.enabled       : Boolean       // set to false to ignore click, dclick, over & out 
+				| &#9c.draggable     : Boolean       // set to false to ignore dragStart, dragChange & dragComplete
+				| &#14
+		p Furthermore, you can at any time disable <u>all</u> MouseEvent Listeners by simply setting the <u>stage.interactive</u> property to false.
+		pre
+			code.javascript
+				| &#14
+				| &#9var stage = new JS3Circle();
+				| &#9stage.interactive = false;
+				| &#14
+		hr
+		p.next-page
+			b Awesome, you're ready for the next section. Click here to <a href='/api'>review the full JS3 API.</a></b>
+		hr
+
 
 block scripts
 	script(type='text/javascript', src='./javascripts/mouse-events.js')
