@@ -8,7 +8,6 @@ app.set('views', './app/server/views');
 app.set('env', process.env.NODE_ENV || 'localhost');
 app.use(require('stylus').middleware({ src: __dirname + '/app/public' }));
 app.use(express.static(__dirname + '/app/public'));
-app.locals.version = '0.3.2';
 require('./app/server/routes')(app);
 
 var server = app.listen(app.get('port'), function (req, res) {

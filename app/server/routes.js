@@ -36,9 +36,9 @@ module.exports = function(app) {
 		res.render('api');
 	});
 
-	app.get('/gallery', function(req, res)
+	app.get('/gallery/:demo', function(req, res)
 	{
-		res.render('gallery');
+		res.render('gallery', {demo:req.params.demo});
 	});
 
 }

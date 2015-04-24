@@ -1,0 +1,13 @@
+
+script
+	var demo =!{JSON.stringify(demo)}
+
+extends layout
+
+block content
+	canvas#cnvs(width='1440' height='737' style='position:absolute; top:40px; display:none; z-index:-9999')
+	#datgui
+block scripts
+	script(type='text/javascript', src='/javascripts/gallery/gallery.js')
+	script(type='text/javascript', src='/vendor/dat.gui.min.js')
+	script(type='text/javascript', src='/javascripts/gallery/'+demo+'.js')
