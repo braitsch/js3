@@ -1,0 +1,244 @@
+
+extends layout
+
+block content
+	#content
+		#header
+			h1 Drawing Shapes
+			p JS3 makes it easy to draw a number of basic primitive shapes : 
+				a.anchor(href='#cr') Circles
+				| , 
+				a.anchor(href='#cr') Ellipses
+				| , 
+				a.anchor(href='#cr') Squares
+				| , 
+				a.anchor(href='#cr') Rectangles
+				| , 
+				a.anchor(href='#tri') Triangles
+				| , 
+				a.anchor(href='#la') Lines
+				| , 
+				a.anchor(href='#la') Arcs.
+			hr
+		#shapes-vs-sprite
+			h2 Shapes Vs. Sprites
+			p JS3 allows you to create non-persistent and persistent graphics, respectively called Shapes & Sprites.<br> The main difference is that Shapes are drawn to the canvas and then immediately removed from memory whereas Sprites persist allowing you to tween and interact with them after they are drawn.
+			p You can draw a Shape by calling the desired Stage method and passing in a generic Object that describes how the Shape should be drawn.<br>A full list of properties that can be used to describe how an Object is created are listed below in <a class='anchor' href='#drawing-basics'>drawing basics.</a>
+			pre
+				code.javascript
+					| &#14
+					| &#9var stage = new JS3('my-canvas');
+					| &#9stage.drawCircle( { x:50, y:25, size:50 } );
+					| &#9stage.drawRect( { x:120, y:25, width:80, height:50 } );
+					| &#9stage.drawLine( { x:220, y:25, x1:0, y1:50, x2:50, y2:0 } );
+					| &#9stage.drawArc( { x:280, y:25, x1:0, y1:50, xc:40, yc:-50, x2:80, y2:50 } );
+					| &#9stage.drawTri( { x:380, y:25, size:58 } );
+					| &#14
+			p These methods essentially stain the canvas with whatever type of Shape you tell it to draw.
+			canvas(id="draw-1" width='898' height='100')
+			p Shapes are much more performant than Sprites. If tweening and interactivity are not needed, always draw Shapes instead of Sprites.
+			hr
+			p Sprites are analogous to DisplayObjects in AS3 in that you create them by using the <span style='color:blue;'>new</span> keyword and then manually add them to the Stage.<br>Sprites can be removed and added to the Stage as often as desired as well be <a href='/tweening'>animated</a> and told to listen for <a href='/mouse-events'>mouse events</a>.
+			pre
+				code.javascript
+					| &#14
+					| &#9var stage = new JS3('my-canvas');
+					|   // create a Sprite using the new keyword //
+					| &#9var c = new JS3Circle();
+					| &#9    c.x = 50;
+					| &#9    c.y = 25;
+					| &#9    c.size = 50;
+					| &#9stage.addChild( c );
+					|   // or you can optionally pass an Object definition into the Sprite's constructor //
+					| &#9var c = new JS3Circle( {x:50, y:25, size:50} );
+					| &#9stage.addChild( c );
+					| &#14
+			canvas(id="draw-2" width='898' height='100')
+			hr
+			
+			#drawing-basics
+				h2 Drawing Basics
+				p All Shapes & Sprites inherit from a base graphics object with the following properties and default settings.<br>Each of these properties can be <a href='/tweening'>tweened</a> by setting them to a different value.
+				pre
+					code.javascript
+						| &#14
+						| &#9x           :Number = 0;
+						| &#9y           :Number = 0;
+						| &#9alpha       :Number = 1;
+						| &#9scaleX      :Number = 1;
+						| &#9scaleY      :Number = 1;
+						| &#9rotation    :Number = 1;
+						| &#14
+				p In addition to the base object properties defined above, Circles, Rectangles, & Triangles also define fill & stroke values.<br>To disable the fill or stroke of a Shape, set its <strong><u>fill</u></strong> or <strong><u>stroke</u></strong> property to false.
+				pre
+					code.javascript
+						| &#14
+						| &#9xfill        :Boolean = true;
+						| &#9xfillColor   :String = '#DDD';
+						| &#9xfillAlpha   :Number = 1;
+						| &#9xstroke      :Boolean = true;
+						| &#9xstrokeColor :String = '#CCC';
+						| &#9xstrokeAlpha :Number = 1;
+						| &#9xstrokeWidth :Number = 4;
+						| &#14
+				hr
+				h2 Colors & Gradients
+				p You can fill any shape, <b>including the background</b> with a single color or a gradient made up of several colors.<br>Simply set an array of colors to either of the two gradient options, <u>radial</u> or <u>linear</u> as shown below.</p>
+				pre
+					code.javascript
+						| &#14
+						| &#9xvar stage = new JS3('my-canvas');
+						| &#9xstage.linear = ['#EEEEEE', '#CCCCCC'];
+						| &#14
+						| &#9xvar r1 = new JS3Rect({size:50, x:25, y:25});
+						| &#9xr1.color = 'green';
+						| &#9xstage.addChild( r1 );
+						| &#14
+						| &#9xvar c1 = new JS3Circle({size:50, x:125, y:25});
+						| &#9xc1.radial = ['#ff0000', '#000000'];
+						| &#9xstage.addChild( c1 );
+						| &#14
+						| &#9xvar r2 = new JS3Rect({size:50, x:225, y:25});
+						| &#9xr2.linear = ['red', 'black'];
+						| &#9xstage.addChild( r2 );
+						| &#14
+						| &#9xvar c2 = new JS3Circle({size:50, x:325, y:25});
+						| &#9xc2.radial = ['#00C9FF', '#000000', '00C9FF', '#000000'];
+						| &#9xstage.addChild( c2 );
+						| &#14
+				canvas(id='draw-5' width='898' height='100')
+				p <strong>Quick Tip : </strong>You can set colors by either using their hex values or with any of the <a href='http://www.w3schools.com/cssref/css_colornames.asp', target='_blank'>17 standard color names.</a>
+				hr
+				h2 Positioning, Scaling & Rotation
+				p It is very important to note that all Shapes and Sprites are positioned on the Stage relative to their top left coordinate.<br>This is exactly the same as the default positioning you are probably used to working with in the Flash authoring environment.<br>Objects are scaled and rotated however from their center, which is automatically calculated from the Object's width, height and size.<br><br>The following example shows a Square positioned at 10 pixels on the X and Y axis.
+				pre
+					code.javascript
+						| &#14
+						| &#9var stage = new JS3('my-canvas');
+						| &#9var r = new JS3Rect();
+						| &#9    r.x = 10;
+						| &#9    r.y = 10;
+						| &#9stage.addChild( r );
+						| &#14
+				canvas(id="draw-3" width='898' height='100')
+				p Now note when scaling and rotation are applied, the Object scales and rotates from its center.
+				pre
+					code.javascript
+						| &#14
+						| &#9var stage = new JS3('my-canvas');
+						| &#9var r = new JS3Rect();
+						| &#9r.x = 10;
+						| &#9r.y = 10;
+						| &#9r.scaleX = 1.5;
+						| &#9r.scaleY = 1.5;
+						| &#9r.rotation = 45;
+						| &#9stage.addChild( r );
+						| &#14
+				canvas(id="draw-4" width='898' height='100')
+				h2#cr Circles and Rectangles
+				p The dimensions of Circles, Rectangles, & Triangles are defined by setting either their <b><u>size</u></b> property or their <b><u>width</u></b> and <b><u>height</u></b>.<br>Setting a Shape's <b><u>size</u></b> property constrains the Shape to equal dimensions.
+				pre
+					code.javascript
+						| &#14
+						|   // draw a circle with a diameter of 50 pixels //
+						| &#9var c = new JS3Circle();
+						| &#9c.size = 50;
+						| &#9stage.addChild(c);
+						|   // draw an Ellipse by setting separate values for a Circle's width and height.
+						| &#9var c = new JS3Circle();
+						| &#9    c.width = 80;
+						| &#9    c.height = 40;
+						| &#9stage.addChild(c);
+						| &#14
+				p <strong>Quick Tip :</strong> Setting a Shape's size will overwrite any previous values that have been set for its width and height.<br>The following examples show how to draw a Square and Rectangle.
+				pre
+					code.javascript
+						| &#14
+						|   // draw a 50 pixels x 50 pixels Square //
+						| &#9var r = new JS3Rect();
+						| &#9    r.size = 50;
+						| &#9stage.addChild(r);
+						|   // draw a Rectangle that is 80 pixels wide by 40 pixels tall.
+						| &#9var r = new JS3Rect();
+						| &#9    r.width = 80;
+						| &#9    r.height = 40;
+						| &#9stage.addChild(r);
+						| &#14
+				h2#tri Triangles
+				p There are <strong><u>three</u></strong> ways to draw Triangles.<br>In addition to setting its size, width & height you can also draw custom Triangles by specifying the x and y location of each of its three points.<br>
+				p <strong>Quick Tip : </strong>Whenever you specify custom coordinate points, <strong><u>these points are always drawn relative to the Object's x & y position on the Stage.</u></strong>
+				pre
+					code.javascript
+						| &#14
+						|   // draw a Triangle whose sides are each 50 pixels in length //
+						| &#9var t = new JS3Tri();
+						| &#9    t.size = 50;
+						| &#9stage.addChild(t);
+						|   // draw a Triangle with a varying width and height //
+						| &#9var t = new JS3Tri();
+						| &#9    t.width = 80;
+						| &#9    t.height = 40;
+						| &#9stage.addChild(t);
+						|   // draw a custom Triangle by specifying its three points //
+						| &#9var t = new JS3Tri();
+						|   // position this Triangle at 50 pixels on the x and y axis //
+						| &#9    t.x = 50;
+						| &#9    t.y = 50;
+						|   // x1 will be drawn at the global coordinate of 80, y1 at 100 etc... //
+						| &#9    t.x1 = 30;
+						| &#9    t.y1 = 50;
+						| &#9    t.x2 = 60;
+						| &#9    t.y2 = 0;
+						| &#9    t.x3 = 90;
+						| &#9    t.y3 = 50;
+						| &#9stage.addChild(c);
+						| &#14
+				hr
+				h2#la Lines and Arcs
+				p In addition to the base object properties, Lines & Arcs also have the following unique properites :
+				pre
+					code.javascript
+						| &#14
+						| &#9color       :Number = '#333';
+						| &#9thickness   :Number = 4;
+						| &#9capStyle    :String = 'butt'; // (valid values are 'butt, round, or square')
+						| &#14
+				p To draw a line, simply define the x and y points to draw to.<br>All lines & arcs start drawing from their x1 & y1 coordinates.<br>If these are not set the line will start drawing from the line's x and y coordinates and if these are not set it will start from 0,0
+				pre(style='width:445px;float:left;margin-right:10px;')
+					code.javascript
+						| &#14
+						| &#9var line = new JS3Line();
+						| &#9    line.color = '#ff0000';
+						| &#9    line.x = 50;
+						| &#9    line.y = 130;
+						| &#9    line.y2 = -100;
+						| &#9    line.x2 = 340;
+						| &#9stage.addChild(line);
+						| &#14
+				canvas(id="line-1" width='440' height='173')
+				p.clearfix Drawing an Arc is simple and just requires an additional point to "pull" the Line in one direction or another.<br> This third point is a control point defined with the properties <strong><u>xc</u></strong> and <strong><u>yc</u></strong>.
+				pre(style='width:445px;float:left;margin-right:10px;')
+					code.javascript
+						| &#14
+						| &#9var arc = new JS3Arc();
+						| &#9    arc.color = '#ff0000';
+						| &#9    arc.x = 50;
+						| &#9    arc.y = 190;
+						| &#9    arc.x1 = 0;
+						| &#9    arc.y1 = 0;
+						| &#9    arc.yc = -250;
+						| &#9    arc.xc = 170;
+						| &#9    arc.x2 = 340;
+						| &#9    sarc.y2 = 0;
+						| &#9stage.addChild(arc);
+						| &#14
+				canvas(id="line-2" width='440' height='246')
+				hr
+				p.next-page
+					b Awesome, you're ready for the next section. Click here to learn about <a href='/images-and-text')>Images & Text.</a>
+				hr
+block scripts
+	script(type='text/javascript', src='./javascripts/drawing.js')
+
+
+

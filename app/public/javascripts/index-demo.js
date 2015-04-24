@@ -28,7 +28,7 @@ function drawGui()
 		'Opacity'			: alpha,
 		'ScaleX'			: scaleX,
 		'ScaleY'			: scaleY,
-		'Rotation'			: rotation,			
+		'Rotation'			: rotation,
 		'Duration'			: speed,
 		'Ease Function'		: 'easeOutQuad',
 		'Tween'				: tweenShape
@@ -39,15 +39,15 @@ function drawGui()
 	var s2 = gui.add(guiObj, 'X', 0, stage.width-cross.width);
 		s2.onChange(function(val){cross.x=val;updateOut();})
 	var s3 = gui.add(guiObj, 'Y', 0, stage.height-cross.height);
-		s3.onChange(function(val){cross.y=val;updateOut();})		
+		s3.onChange(function(val){cross.y=val;updateOut();})
 	var a1 = gui.add(guiObj, 'Opacity', 0, 1);
-		a1.onChange(function(val){alpha=val;updateOut();})	
+		a1.onChange(function(val){alpha=val;updateOut();})
 	var s4 = gui.add(guiObj, 'ScaleX', 0, 5);
 		s4.onChange(function(val){scaleX=val;updateOut();})
 	var s5 = gui.add(guiObj, 'ScaleY', 0, 5);
-		s5.onChange(function(val){scaleY=val;updateOut();})	
+		s5.onChange(function(val){scaleY=val;updateOut();})
 	var s6 = gui.add(guiObj, 'Rotation', -720, 720);
-		s6.onChange(function(val){rotation=val;updateOut();})					
+		s6.onChange(function(val){rotation=val;updateOut();})
 	var a2 = gui.add(guiObj, 'Duration', 0, 5);
 		a2.onChange(function(val){speed=val;updateOut();})
 	var s7 = gui.add(guiObj, 'Ease Function', easeFuncs);
@@ -73,7 +73,7 @@ function updateOut()
 	if (alpha!=1) s+=', alpha:'+green(alpha,1);
 	if (scaleX!=1) s+=', scaleX:'+green(scaleX,1);
 	if (scaleY!=1) s+=', scaleY:'+green(scaleY,1);
-	if (rotation!=0) s+=', rotation:'+green(rotation,0);	
+	if (rotation!=0) s+=', rotation:'+green(rotation,0);
 		s+=', ease:'+green(easeFuncs[easeIndex])+'});';
 	$('#js3-demo-out').html(s);
 }
@@ -81,9 +81,9 @@ function updateOut()
 function green(n, i)
 {
 	if (i === undefined){
-		return "<span style='color:#40a070'>"+n+"</span>";		
+		return "<span style='color:#40a070'>"+n+"</span>";
 	}	else{
-		return "<span style='color:#40a070'>"+n.toFixed(i)+"</span>";				
+		return "<span style='color:#40a070'>"+n.toFixed(i)+"</span>";
 	}
 }
 
@@ -94,7 +94,7 @@ function setShape(s)
 		case 'Circle' : drawCirc(); shapeType = 'JS3Circle'; break;
 		case 'Rectangle' : drawRect(); shapeType = 'JS3Rect'; break;
 		case 'Triangle' : drawTri(); shapeType = 'JS3Tri'; break;
-		case 'Nyan Cat' : drawImage(); shapeType = 'JS3Image'; break;		
+		case 'Nyan Cat' : drawImage(); shapeType = 'JS3Image'; break;
 	}
 	drawCross();
 }
@@ -114,7 +114,7 @@ function drawRect()
 function drawTri()
 {
 	shape = new JS3Tri(getObjDefinition());
-	stage.addChild(shape);	
+	stage.addChild(shape);
 }
 
 function drawImage()
@@ -132,7 +132,7 @@ function drawCross()
 		guiObj.Y = cross.y = stage.height/2 - cross.height/2;
 		updateGui();
 	}
-	cross.src = './home/cross.png';
+	cross.src = './img/cross.png';
 	cross.dragChange = onCrossDrag;
 	stage.addChild(cross);
 }

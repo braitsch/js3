@@ -1,0 +1,26 @@
+{
+	"name": "JS3",
+	"version": "0.3.2",
+	"description": "A simple drawing & animation API for the JavaScript Canvas heavily modeled after AS3 & TweenLite",
+	"author": {
+		"name": "Stephen Braitsch",
+		"email": "stephen@braitsch.io"
+	},
+	"website":{
+		"url": "http://braitsch.io"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:braitsch/js3.git"
+	},
+	"private": true,
+	"dependencies": {
+		"express": "4.12.3",
+		"stylus": "0.50.0",
+		"jade": "1.9.2",
+		"mongodb": "2.0.16"
+	},
+	"engines": {
+		"node": "0.10.29"
+	}
+}

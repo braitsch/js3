@@ -1,9 +1,3 @@
-<div id='footer'><i>Lovingly Hand-Crafted by <a href='http://twitter.com/braitsch'>@braitsch</a> in San Francisco, California</i></div>
-</div><!-- close content div -->
-<script type="text/javascript" src=<?php linkto('/vendor/jquery-1.7.1.min.js')?>></script>
-<script type="text/javascript" src=<?php linkto('/vendor/bootstrap-dropdown.js')?>></script>
-<script type="text/javascript" src=<?php linkto('/src/JS3.js')?>></script>
-<script type="text/javascript">
 $(document).ready(function() {    
     $(".anchor").click(function() {
         var a = $(this).attr("href");
@@ -18,4 +12,3 @@ $(document).ready(function() {
         setTimeout(function(){ $(window).scrollTop($(a).offset().top - 50); }, 100);        
     }
 });
-</script>

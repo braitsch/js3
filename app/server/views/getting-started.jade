@@ -1,0 +1,88 @@
+
+extends layout
+
+block content
+	#content
+		#header
+			h1 Getting Started
+			p Here's how to add JS3 to your project to quickly get started drawing and animating
+		hr
+		p
+			b 1.
+			|&nbspFirst things first, add a canvas tag to your HTML and give it a unique id.
+		pre
+			code.html
+				| &#14
+				| &#9&lt;body&gt;
+				| &#9&lt;canvas id="my-canvas" width="800" height="100"&gt;&lt;/canvas&gt;
+				| &#9&lt;/body&gt;
+				| &#14
+		p
+			b 2.
+			|&nbspInclude a link to the JS3 library right before your closing body tag.
+		pre
+			code.html
+				| &#14
+				| &#9&lt;body&gt;
+				| &#9&lt;canvas id="my-canvas" width="800" height="100"&gt;&lt;/canvas&gt;
+				| &#9&lt;script src="https://raw.github.com/braitsch/js3/master/src/JS3-0.3.2-min.js"&gt;&lt;/script&gt;
+				| &#9&lt;/body&gt;
+				| &#14
+		p
+			b 3.
+			|&nbspInitialize a new JS3 object and pass in the id of your canvas element.
+		pre
+			code.html
+				| &#14
+				| &#9&lt;body&gt;
+				| &#9&lt;canvas id="my-canvas" width="800" height="100"&gt;&lt;/canvas&gt;
+				| &#9&lt;script src="https://raw.github.com/braitsch/js3/master/src/JS3-0.3.2-min.js"&gt;&lt;/script&gt;
+				| &#9&lt;script&gt;
+				| &#9   var stage = new JS3('my-canvas');
+				| &#9&lt;/script&gt;
+				| &#9&lt;/body&gt;
+				| &#14
+		p
+			b 4.
+			|&nbspAnd that's it! You're now ready to start
+			a(href='/drawing')  drawing
+			|  and
+			a(href='/animating')  animating.
+		hr
+		p
+			b Here's a quick example of how to draw a red circle and tween it across the Stage.
+		pre
+			code
+				| &#14
+				| &#9&lt;body&gt;
+				| &#9&lt;canvas id="my-canvas" width="800" height="100"&gt;&lt;/canvas&gt;
+				| &#9&lt;script src="https://raw.github.com/braitsch/js3/master/src/JS3-0.3.2-min.js"&gt;&lt;/script&gt;
+				| &#9&lt;script&gt;
+				| &#9   var stage = new JS3('my-canvas');
+				| &#9       stage.background = '#CCC'
+				| &#9   var circ = new JS3Circle();
+				| &#9       circ.strokeColor = '#EEE';
+				| &#9       circ.strokeWidth = 4;
+				| &#9       circ.fillColor = '#9C0C0C';
+				| &#9       circ.x = 25;
+				| &#9       circ.y = 35;
+				| &#9   stage.addChild(circ);
+				| &#9   var tweenCirc = function()
+				| &#9   {
+				| &#9       circ.x = 25;
+				| &#9// automatically call tweenCirc again after the tween completes //
+				| &#9       stage.tween(circ, 8, {x:840, onComplete:tweenCirc});
+				| &#9   }
+				| &#9   tweenCirc();
+				| &#9&lt;/script&gt;
+				| &#9&lt;/body&gt;
+				| &#14
+		canvas#gs-canvas(width='898' height='100')
+		hr
+		p.next-page
+			b Awesome, you're ready for the next section. Click here to learn more about 
+				a(href='/drawing') drawing shapes.
+		hr
+
+block scripts
+	script(type='text/javascript', src='./javascripts/getting-started.js')

@@ -10,8 +10,8 @@ $(document).ready(function() {
 	stage.addChild(circ);
 	var tweenCirc = function()
 	{
-		circ.x = 25;		
-		stage.tween(circ, 8, {x:840, onComplete:tweenCirc});	
+		circ.x = 25;
+		stage.tween(circ, 8, {x:840, onComplete:tweenCirc});
 	}
 	tweenCirc();
 });

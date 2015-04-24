@@ -1,0 +1,61 @@
+
+extends layout
+
+block content
+	#content
+		#header
+			h1 Simple, Flash-like Tweening for the JavaScript Canvas
+			p	JS3 is a fast and lightweight drawing and animation library for the JavaScript Canvas allowing you to easily do things like :
+		#header-example
+			pre#home-canvas-code
+				code
+					| &#14
+					| &#9var c = new JS3Circle();
+					| &#9stage.addChild(c);
+					| &#9stage.tween(c, 2, {x:500});
+					| &#14
+			canvas#home-canvas(width='585', height='102')
+		hr
+		#features.clearfix
+			h2 Core Features
+			ul
+				li
+					| Simple API for drawing basic primitives: 
+					a(href='/drawing/#cr') Circles, Ellipses, Squares, Rectangles
+					| , 
+					a(href='/drawing/#tri') Triangles
+					| , 
+					a(href='/drawing/#la') Lines & Arcs
+				li
+					| Support for displaying 
+					a(href='/images-and-text') Images and Text
+				li
+					| Built-in Mouse interactions : 
+					a(href='/mouse-events') Click, Drag, MouseOver, MouseOut, etc..
+				li
+					| Powerful yet simple 
+					a(href='/tweening') Tween Engine 
+					| modeled after the popular 
+					a(href='http://www.greensock.com/tweenlite/', target='blank') Tweenlite ActionScript library
+				li
+					| Lightweight footprint : The 
+					a(href='https://raw.github.com/braitsch/js3/master/src/JS3-0.3.2-min.js') Entire Library Minified
+					|  is only 16kb
+		hr
+		h2 Interactive Demo
+		p Move the Shape and Target around and paste the generated code into your HTML document.
+		#js3-demo
+			canvas#demo-canvas(width='623', height='278', style='float:left;margin-right:10px')
+			#datgui(style='margin:-30px 10px 0 0;float:left')
+		pre(style='margin-top:5px;')
+			code(id='js3-demo-out').javascript
+		hr
+		p.next-page
+			b Learn the entire JS3 library in <u>10 minutes.</u> 
+				a(href='/gettings-started') Click here to get started.
+		hr
+block scripts
+	script(type='text/javascript', src='./javascripts/index.js')
+	script(type='text/javascript', src='./javascripts/index-demo.js')
+	script(type='text/javascript', src='./vendor/dat.gui.min.js')
+

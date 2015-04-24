@@ -1,0 +1,89 @@
+doctype html
+html
+	head
+		title JS3 is a fast and lightweight drawing and animation library for the HTML5 JavaScript Canvas
+		meta(name='author', content='Stephen Braitsch')
+		meta(name='description', content='A fast and lightweight drawing and animation library for the HTML5 JavaScript Canvas')
+		link(rel='stylesheet', href='/vendor/bootstrap.min.css')
+		link(rel='stylesheet', href='/vendor/highlightjs-6.1-min.css')
+		link(rel='stylesheet', href='/css/site.css')
+	body
+		.navbar.navbar-fixed-top
+			.navbar-inner
+				.container(style='width: auto;')
+					ul(id='global-nav').nav.pull-left
+						li.divider-vertical
+						li
+							a(href='/') JS3
+						li.divider-vertical
+						li
+							a(href='/getting-started') Getting Started
+						li.divider-vertical
+						li
+							a(href='/drawing') Drawing Shapes
+						li.divider-vertical
+						li
+							a(href='/images-and-text') Images &amp; Text
+						li.divider-vertical
+						li
+							a(href='/tweening') Tweening
+						li.divider-vertical
+						li
+							a(href='/mouse-events') Mouse Events
+						li.divider-vertical
+						li
+							a(href='/api') API
+						li.divider-vertical
+						li.dropdown
+							a(href='#', data-toggle="dropdown" role="button" aria-expanded="false").dropdown-toggle Gallery
+								span.caret
+							ul.dropdown-menu(role='menu')
+								li
+									a(href='/gallery/quarks') Quarks
+								li
+									a(href='/gallery/honeycomb') HoneyComb
+								li
+									a(href='/gallery/rings') Rings
+								li
+									a(href='/gallery/lite-brite') LiteBrite
+								li
+									a(href='/gallery/tube-worms') TubeWorms
+								li.divider
+								li
+									a(href='/gallery/joints') Joints
+								li
+									a(href='/gallery/spiders') Spiders
+								li
+									a(href='/gallery/confetti') Confetti
+								li
+									a(href='/gallery/snowflakes') SnowFlakes
+						li.divider-vertical
+					.btn-group(style='float:right;right:10px;top:1px;')
+						button.btn.btn-success.dropdown-toggle(style='width:161px;' data-toggle="dropdown")
+							i.icon-download.icon-white 
+							| Download v#{version}
+						ul.dropdown-menu
+							li
+								a(href='https://raw.github.com/braitsch/js3/master/src/JS3-'+version+'-min.js') Minified
+							li
+								a(href='https://raw.github.com/braitsch/js3/master/src/JS3-'+version+'.js') Uncompressed
+							li.divider
+							li
+								a(href='/quick-start.zip') Quick Start
+		a(href='http://github.com/braitsch/js3')
+			img(style='position:fixed; top:40px; right:0; border:0;', src='https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67', alt='Fork me on GitHub', data-canonical-src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png')
+
+		block content
+		script(src='/vendor/jquery-2.1.3.min.js')
+		script(src='/vendor/bootstrap-dropdown.js')
+		script(src='/javascripts/JS3.js')
+		script(src='/javascripts/site.js')
+		script(type='text/javascript', src='http://yandex.st/highlightjs/6.1/highlight.min.js')
+		script.
+			hljs.initHighlightingOnLoad();
+		block scripts
+		#footer
+			i Lovingly Hand-Crafted by 
+				a(href='http://twitter.com/braitsch') @braitsch 
+				| in San Francisco, California
+
