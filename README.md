@@ -1,4 +1,4 @@
-###JS3 is a fast & lightweight JavaScript drawing & animation API heavily modeled after [AS3](http://en.wikipedia.org/wiki/ActionScript) & [TweenLite](http://greensock.com/tweenlite)
+###JS3 is a fast & lightweight JavaScript drawing & animation library modeled after the [Flash ActionScript drawing API](http://en.wikipedia.org/wiki/ActionScript)
 ****
 
 * [Getting Started](http://js3.braitsch.io/)
