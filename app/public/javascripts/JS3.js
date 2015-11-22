@@ -1,11 +1,11 @@
 
 /**
  * JS3 - A Drawing & Tweening API for the JavaScript Canvas
- * Version : 0.3.2
- * Release Date : March 03 2013
+ * Version : 0.4.0
+ * Release Date : November 21 2015
  * Documentation : http://js3.braitsch.io/
  *
- * Copyright 2012 Stephen Braitsch :: @braitsch
+ * Copyright 2012-2015 Stephen Braitsch :: @braitsch
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ function JS3(cnvs)
 		var _background		= '#ffffff';
 		var _winTitle		= 'My Canvas';
 		var _clickInt		= 0;
-		var _stageEnter		= false;
+		var _mouseOver		= false;
 		var _interactive	= false;
 		var _downObj, _overObj, _dragObj, _radial, _linear;
 	
@@ -126,41 +126,52 @@ function JS3(cnvs)
 	
 		var addMouseEvents = function()
 		{
-			_canvas.addEventListener("mousedown", onMD);
-			_canvas.addEventListener("mouseup", onMU);
-			_canvas.addEventListener("mousemove", onMM);
-			_canvas.addEventListener("mouseover", onOVR);
-			_canvas.addEventListener("mouseout", onOUT);
-			document.body.addEventListener("mouseup", onMU);
+			_canvas.addEventListener("mousedown", onCanvasMouseDown);
+			window.addEventListener("mouseup", onWindowMouseUp);
+			window.addEventListener("mousemove", onWindowMouseMove);
 		}
 		var remMouseEvents = function()
 		{
-			_canvas.removeEventListener("mousedown", onMD);
-			_canvas.removeEventListener("mouseup", onMU);
-			_canvas.removeEventListener("mousemove", onMM);
-			_canvas.removeEventListener("mouseover", onOVR);
-			_canvas.removeEventListener("mouseout", onOUT);
-			document.body.removeEventListener("mouseup", onMU);
+			_canvas.removeEventListener("mousedown", onCanvasMouseDown);
+			window.removeEventListener("mouseup", onWindowMouseUp);
+			window.removeEventListener("mousemove", onWindowMouseMove);
 		}
-
-		var onMD = function(e)
+		var onWindowMouseMove = function(e)
+		{
+			if (mouseIsOverCanvas(e)){
+				if (_mouseOver == false) onMouseEvent(_root, 'stageEnter');
+				_mouseOver = true;
+				onCanvasMouseMove(e);
+			}	else{
+				if (_mouseOver == true) onMouseEvent(_root, 'stageLeave');
+				_mouseOver = false;
+			}
+		}
+		var onWindowMouseUp = function(e)
+		{
+			if (mouseIsOverCanvas(e)){
+				if (_dragObj){
+					onMouseEvent(_dragObj, 'dragComplete'); _dragObj = _downObj = undefined;
+				}	else{
+					var n = Date.now();
+						n - _clickInt > 200 ? onSingleClick() : onDoubleClick();
+					_clickInt = n;
+				}
+			}
+			if (_overObj) onMouseEvent(_overObj, 'mouseUp');
+		}
+		var mouseIsOverCanvas = function(e)
+		{
+			e = e || window.event;
+			return e.target == _canvas;
+		}
+		var onCanvasMouseDown = function(e)
 		{
 			_context.dx = _context.mx; _context.dy = _context.my;
 			_downObj = _overObj;
 			onMouseEvent(_overObj, 'mouseDown');
 		}
-		var onMU = function(e)
-		{
-			if (_dragObj){
-				onMouseEvent(_dragObj, 'dragComplete'); _dragObj = _downObj = undefined;
-			}	else{
-				var n = Date.now();
-					n - _clickInt > 200 ? onSingleClick() : onDoubleClick();
-				_clickInt = n;
-			}
-			onMouseEvent(_overObj, 'mouseUp');
-		}		
-		var onMM = function(e)
+		var onCanvasMouseMove = function(e)
 		{
 			getMousePosition(e); 
 		// detect rollOver & rollOuts //
@@ -187,25 +198,17 @@ function JS3(cnvs)
 					}
 				}
 			}
-		 	if (_stageEnter) {
-				_stageEnter = false;
-				onMouseEvent(_root, 'stageEnter');
-			}	else{
-				onMouseEvent(k, 'mouseMove');
-			}
-		}
-		var onOVR = function(e)
-		{
-			_stageEnter = true;
-		}
-		var onOUT = function(e)
-		{
-			onMouseEvent(_root, 'stageLeave');
+			onMouseEvent(k, 'mouseMove');
 		}
 		var onMouseEvent = function(o, e)
 		{
 			var t = o;
-			while(o){ if (o['_'+e]) o['_'+e](getMouseEvent(e, t, o)); o = o.parent; }
+			while(o){ 
+				if (o['_'+e]) {
+					o['_'+e](getMouseEvent(e, t, o));
+				}
+				o = o.parent; 
+			}
 		}
 		var onSingleClick = function()
 		{

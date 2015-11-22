@@ -16,6 +16,9 @@ button {
   float: right;
   margin-top: 6px;
 }
+select {
+  height: auto;
+}
 #content {
   width: 900px;
   margin: 80px auto 30px auto;

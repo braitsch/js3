@@ -1,7 +1,3 @@
-
-script
-	var demo =!{JSON.stringify(demo)}
-
 doctype html
 html
 	head
@@ -75,7 +71,7 @@ html
 							li
 								a(href='/quick-start.zip') Quick Start
 
-		canvas#cnvs(width='1440' height='737' style='position:absolute; top:40px; display:none; z-index:-9999')
+		canvas#cnvs(style='position:absolute; top:40px; display:none; z-index:-9999')
 		#datgui
 
 		script(src='/vendor/jquery-2.1.3.min.js')
@@ -87,6 +83,8 @@ html
 			hljs.initHighlightingOnLoad();
 		script(type='text/javascript', src='/javascripts/gallery/gallery.js')
 		script(type='text/javascript', src='/vendor/dat.gui.min.js')
+		script.
+			var demo=!{JSON.stringify(demo)}
 		script(type='text/javascript', src='/javascripts/gallery/'+demo+'.js')
 
 

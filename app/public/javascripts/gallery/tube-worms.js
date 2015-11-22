@@ -15,16 +15,18 @@ function init()
 	canvas.drawClean = false;
 	canvas.background = bkgdColor;
 	canvas.click = onCanvasClick;
-	canvas.interactive = true;		
+	canvas.interactive = true;
 	canvas.windowTitle = 'TubeWorms &#187; Right Click & Select Save Image As';
 	startX = canvas.width / 2; startY = canvas.height / 2;
-	setTimeout(draw, 500);	
+	setTimeout(draw, 500);
+	console.log('niit')	
 }
 
 function onCanvasClick(e)
 {
+//	console.log('onCanvasClick', e)
 	startX = e.x;
-	startY = e.y;	
+	startY = e.y;
 // stop any active worms from growing //
 	while (canvas.numChildren) canvas.removeChildAt(0);
 	draw();
