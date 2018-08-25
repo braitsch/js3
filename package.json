@@ -3,7 +3,7 @@
 	"version": "0.3.2",
 	"description": "A simple drawing & animation API for the JavaScript Canvas heavily modeled after AS3 & TweenLite",
 	"author": "Stephen Braitsch <stephen@braitsch.io>",
-	"website":{
+	"website": {
 		"url": "http://js3.braitsch.io"
 	},
 	"repository": {
@@ -11,10 +11,9 @@
 		"url": "git@github.com:braitsch/js3.git"
 	},
 	"dependencies": {
-		"express": "4.13.3",
-		"jade": "1.11.0",
-		"stylus": "0.52.4",
-		"mongodb": "2.0.45"
+		"express": "4.16.3",
+		"pug": "^2.0.3",
+		"stylus": "0.54.5"
 	},
 	"engines": {
 		"node": "4.2.1"
