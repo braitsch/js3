@@ -5,18 +5,14 @@
  * More Info : https://github.com/braitsch/js3
  */
 
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
+ const express = require('@braitsch/express');
 
-app.locals.pretty = true;
-app.set('port', process.env.PORT || 3000);
-app.set('view engine', 'pug');
-app.set('views', './app/server/views');
-app.use(require('stylus').middleware({ src: __dirname + '/app/public' }));
-app.use(express.static(__dirname + '/app/public'));
-require('./app/server/routes')(app);
+ const app = express();
 
-server.listen(app.get('port'), function(){
-	console.log('Express app listening at http://%s:%s', server.address().address, server.address().port);
-});
+ express.log('./logs');
+
+ express.http(app);
+
+ express.init(__dirname, app);
+
+ express.start(app);
