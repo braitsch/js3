@@ -11,12 +11,12 @@
 		"url": "git@github.com:braitsch/js3.git"
 	},
 	"dependencies": {
-		"@braitsch/express": "^1.1.1",
+		"@braitsch/express": "^1.1.4",
 		"express": "^4.17.1",
 		"pug": "^3.0.2",
 		"stylus": "^0.54.8"
 	},
 	"engines": {
-		"node": "12.21.0"
+		"node": ">=12.21.0"
 	}
 }
